@@ -1,0 +1,14 @@
+[tool.black]
+line-length = 88
+exclude = '''
+/(
+    env  # Exclude the env folder
+)/
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 88
+skip = [
+    "env"  # Exclude the env folder
+]
