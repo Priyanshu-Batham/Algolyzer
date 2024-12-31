@@ -35,5 +35,7 @@ jobs:
           export DJANGO_SETTINGS_MODULE=Algolyzer.Algolyzer.settings  # Replace with your actual settings module
           
           # Run Django tests with manage.py
-          cd Algolyzer
+          export PYTHONPATH=./Algolyzer:$PYTHONPATH
+          export DJANGO_SETTINGS_MODULE=Algolyzer.settings
+
           python manage.py test
