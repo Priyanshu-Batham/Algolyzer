@@ -1,0 +1,38 @@
+name: Python Lint, Format, and Tests
+
+on: [push, pull_request]
+
+jobs:
+  lint-format-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.12  # Or whichever Python version you're using
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install black isort flake8
+
+      - name: Run Black (check)
+        run: black --check .
+
+      - name: Run Isort (check)
+        run: isort --check-only .
+
+      - name: Run Flake8
+        run: flake8 .
+
+      - name: Run Django Tests
+        run: |
+          # Set up the Django environment variable
+          export DJANGO_SETTINGS_MODULE=mysite.settings  # Replace with your actual settings module
+          
+          # Run Django tests with manage.py
+          python manage.py test
