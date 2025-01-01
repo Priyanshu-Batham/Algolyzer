@@ -2,7 +2,7 @@
 line-length = 88
 exclude = '''
 /(
-    env  # Exclude the env folder
+    env|venv  # Exclude the env and venv folders
 )/
 '''
 
@@ -10,5 +10,6 @@ exclude = '''
 profile = "black"
 line_length = 88
 skip = [
-    "env"  # Exclude the env folder
+    "env",  # Exclude the env folder
+    "venv"  # Exclude the venv folder
 ]
