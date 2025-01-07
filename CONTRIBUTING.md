@@ -41,6 +41,9 @@ Thank you for considering contributing to Algolyzer! We appreciate your help in 
     # Install dependencies
     pip install -r requirements.txt
     
+    # Install pre-commit hooks
+    pre-commit install
+    
     ## Setup locally
     
     cd Algolyzer
@@ -50,6 +53,11 @@ Thank you for considering contributing to Algolyzer! We appreciate your help in 
   
     # Create a local administrator
     python manage.py createsuperuser
+    
+    # Create .env file
+    cp .env.sample .env
+    
+    # Enter your secrets in the .env files
     
     # Run Django server
     python manage.py runserver 8000
@@ -66,6 +74,9 @@ Thank you for considering contributing to Algolyzer! We appreciate your help in 
     
     # Install dependencies
     pip install -r requirements.txt
+  
+    # Install pre-commit hooks
+    pre-commit install
     
     ## Setup locally
     
@@ -76,6 +87,11 @@ Thank you for considering contributing to Algolyzer! We appreciate your help in 
     
     # Create a local administrator
     python manage.py createsuperuser
+  
+    # Create .env file
+    cp .env.sample .env
+    
+    # Enter your secrets in the .env files
     
     # Run Django server
     python manage.py runserver 8000
@@ -95,7 +111,7 @@ Thank you for considering contributing to Algolyzer! We appreciate your help in 
             ```powershell
             black .
             isort .
-            flake8 .
+            flake8
             ```
 
 2. Run Tests
