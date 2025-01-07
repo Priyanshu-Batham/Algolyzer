@@ -29,73 +29,79 @@ Thank you for considering contributing to Algolyzer! We appreciate your help in 
 
 ## Setup locally
 
-- For LINUX/MacOS
+1. Make a new OAuth Client using the following URL as the Authorized Redirect URI:
 
-    ```bash
-    # Create a virtual environment named 'myenv'
-    python3 -m venv myenv
-    
-    # Activate the virtual environment
-    source myenv/bin/activate
-    
-    # Install dependencies
-    pip install -r requirements.txt
-    
-    # Install pre-commit hooks
-    pre-commit install
-    
-    ## Setup locally
-    
-    cd Algolyzer
-    
-    # Apply migrations
-    python manage.py migrate
-  
-    # Create a local administrator
-    python manage.py createsuperuser
-    
-    # Create .env file
-    cp .env.sample .env
-    
-    # Enter your secrets in the .env files
-    
-    # Run Django server
-    python manage.py runserver 8000
-    ```
-  
-- For Windows
+    ```http://localhost:8000/accounts/google/login/callback/```
 
-    ```powershell
-    # Create a virtual environment named 'myenv'
-    python -m venv myenv
+2. Run the following commands:
+
+    - For LINUX/MacOS
+
+        ```bash
+        # Create a virtual environment named 'myenv'
+        python3 -m venv myenv
     
-    # Activate the virtual environment
-    myenv\Scripts\activate
+        # Activate the virtual environment
+        source myenv/bin/activate
     
-    # Install dependencies
-    pip install -r requirements.txt
-  
-    # Install pre-commit hooks
-    pre-commit install
+        # Install dependencies
+        pip install -r requirements.txt
     
-    ## Setup locally
+        # Install pre-commit hooks
+        pre-commit install
     
-    cd Algolyzer
+        ## Setup locally
     
-    # Apply migrations
-    python manage.py migrate
+        cd Algolyzer
     
-    # Create a local administrator
-    python manage.py createsuperuser
-  
-    # Create .env file
-    cp .env.sample .env
+        # Apply migrations
+        python manage.py migrate
     
-    # Enter your secrets in the .env files
+        # Create a local administrator
+        python manage.py createsuperuser
     
-    # Run Django server
-    python manage.py runserver 8000
-    ```
+        # Create .env file
+        cp .env.sample .env
+    
+        # Enter your secrets in the .env files
+    
+        # Run Django server
+        python manage.py runserver 8000
+        ```
+
+    - For Windows
+
+        ```powershell
+        # Create a virtual environment named 'myenv'
+        python -m venv myenv
+    
+        # Activate the virtual environment
+        myenv\Scripts\activate
+    
+        # Install dependencies
+        pip install -r requirements.txt
+    
+        # Install pre-commit hooks
+        pre-commit install
+    
+        ## Setup locally
+    
+        cd Algolyzer
+    
+        # Apply migrations
+        python manage.py migrate
+    
+        # Create a local administrator
+        python manage.py createsuperuser
+    
+        # Create .env file
+        cp .env.sample .env
+    
+        # Enter your secrets in the .env files
+    
+        # Run Django server
+        python manage.py runserver 8000
+        ```
 
 ## Running Quality Checks
 
