@@ -15,12 +15,12 @@ A platform for learning about AI/ML models and algorithms from theoretical to ex
 - Focusing on creating the basic structure for the project.
 
 ## Planned
-- [] Homepage
-- [] Tutorials
-- [] Playground
-- [] Community Forum
-- [] Quiz
-- [] Documentation
+- [ ] Homepage
+- [ ] Tutorials
+- [ ] Playground
+- [ ] Community Forum
+- [ ] Quiz
+- [ ] Documentation
 
 ## Contribution
 - For guidelines on how to contribute to this project, check out [Contribution Guidelines](./CONTRIBUTING.md).
