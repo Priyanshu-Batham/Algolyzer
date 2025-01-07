@@ -13,6 +13,7 @@ A platform for learning about AI/ML models and algorithms from theoritical to ex
 - navigate into the main project directory `cd Algolyzer`
 - run `python manage.py migrate` to create the database.
 - run `python manage.py createsuperuser` this will ask you to enter some details.
+- create a `.env` file just like the `.env.sample` and place your `GOOGLE_CLIENT_ID` & `GOOGLE_SECRET_KEY` this step is required to enable google oauth
 - run `python manage.py runserver` to run the server on localhost:8000
 
 ## Contributing Guidelines
