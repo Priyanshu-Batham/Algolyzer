@@ -29,7 +29,7 @@ Thank you for considering contributing to Algolyzer! We appreciate your help in 
 
 ## Setup locally
 
-1. Make a new OAuth Client using the following URL as the Authorized Redirect URI:
+1. Goto [Google Developer Console](https://console.developers.google.com). Make a new OAuth Client using the following URL as the Authorized Redirect URI:
 
     ```http://localhost:8000/accounts/google/login/callback/```
 
@@ -43,6 +43,11 @@ Thank you for considering contributing to Algolyzer! We appreciate your help in 
     
         # Activate the virtual environment
         source myenv/bin/activate
+
+        # Create .env file from .env.sample
+        cp .env.sample .env
+
+        # Enter the Google client id and secret in the .env file
     
         # Install dependencies
         pip install -r requirements.txt
@@ -50,8 +55,7 @@ Thank you for considering contributing to Algolyzer! We appreciate your help in 
         # Install pre-commit hooks
         pre-commit install
     
-        ## Setup locally
-    
+        # Navigate into Algolyzer project
         cd Algolyzer
     
         # Apply migrations
@@ -59,11 +63,6 @@ Thank you for considering contributing to Algolyzer! We appreciate your help in 
     
         # Create a local administrator
         python manage.py createsuperuser
-    
-        # Create .env file
-        cp .env.sample .env
-    
-        # Enter your secrets in the .env files
     
         # Run Django server
         python manage.py runserver 8000
@@ -77,6 +76,11 @@ Thank you for considering contributing to Algolyzer! We appreciate your help in 
     
         # Activate the virtual environment
         myenv\Scripts\activate
+
+        # Create .env file from .env.sample
+        cp .env.sample .env
+
+        # Enter the Google client id and secret in the .env file
     
         # Install dependencies
         pip install -r requirements.txt
@@ -84,8 +88,7 @@ Thank you for considering contributing to Algolyzer! We appreciate your help in 
         # Install pre-commit hooks
         pre-commit install
     
-        ## Setup locally
-    
+        # Navigate into Algolyzer project
         cd Algolyzer
     
         # Apply migrations
@@ -93,11 +96,6 @@ Thank you for considering contributing to Algolyzer! We appreciate your help in 
     
         # Create a local administrator
         python manage.py createsuperuser
-    
-        # Create .env file
-        cp .env.sample .env
-    
-        # Enter your secrets in the .env files
     
         # Run Django server
         python manage.py runserver 8000
