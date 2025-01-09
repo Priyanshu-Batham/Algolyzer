@@ -100,6 +100,7 @@ Thank you for considering contributing to Algolyzer! We appreciate your help in 
         # Run Django server
         python manage.py runserver 8000
         ```
+**Note - Always use `localhost:8000` instead of `127.0.0.1:8000` if you don't want access blocked from google during development**
 
 ## Running Quality Checks
 

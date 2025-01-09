@@ -51,7 +51,6 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # algolyzer apps
     "home",
-    "dashboard",
 ]
 
 MIDDLEWARE = [
@@ -157,6 +156,8 @@ SOCIALACCOUNT_PROVIDERS = {
 # this is to enforce email if not optional
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_REQUIRED = True
+# The redirect url after successful signin/signup
+LOGIN_REDIRECT_URL = "/dashboard/"
 
 # console.EmailBackend is a dev only config
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
