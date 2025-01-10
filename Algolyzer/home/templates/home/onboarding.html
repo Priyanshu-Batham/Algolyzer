@@ -1,0 +1,7 @@
+<h1>Complete your profile</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+</form>
+<a href="{% url 'dashboard' %}">Skip</a>
