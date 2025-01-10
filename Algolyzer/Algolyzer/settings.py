@@ -158,6 +158,8 @@ ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_REQUIRED = True
 # The redirect url after successful signin/signup
 LOGIN_REDIRECT_URL = "/dashboard/"
+# Redirect after successful sign-up
+ACCOUNT_SIGNUP_REDIRECT_URL = "/onboarding/"
 
 # console.EmailBackend is a dev only config
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
