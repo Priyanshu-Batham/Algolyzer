@@ -1,0 +1,5 @@
+<h1>Topic: {{ topic.name }}</h1>
+{% if score is not none%}
+    <h2>Your Previous score: {{score}} / {{total}}</h2>
+{% endif %}
+<a href="{% url 'quiz_start' topic.id %}">Start quiz on this topic</a>
