@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # algolyzer apps
     "home",
+    "quiz",
 ]
 
 MIDDLEWARE = [
