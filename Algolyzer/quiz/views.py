@@ -96,7 +96,7 @@ def quiz_question(request, topic_id):
 def quiz_results(request, topic_id):
     topic = get_object_or_404(Topic, id=topic_id)
     quiz_progress = get_object_or_404(QuizProgress, topic=topic, user=request.user)
-    if quiz_progress.completed:
+    if not quiz_progress.completed:
         return redirect("quiz_question", topic_id=topic.id)
     answers = UserAnswer.objects.filter(user=request.user, topic=topic)
     score = answers.filter(is_correct=True).count()
