@@ -1,0 +1,6 @@
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Next</button>
+</form>
+<p>Question {{ progress.current_question|add:1 }} of {{ progress.topic.question_set.count }}</p>

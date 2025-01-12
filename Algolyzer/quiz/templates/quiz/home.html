@@ -1,0 +1,13 @@
+<div>
+    <h1>Available Quiz Topics</h1>
+    <hr>
+    <div>
+        {% for topic in topics %}
+            <a href="{% url 'quiz_topic' topic.id %}">
+                {{ topic.name }}
+            </a>
+        {% empty %}
+            <p>No topics available at the moment. Please check back later!</p>
+        {% endfor %}
+    </div>
+</div>
