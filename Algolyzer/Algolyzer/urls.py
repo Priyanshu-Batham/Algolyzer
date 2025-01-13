@@ -24,4 +24,5 @@ urlpatterns = [
     path("quiz/", include("quiz.urls")),
     # allauth urls
     path("accounts/", include("allauth.urls")),
+    path("study/", include("study.urls")),
 ]

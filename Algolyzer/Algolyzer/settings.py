@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     # algolyzer apps
     "home",
     "quiz",
+    "study",
 ]
 
 MIDDLEWARE = [

@@ -1,10 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+<h1>Study Materials</h1>
+<div>
+    <h2>Categories</h2>
+    <ul>
+        {% for category in categories %}
+            <li>
+                <a href="?category={{ category.id }}">{{ category.name }}</a>
+                {% if category.subcategories.exists %}
+                    <ul>
+                        {% for subcategory in category.subcategories.all %}
+                            <li><a href="?category={{ subcategory.id }}">{{ subcategory.name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+<div>
+    <h2>topics</h2>
+    <form method="get">
+        <label for="sort">Sort by:</label>
+        <select name="sort" onchange="this.form.submit()">
+            <option value="created_at" {% if sort_by == 'created_at' %}selected{% endif %}>Date Created</option>
+            <option value="title" {% if sort_by == 'title' %}selected{% endif %}>Title</option>
+        </select>
+    </form>
+    <ul>
+        {% for topic in topics %}
+            <li><a href="{% url 'topic_detail' topic.id %}">{{ topic.title }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
