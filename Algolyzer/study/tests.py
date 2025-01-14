@@ -82,19 +82,3 @@ class TopicDetailViewTests(TestCase):
             reverse("topic_detail", args=[999])
         )  # ID 999 does not exist
         self.assertEqual(response.status_code, 404)
-
-
-class TopicDetailRedirectTests(TestCase):
-    def setUp(self):
-        # Create a category and topic
-        self.category = Category.objects.create(name="Category 1")
-        self.topic = Topic.objects.create(
-            title="Topic 1", content="Content for Topic 1", category=self.category
-        )
-
-    def test_redirect_to_landing_page(self):
-        """Test if trying to view a non-existent topic redirects to a 404"""
-        response = self.client.get(
-            reverse("topic_detail", args=[999])
-        )  # ID 999 does not exist
-        self.assertEqual(response.status_code, 404)

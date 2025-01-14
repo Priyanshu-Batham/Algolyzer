@@ -19,7 +19,7 @@ def landing_page_view(request):
 
     return render(
         request,
-        "study/landing_page.html",
+        "study/study_home.html",
         {
             "categories": categories,
             "topics": topics,

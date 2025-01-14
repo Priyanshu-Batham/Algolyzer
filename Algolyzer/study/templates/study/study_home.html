@@ -4,11 +4,11 @@
     <ul>
         {% for category in categories %}
             <li>
-                <a href="?category={{ category.id }}">{{ category.name }}</a>
+                <a href="{% url "landing_page" %}?category={{ category.id }}">{{ category.name }}</a>
                 {% if category.subcategories.exists %}
                     <ul>
                         {% for subcategory in category.subcategories.all %}
-                            <li><a href="?category={{ subcategory.id }}">{{ subcategory.name }}</a></li>
+                            <li><a href="{% url "landing_page" %}?category={{ subcategory.id }}">{{ subcategory.name }}</a></li>
                         {% endfor %}
                     </ul>
                 {% endif %}
@@ -17,7 +17,7 @@
     </ul>
 </div>
 <div>
-    <h2>topics</h2>
+    <h2>Topics</h2>
     <form method="get">
         <label for="sort">Sort by:</label>
         <select name="sort" onchange="this.form.submit()">
