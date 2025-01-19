@@ -19,9 +19,12 @@ from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
+    # admin url
     path("admin/", admin.site.urls),
+    # algolyzer urls
     path("", include("home.urls")),
     path("quiz/", include("quiz.urls")),
+    path("study/", include("study.urls")),
     # allauth urls
     path("accounts/", include("allauth.urls")),
 ]
