@@ -71,7 +71,7 @@ ROOT_URLCONF = "Algolyzer.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -164,3 +164,8 @@ ACCOUNT_SIGNUP_REDIRECT_URL = "/onboarding/"
 
 # console.EmailBackend is a dev only config
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+# static files settings
+STATIC_URL = "/static/"
+STATICFILES_DIRS = [BASE_DIR / "static"]
+STATIC_ROOT = BASE_DIR / "staticfiles"  # Will be used in production

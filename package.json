@@ -1,0 +1,27 @@
+{
+  "name": "algolyzer",
+  "version": "1.0.0",
+  "description": "A platform for learning about AI/ML models and algorithms from theoretical to executing pre-trained models all at one place.",
+  "main": "index.js",
+  "scripts": {
+    "tw_build": "npx tailwindcss build static/css/styles.css -o static/css/output.css",
+    "tw_watch": "npx tailwindcss -i Algolyzer/static/input.css -o Algolyzer/static/output.css --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Priyanshu-Batham/Algolyzer.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Priyanshu-Batham/Algolyzer/issues"
+  },
+  "homepage": "https://github.com/Priyanshu-Batham/Algolyzer#readme",
+  "devDependencies": {
+    "autoprefixer": "^10.4.20",
+    "daisyui": "^4.12.23",
+    "postcss": "^8.5.1",
+    "tailwindcss": "^3.4.17"
+  }
+}
