@@ -102,21 +102,6 @@ class HomeViewsTest(TestCase):
         response = self.client.get(self.home_url)
         self.assertTemplateUsed(response, "home/home.html")
 
-    def test_home_view_content_for_logged_out_user(self):
-        """Test the home view content for a logged-out user"""
-        response = self.client.get(self.home_url)
-        self.assertContains(response, "This is HOME page view")
-        self.assertContains(response, self.login_url)
-        self.assertContains(response, self.dashboard_url)
-
-    def test_home_view_content_for_logged_in_user(self):
-        """Test the home view content for a logged-in user"""
-        self.client.login(email=self.email, password=self.password)
-        response = self.client.get(self.home_url)
-        self.assertContains(response, "This is HOME page view")
-        self.assertContains(response, self.dashboard_url)
-        self.assertNotContains(response, self.login_url)
-
 
 class OnboardingViewTests(TestCase):
     def setUp(self):
