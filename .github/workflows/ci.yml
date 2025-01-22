@@ -10,10 +10,21 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22.13.0  
+
+      - name: Install Node.js dependencies
+        run: npm install
+
+      - name: Build Tailwind CSS
+        run: npm run tw_build
+        
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.12  # Or whichever Python version you're using
+          python-version: 3.12
 
       - name: Install dependencies
         run: |
