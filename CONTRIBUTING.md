@@ -2,6 +2,13 @@
 
 Thank you for considering contributing to Algolyzer! We appreciate your help in improving our project. Please follow the steps below to ensure a smooth and efficient contribution process.
 
+## Pre Requisites
+The project is built using following versions of softwares:
+1. Python 3.12.3
+2. pip 24.3.1
+3. Node 22.13.0
+4. Npm 10.9.2
+
 ## Getting Started
 
 1. Fork the Repository
@@ -49,9 +56,12 @@ Thank you for considering contributing to Algolyzer! We appreciate your help in 
 
         # Enter the Google client id and secret in the .env file
     
-        # Install dependencies
+        # Install python dependencies
         pip install -r requirements.txt
     
+        # Install node dependencies
+        npm install
+
         # Install pre-commit hooks
         pre-commit install
     
@@ -64,7 +74,10 @@ Thank you for considering contributing to Algolyzer! We appreciate your help in 
         # Create a local administrator
         python manage.py createsuperuser
     
-        # Run Django server
+        # Run custom Tailwind watch command
+        npm run tw_watch
+
+        # Run Django server (in new terminal)
         python manage.py runserver 8000
         ```
 
@@ -84,7 +97,10 @@ Thank you for considering contributing to Algolyzer! We appreciate your help in 
     
         # Install dependencies
         pip install -r requirements.txt
-    
+
+        # Install node dependencies
+        npm install
+
         # Install pre-commit hooks
         pre-commit install
     
@@ -96,7 +112,10 @@ Thank you for considering contributing to Algolyzer! We appreciate your help in 
     
         # Create a local administrator
         python manage.py createsuperuser
-    
+
+        # Run custom Tailwind watch command
+        npm run tw_watch
+
         # Run Django server
         python manage.py runserver 8000
         ```
