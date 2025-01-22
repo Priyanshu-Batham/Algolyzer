@@ -4,7 +4,7 @@
   "description": "A platform for learning about AI/ML models and algorithms from theoretical to executing pre-trained models all at one place.",
   "main": "index.js",
   "scripts": {
-    "tw_build": "npx tailwindcss build static/css/styles.css -o static/css/output.css",
+    "tw_build": "npx tailwindcss build -i Algolyzer/static/input.css -o Algolyzer/static/output.css",
     "tw_watch": "npx tailwindcss -i Algolyzer/static/input.css -o Algolyzer/static/output.css --watch"
   },
   "repository": {
