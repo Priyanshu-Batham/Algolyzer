@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% load allauth i18n %}
+{% block head_title %}
+    {% trans "Sign In" %}
+{% endblock head_title %}
+
+{% block content %}
+<div class="flex justify-center items-center min-h-screen bg-base-200">
+    <div class="card w-full max-w-md shadow-lg bg-base-100">
+        <div class="card-body">
+            <h1 class="text-2xl font-bold text-center text-primary">
+                {% trans "Sign In" %}
+            </h1>
+            {% if not SOCIALACCOUNT_ONLY %}
+                <p class="text-sm text-center text-secondary mt-2">
+                    {% blocktranslate %}
+                        If you don't have an account, please
+                        <a href="{{ signup_url }}" class="link link-primary">sign up</a> first.
+                    {% endblocktranslate %}
+                </p>
+            {% endif %}
+
+            <form method="post" action="{% url 'account_login' %}" class="mt-6 space-y-4">
+                {% csrf_token %}
+                
+                {% for field in form %}
+                    {% if field.label == 'Remember Me' %}
+                        <div class="flex items-center gap-2">
+                            <input
+                                type="checkbox"
+                                name="{{ field.name }}"
+                                id="{{ field.id_for_label }}"
+                                value="{{ field.value|default:'' }}"
+                                class="checkbox checkbox-primary"
+                                {% if field.value %} checked {% endif %}
+                            >
+                            <span class="label-text">{{ field.label }}</span>
+                        </div>
+                    {% else %}
+                        <div class="form-control">
+                            {% comment %} <label for="{{ field.id_for_label }}" class="label">
+                                <span class="label-text">{{ field.label }}</span>
+                            </label> {% endcomment %}
+                            <input
+                                type="{{ field.type }}"
+                                name="{{ field.name }}"
+                                id="{{ field.id_for_label }}"
+                                value="{{ field.value|default:'' }}"
+                                placeholder="{{ field.label }}"
+                                class="input input-bordered input-primary"
+                            >
+                            {% for error in field.errors %}
+                                <span class="text-error text-sm">{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                {% endfor %}
+                
+                {{ redirect_field }}
+                
+                <button type="submit" class="btn btn-primary btn-block">
+                    {% trans "Sign In" %}
+                </button>
+            </form>
+
+            {% if LOGIN_BY_CODE_ENABLED or PASSKEY_LOGIN_ENABLED %}
+                <div class="divider">OR</div>
+                <div class="btn-group-vertical w-full">
+                    {% if PASSKEY_LOGIN_ENABLED %}
+                        <a href="{{ passkey_login_url }}" class="btn btn-outline btn-primary btn-block">
+                            {% trans "Sign in with a passkey" %}
+                        </a>
+                    {% endif %}
+                    {% if LOGIN_BY_CODE_ENABLED %}
+                        <a href="{{ request_login_code_url }}" class="btn btn-outline btn-primary btn-block">
+                            {% trans "Mail me a sign-in code" %}
+                        </a>
+                    {% endif %}
+                </div>
+            {% endif %}
+
+            {% if SOCIALACCOUNT_ENABLED %}
+                <div class="divider">Or Use a Third Party App</div>
+                <div class="text-center">
+                    {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block extra_body %}
+    {{ block.super }}
+    {% if PASSKEY_LOGIN_ENABLED %}
+        {% include "mfa/webauthn/snippets/login_script.html" with button_id="passkey_login" %}
+    {% endif %}
+{% endblock %}

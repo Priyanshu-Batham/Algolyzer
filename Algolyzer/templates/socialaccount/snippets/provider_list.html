@@ -1,0 +1,25 @@
+{% load allauth socialaccount %}
+{% get_providers as socialaccount_providers %}
+{% if socialaccount_providers %}
+    {% element provider_list %}
+        {% for provider in socialaccount_providers %}
+            {% if provider.id == "google" %}
+                {% provider_login_url provider process=process scope=scope auth_params=auth_params as href %}
+                <a href="{{ href }}" class="btn btn-outline btn-google btn-block">
+                    <i class="fa fa-google"></i> Sign in with Google
+                </a>
+            {% elif provider.id == "facebook" %}
+                {% provider_login_url provider process=process scope=scope auth_params=auth_params as href %}
+                <a href="{{ href }}" class="btn btn-outline btn-facebook btn-block">
+                    <i class="fa fa-facebook"></i> Sign in with Facebook
+                </a>
+            {% else %}
+                {% provider_login_url provider process=process scope=scope auth_params=auth_params as href %}
+                <a href="{{ href }}" class="btn btn-outline btn-default btn-block">
+                    {{ provider.name }}
+                </a>
+            {% endif %}
+        {% endfor %}
+    {% endelement %}
+{% endif %}
+
