@@ -15,10 +15,10 @@ The project is built using following versions of softwares:
     - Click the "Fork" button at the top of the repository page to create a copy in your GitHub account.
 
 2. Clone the Forked Repository
-    - Use the following command to clone your fork locally:
+    - Use the following command to clone your fork locally (replace `your-username` with your actual github username):
 
         ```bash
-        git clone https://github.com/your-username/Algolyzer.git
+        git clone https://github.com/<your-username>/Algolyzer.git
         cd Algolyzer
         ```
 
@@ -42,7 +42,7 @@ The project is built using following versions of softwares:
 
 2. Run the following commands:
 
-    - For LINUX/MacOS
+    - # For LINUX/MacOS
 
         ```bash
         # Create a virtual environment named 'myenv'
@@ -74,14 +74,15 @@ The project is built using following versions of softwares:
         # Create a local administrator
         python manage.py createsuperuser
     
-        # Run custom Tailwind watch command
+        # Now open a NEW TERMINAL and start tailwind in Algolyzer dir
         npm run tw_watch
 
-        # Run Django server (in new terminal)
+        # Goto PREVIOUS TERMINAL and Run Django server.
         python manage.py runserver 8000
         ```
 
-    - For Windows
+    - # For Windows 
+        ### Recommended to use `git bash` unless you know how to cope with `ScriptExecutionPolicy` in `Powershell`
 
         ```powershell
         # Create a virtual environment named 'myenv'
@@ -113,10 +114,10 @@ The project is built using following versions of softwares:
         # Create a local administrator
         python manage.py createsuperuser
 
-        # Run custom Tailwind watch command
+        # Now open a NEW TERMINAL and start tailwind in Algolyzer dir
         npm run tw_watch
 
-        # Run Django server
+        # Goto PREVIOUS TERMINAL and Run Django server.
         python manage.py runserver 8000
         ```
 **Note - Always use `localhost:8000` instead of `127.0.0.1:8000` if you don't want access blocked from google during development**
