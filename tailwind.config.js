@@ -12,7 +12,7 @@ module.exports = {
   // DaisyUI Theme setup
   daisyui: {
     themes: [
-      "winter",
+      "night",
       // {
       //   algolyzer2: {
       //     "primary": "#00ffcc",        // Neon teal for primary actions or key highlights
