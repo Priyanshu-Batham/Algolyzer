@@ -12,7 +12,7 @@
   {% block extra_head %}{% endblock %}
 </head>
 
-<body>
+<body class="font-montserrat">
   <!-- Navbar -->
   {% comment %} Loading Url tags to activate tab-active class without bugs and errors {% endcomment %}
   {% url 'quiz_home' as quiz_url %}
@@ -20,7 +20,7 @@
   {% url 'home' as home_url %}
   {% url 'community_url' as community_url %}
 
-  <div class="navbar bg-base-100">
+  <div class="navbar bg-base-100 font-bold">
     <div class="navbar-start">
       <div class="dropdown">
         <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
@@ -51,14 +51,14 @@
 
       {% comment %} pc navbar links {% endcomment %}
       <ul role="tablist" class="menu menu-horizontal px-1 tabs tabs-boxed">
+        <li role="tab" class="tab {% if request.path == home_url %}tab-active{% endif %}">
+            <a href="{{ home_url }}">Home</a>
+        </li>
         <li role="tab" class="tab {% if request.path == quiz_url %}tab-active{% endif %}">
           <a href="{{ quiz_url }}">Quiz</a>
       </li>
       <li role="tab" class="tab {% if request.path == playground_url %}tab-active{% endif %}">
           <a href="{{ playground_url }}">Playground</a>
-      </li>
-      <li role="tab" class="tab {% if request.path == home_url %}tab-active{% endif %}">
-          <a href="{{ home_url }}">Home</a>
       </li>
       <li role="tab" class="tab {% if request.path == community_url %}tab-active{% endif %}">
           <a href="{{ community_url }}">Community</a>
@@ -68,8 +68,8 @@
     </div>
     <div class="navbar-end flex gap-2">
       {% if not user.is_authenticated %}
-        <a href="{% url 'account_login' %}" class="btn btn-outline">Login</a>
-        <a href="{% url 'account_signup' %}" class="btn btn-primary">Signup</a>
+        <a href="{% url 'account_login' %}" class="btn btn-sm btn-outline">Login</a>
+        <a href="{% url 'account_signup' %}" class="btn btn-sm btn-primary">Signup</a>
       {% endif %}
       {% if user.is_authenticated %}
         <a href="{% url 'dashboard' %}" class="btn btn-primary">Dashboard</a>
