@@ -18,7 +18,6 @@ module.exports = {
   daisyui: {
     themes: [
       "night",
-      "winter",
     ],
   },
 }
