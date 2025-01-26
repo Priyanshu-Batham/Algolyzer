@@ -1,0 +1,202 @@
+[
+{
+    "model": "quiz.question",
+    "pk": 1,
+    "fields": {
+        "topic": 1,
+        "text": "What is Artificial Intelligence (AI)?",
+        "option_a": "A branch of science focused on studying human psychology",
+        "option_b": "The process of designing computer games",
+        "option_c": "The simulation of human intelligence in machines",
+        "option_d": "The development of physical robots only",
+        "correct_answer": "c"
+    }
+},
+{
+    "model": "quiz.question",
+    "pk": 2,
+    "fields": {
+        "topic": 1,
+        "text": "Which of the following is NOT a type of machine learning?",
+        "option_a": "Supervised learning",
+        "option_b": "Unsupervised learning",
+        "option_c": "Reinforcement learning",
+        "option_d": "Data modeling",
+        "correct_answer": "d"
+    }
+},
+{
+    "model": "quiz.question",
+    "pk": 3,
+    "fields": {
+        "topic": 1,
+        "text": "What distinguishes Machine Learning from traditional programming?",
+        "option_a": "Machine Learning models rely on fixed rules defined by humans",
+        "option_b": "Machine Learning models learn patterns from data",
+        "option_c": "Machine Learning does not require any data",
+        "option_d": "Traditional programming can handle image recognition better than Machine Learning",
+        "correct_answer": "b"
+    }
+},
+{
+    "model": "quiz.question",
+    "pk": 4,
+    "fields": {
+        "topic": 1,
+        "text": "Which of the following is an example of supervised learning?",
+        "option_a": "Grouping customers based on purchasing behavior",
+        "option_b": "Predicting house prices based on features like area and number of rooms",
+        "option_c": "Detecting unusual transactions without labeled data",
+        "option_d": "Training a robot to learn from rewards in a game environment",
+        "correct_answer": "b"
+    }
+},
+{
+    "model": "quiz.question",
+    "pk": 5,
+    "fields": {
+        "topic": 1,
+        "text": "What is the role of a dataset in Machine Learning?",
+        "option_a": "To provide training and testing data for the model",
+        "option_b": "To create a database of rules",
+        "option_c": "To store the output of the model",
+        "option_d": "To develop software applications",
+        "correct_answer": "a"
+    }
+},
+{
+    "model": "quiz.question",
+    "pk": 6,
+    "fields": {
+        "topic": 1,
+        "text": "What is a common application of AI in daily life?",
+        "option_a": "Weather forecasting using random guesses",
+        "option_b": "Spam email filtering in mail services",
+        "option_c": "Writing code for computer programs manually",
+        "option_d": "Developing spreadsheets for data storage",
+        "correct_answer": "b"
+    }
+},
+{
+    "model": "quiz.question",
+    "pk": 7,
+    "fields": {
+        "topic": 1,
+        "text": "What does \"unsupervised learning\" aim to do?",
+        "option_a": "Predict a target variable using labeled data",
+        "option_b": "Find hidden patterns in unlabeled data",
+        "option_c": "Simulate human intelligence for logical tasks",
+        "option_d": "Train robots to follow human instructions",
+        "correct_answer": "b"
+    }
+},
+{
+    "model": "quiz.question",
+    "pk": 8,
+    "fields": {
+        "topic": 1,
+        "text": "Which of the following is an example of reinforcement learning?",
+        "option_a": "Clustering news articles based on their content",
+        "option_b": "Teaching a robot to walk by rewarding it for each successful step",
+        "option_c": "Predicting stock prices using historical data",
+        "option_d": "Identifying spam emails based on labeled examples",
+        "correct_answer": "b"
+    }
+},
+{
+    "model": "quiz.question",
+    "pk": 9,
+    "fields": {
+        "topic": 1,
+        "text": "Which of these statements is true about deep learning?",
+        "option_a": "It is a subset of reinforcement learning",
+        "option_b": "It does not use neural networks",
+        "option_c": "It requires large amounts of data to perform well",
+        "option_d": "It is primarily used for clustering",
+        "correct_answer": "c"
+    }
+},
+{
+    "model": "quiz.question",
+    "pk": 10,
+    "fields": {
+        "topic": 1,
+        "text": "What is the primary objective of Machine Learning?",
+        "option_a": "To make machines conscious like humans",
+        "option_b": "To build hardware that mimics the human brain",
+        "option_c": "To write manual code for all decision-making processes",
+        "option_d": "To enable machines to learn from data and make decisions",
+        "correct_answer": "d"
+    }
+},
+{
+    "model": "quiz.topic",
+    "pk": 1,
+    "fields": {
+        "name": "Introduction to Artificial Intelligence and Machine Learning"
+    }
+},
+{
+    "model": "quiz.topic",
+    "pk": 2,
+    "fields": {
+        "name": "Mathematics and Statistics for AI/ML"
+    }
+},
+{
+    "model": "quiz.topic",
+    "pk": 3,
+    "fields": {
+        "name": "Data Preprocessing and Feature Engineering"
+    }
+},
+{
+    "model": "quiz.topic",
+    "pk": 4,
+    "fields": {
+        "name": "Supervised Learning"
+    }
+},
+{
+    "model": "quiz.topic",
+    "pk": 5,
+    "fields": {
+        "name": "Unsupervised Learning"
+    }
+},
+{
+    "model": "quiz.topic",
+    "pk": 6,
+    "fields": {
+        "name": "Neural Networks and Deep Learning"
+    }
+},
+{
+    "model": "quiz.topic",
+    "pk": 7,
+    "fields": {
+        "name": "Reinforcement Learning"
+    }
+},
+{
+    "model": "quiz.topic",
+    "pk": 8,
+    "fields": {
+        "name": "Natural Language Processing (NLP)"
+    }
+},
+{
+    "model": "quiz.topic",
+    "pk": 9,
+    "fields": {
+        "name": "Model Deployment and Scalability"
+    }
+},
+{
+    "model": "quiz.topic",
+    "pk": 10,
+    "fields": {
+        "name": "Ethical AI and Advanced Topics"
+    }
+}
+]
