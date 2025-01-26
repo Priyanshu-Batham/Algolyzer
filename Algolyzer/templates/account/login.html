@@ -37,23 +37,31 @@
                             <span class="label-text">{{ field.label }}</span>
                         </div>
                     {% else %}
-                        <div class="form-control">
-                            {% comment %} <label for="{{ field.id_for_label }}" class="label">
-                                <span class="label-text">{{ field.label }}</span>
-                            </label> {% endcomment %}
+                        <div class="form-control relative">
                             <input
-                                type="{{ field.type }}"
+                                type="{% if field.name == 'password' %}password{% else %}{{ field.type }}{% endif %}"
                                 name="{{ field.name }}"
                                 id="{{ field.id_for_label }}"
                                 value="{{ field.value|default:'' }}"
                                 placeholder="{{ field.label }}"
                                 class="input input-bordered input-primary"
                             >
+                            {% if field.name == 'password' %}
+                                <button
+                                    type="button"
+                                    class="absolute inset-y-0 right-2 flex items-center btn btn-sm btn-ghost"
+                                    onclick="togglePasswordVisibility('{{ field.id_for_label }}')"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825l4.5-4.5M21 12a9 9 0 11-6-8.47" />
+                                    </svg>
+                                </button>
+                            {% endif %}
                             {% for error in field.errors %}
                                 <span class="text-error text-sm">{{ error }}</span>
                             {% endfor %}
                         </div>
-                        {% endif %}
+                    {% endif %}
                 {% endfor %}
                 
                 {{ redirect_field }}
@@ -95,7 +103,7 @@
     {% if PASSKEY_LOGIN_ENABLED %}
         {% include "mfa/webauthn/snippets/login_script.html" with button_id="passkey_login" %}
     {% endif %}
-<script>
+    <script>
         function togglePasswordVisibility(inputId) {
             const input = document.getElementById(inputId);
             if (input.type === "password") {
@@ -105,5 +113,4 @@
             }
         }
     </script>
-{% endblock %}
-
+{% endblock extra_body %}
