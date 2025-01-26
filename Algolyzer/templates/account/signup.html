@@ -34,7 +34,7 @@
                     {% if field.name == 'password1' or field.name == 'password2' %}
                         <button
                             type="button"
-                            class="absolute inset-y-0 right-2 flex items-center btn btn-sm btn-ghost"
+                            class="absolute inset-y-0 right-2 flex items-center btn btn-sm btn-ghost transform -translate-y-1/2 top-1/2"
                             onclick="togglePasswordVisibility('{{ field.id_for_label }}')"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -73,7 +73,7 @@
 </div>
 {% endblock content %}
 
-{% block extra_body %}
+{% block scripts %}
     {{ block.super }}
     <script>
         function togglePasswordVisibility(inputId) {
@@ -85,4 +85,4 @@
             }
         }
     </script>
-{% endblock extra_body %}
+{% endblock scripts %}
