@@ -73,6 +73,9 @@ The project is built using following versions of softwares:
     
         # Create a local administrator
         python manage.py createsuperuser
+
+        #seed database
+        python manage.py loaddata data/*
     
         # Now open a NEW TERMINAL and start tailwind in Algolyzer dir
         npm run tw_watch
@@ -114,6 +117,9 @@ The project is built using following versions of softwares:
         # Create a local administrator
         python manage.py createsuperuser
 
+        #seed database
+        python manage.py loaddata data/*
+
         # Now open a NEW TERMINAL and start tailwind in Algolyzer dir
         npm run tw_watch
 
@@ -121,6 +127,23 @@ The project is built using following versions of softwares:
         python manage.py runserver 8000
         ```
 **Note - Always use `localhost:8000` instead of `127.0.0.1:8000` if you don't want access blocked from google during development**
+
+# Contributing for Quiz Data
+1. Setup the project locally
+2. Make sure you have run following commands as mentioned in above steps.
+
+    ```bash
+    python manage.py createsuperuser
+    python manage.py loaddata data/*
+    ```
+
+3. Goto `localhost:8000/admin` and login using your **superuser** credentials.
+4. Add your Topics and Questions in the `Topics` & `Questions` models under the `Quiz` tab.
+5. Open the terminal and run 
+    ```bash 
+    python manage.py dump_quiz
+    ```
+
 
 ## Running Quality Checks
 

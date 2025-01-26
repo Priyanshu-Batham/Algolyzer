@@ -22,5 +22,5 @@ A platform for learning about AI/ML models and algorithms from theoretical to ex
 - [ ] Quiz
 - [ ] Documentation
 
-## Contribution
+## Contribution & Setup Locally
 - For guidelines on how to contribute to this project, check out [Contribution Guidelines](./CONTRIBUTING.md).
