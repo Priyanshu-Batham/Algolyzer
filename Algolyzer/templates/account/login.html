@@ -98,19 +98,22 @@
 </div>
 {% endblock content %}
 
-{% block scripts %}
+{% block extra_body %}
     {{ block.super }}
     {% if PASSKEY_LOGIN_ENABLED %}
         {% include "mfa/webauthn/snippets/login_script.html" with button_id="passkey_login" %}
     {% endif %}
-    <script>
-        function togglePasswordVisibility(inputId) {
-            const input = document.getElementById(inputId);
-            if (input.type === "password") {
-                input.type = "text";
-            } else {
-                input.type = "password";
-            }
+{% endblock extra_body %}
+
+{% block scripts %}
+<script>
+    function togglePasswordVisibility(inputId) {
+        const input = document.getElementById(inputId);
+        if (input.type === "password") {
+            input.type = "text";
+        } else {
+            input.type = "password";
         }
-    </script>
-{% endblock scripts %}
+    }
+</script>
+{% endblock %}
