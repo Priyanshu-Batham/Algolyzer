@@ -3,7 +3,7 @@
 Thank you for considering contributing to Algolyzer! We appreciate your help in improving our project. Please follow the steps below to ensure a smooth and efficient contribution process.
 
 ## Pre Requisites
-The project is built using following versions of softwares:
+The project is built using following versions of software:
 1. Python 3.12.3
 2. pip 24.3.1
 3. Node 22.13.0
@@ -88,6 +88,9 @@ The project is built using following versions of softwares:
         ### Recommended to use `git bash` unless you know how to cope with `ScriptExecutionPolicy` in `Powershell`
 
         ```powershell
+        # If you are a ps lover
+        Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+
         # Create a virtual environment named 'myenv'
         python -m venv myenv
     
@@ -126,7 +129,7 @@ The project is built using following versions of softwares:
         # Goto PREVIOUS TERMINAL and Run Django server.
         python manage.py runserver 8000
         ```
-**Note - Always use `localhost:8000` instead of `127.0.0.1:8000` if you don't want access blocked from google during development**
+**Note - Always use `localhost:8000` instead of `127.0.0.1:8000` if you don't want access blocked from Google during development**
 
 # Contributing for Quiz Data
 1. Setup the project locally
@@ -175,8 +178,8 @@ The project is built using following versions of softwares:
     - Add your changes and commit them with a descriptive message:
 
         ```bash
-            git add .
-            git commit -m "Add detailed commit message here"
+        git add .
+        git commit -m "Add detailed commit message here"
         ```
 2. Pre-Commit Hook
     - Note that a pre-commit hook will automatically run upon committing. If it fails, resolve the issues and commit again.
