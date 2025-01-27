@@ -1,17 +1,81 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div>
-    <h1>Available Quiz Topics</h1>
-    <hr>
-    <div>
+<div class="container mx-auto">
+    <h1 class="text-center my-10 text-poppins text-5xl">Available Quiz Topics</h1>
+
+    <ul class="timeline max-md:timeline-compact timeline-vertical">
         {% for topic in topics %}
-            <a href="{% url 'quiz_topic' topic.id %}">
+            {% comment %} <a href="{% url 'quiz_topic' topic.id %}">
                 {{ topic.name }}
-            </a>
+            </a> {% endcomment %}
+            <li>
+                <hr class="bg-primary" />
+                <div class="timeline-{% if forloop.counter0|divisibleby:2 %}start{% else %}end{% endif %} timeline-box min-w-full">
+                    <div class="bg-base-200 collapse">
+                        <input type="checkbox" class="peer" />
+                        <div
+                          class="collapse-title bg-primary text-center text-xl text-primary-content peer-checked:bg-secondary peer-checked:text-secondary-content">
+                          {{ topic.name }}
+                        </div>
+                        <div
+                          class="collapse-content bg-primary text-primary-content peer-checked:bg-secondary peer-checked:text-secondary-content">
+
+                          {% comment %} Detailed Card {% endcomment %}
+                          <div class="card bg-base-100 shadow-xl">
+                            <div class="stats stats-vertical lg:stats-horizontal shadow">
+                                <div class="stat place-items-center">
+                                  <div class="stat-title">Your Score</div>
+                                  <div class="stat-value">31K</div>
+                                  <div class="stat-desc">Excellent</div>
+                                </div>
+                              
+                                <div class="stat place-items-center">
+                                  <div class="stat-title">Total Questions</div>
+                                  <div class="stat-value">10</div>
+                                  <div class="stat-desc">↗︎ 400 (22%)</div>
+                                </div>
+                              
+                                <div class="stat place-items-center">
+                                  <div class="stat-title">Difficulty</div>
+                                  <div class="stat-value">Hard</div>
+                                  <div class="stat-desc">↘︎ 90 (14%)</div>
+                                </div>
+                              </div>
+
+
+                            <div class="card-body text-base-content">
+                              <h2 class="card-title">Lets Go!</h2>
+                              <p>The most exciting questions personlly hand-picked by the Experts of Algolyzer. Start playing the quiz to earn xp and level up.</p>
+                              <div class="card-actions justify-end">
+                                <a class="btn text-accent-foreground font-bold btn-accent" href="{% url 'quiz_topic' topic.id %}">
+                                    Play Now
+                                </a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                </div>
+                <div class="timeline-middle">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    class="text-primary h-5 w-5">
+                    <path
+                      fill-rule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                      clip-rule="evenodd" />
+                  </svg>
+                </div>
+                <hr class="bg-primary" />
+              </li>
+
         {% empty %}
             <p>No topics available at the moment. Please check back later!</p>
         {% endfor %}
-    </div>
+    </ul>
 </div>
-{% endblock %}
+
+{% endblock content %}
