@@ -1,8 +1,8 @@
 ---
-name: Custom Bug template
+name: "Bug \U0001F41E"
 about: Template to use for raising issues related to bugs
 title: 'Bug: Title of Issue'
-labels: bug
+labels: bug, enhancement
 assignees: ''
 
 ---
