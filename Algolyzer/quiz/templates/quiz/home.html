@@ -5,18 +5,20 @@
     <h1 class="text-center my-10 text-poppins text-5xl">Available Quiz Topics</h1>
 
     <ul class="timeline max-md:timeline-compact timeline-vertical">
-        {% for topic in topics %}
+        {% for item in data %}
             {% comment %} <a href="{% url 'quiz_topic' topic.id %}">
                 {{ topic.name }}
             </a> {% endcomment %}
             <li>
+              {% if not forloop.first %}
                 <hr class="bg-primary" />
+              {% endif %}
                 <div class="timeline-{% if forloop.counter0|divisibleby:2 %}start{% else %}end{% endif %} timeline-box min-w-full">
                     <div class="bg-base-200 collapse">
                         <input type="checkbox" class="peer" />
                         <div
                           class="collapse-title bg-primary text-center text-xl text-primary-content peer-checked:bg-secondary peer-checked:text-secondary-content">
-                          {{ topic.name }}
+                          {{ item.topic.name }}
                         </div>
                         <div
                           class="collapse-content bg-primary text-primary-content peer-checked:bg-secondary peer-checked:text-secondary-content">
@@ -26,19 +28,19 @@
                             <div class="stats stats-vertical lg:stats-horizontal shadow">
                                 <div class="stat place-items-center">
                                   <div class="stat-title">Your Score</div>
-                                  <div class="stat-value">31K</div>
+                                  <div class="stat-value">{{item.score}}</div>
                                   <div class="stat-desc">Excellent</div>
                                 </div>
                               
                                 <div class="stat place-items-center">
                                   <div class="stat-title">Total Questions</div>
-                                  <div class="stat-value">10</div>
+                                  <div class="stat-value">{{item.total}}</div>
                                   <div class="stat-desc">↗︎ 400 (22%)</div>
                                 </div>
                               
                                 <div class="stat place-items-center">
                                   <div class="stat-title">Difficulty</div>
-                                  <div class="stat-value">Hard</div>
+                                  <div class="stat-value">{{item.topic.difficulty}}</div>
                                   <div class="stat-desc">↘︎ 90 (14%)</div>
                                 </div>
                               </div>
@@ -46,9 +48,9 @@
 
                             <div class="card-body text-base-content">
                               <h2 class="card-title">Lets Go!</h2>
-                              <p>The most exciting questions personlly hand-picked by the Experts of Algolyzer. Start playing the quiz to earn xp and level up.</p>
+                              <p>{{item.topic.description}}</p>
                               <div class="card-actions justify-end">
-                                <a class="btn text-accent-foreground font-bold btn-accent" href="{% url 'quiz_topic' topic.id %}">
+                                <a class="btn text-accent-foreground font-bold btn-accent" href="{% url 'quiz_topic' item.topic.id %}">
                                     Play Now
                                 </a>
                               </div>
@@ -69,7 +71,9 @@
                       clip-rule="evenodd" />
                   </svg>
                 </div>
-                <hr class="bg-primary" />
+                {% if not forloop.last %}
+                  <hr class="bg-primary" />
+                {% endif %}
               </li>
 
         {% empty %}
