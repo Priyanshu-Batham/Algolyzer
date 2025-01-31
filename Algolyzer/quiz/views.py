@@ -10,8 +10,24 @@ from .models import Question, QuizProgress, Topic, UserAnswer
 @profile_required
 def quiz_home(request):
     """Main QUIZ Home Page"""
+    data = []
     topics = Topic.objects.all()
-    context = {"topics": topics}
+    for topic in topics:
+        score = 0
+        total = Question.objects.filter(topic=topic).count()
+        progress = QuizProgress.objects.filter(user=request.user, topic=topic).first()
+        if progress is not None and progress.completed:
+            answers = UserAnswer.objects.filter(user=request.user, topic=topic)
+            score = answers.filter(is_correct=True).count()
+        data.append(
+            {
+                "topic": topic,
+                "score": score,
+                "total": total,
+            }
+        )
+
+    context = {"data": data}
     return render(request, "quiz/home.html", context=context)
 
 
@@ -19,8 +35,8 @@ def quiz_home(request):
 @profile_required
 def quiz_topic(request, topic_id):
     topic = get_object_or_404(Topic, id=topic_id)
-    score = None
-    total = None
+    score = 0
+    total = 0
     progress = QuizProgress.objects.filter(user=request.user, topic=topic).first()
     if progress is not None and progress.completed:
         answers = UserAnswer.objects.filter(user=request.user, topic=topic)
@@ -88,7 +104,11 @@ def quiz_question(request, topic_id):
     else:
         form = QuizForm(question)
 
-    return render(request, "quiz/question.html", {"form": form, "progress": progress})
+    return render(
+        request,
+        "quiz/question.html",
+        {"form": form, "progress": progress, "total_array": range(len(questions))},
+    )
 
 
 @login_required
