@@ -1,3 +1,71 @@
-<h2>Quiz Results</h2>
-<p>You scored {{ score }} out of {{ total }}.</p>
-<a href="{% url 'quiz_start' topic.id %}">Retry</a>
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container min-h-[70vh] lg:min-h-[80vh] mx-auto flex items-center justify-center">
+        <div class="card bg-neutral p-3 lg:p-8 shadow-xl border-solid border-primary border-4 mt-5">
+            <div class="text-center text-2xl lg:text-7xl font-bold my-3 lg:my-7 text-primary font-poppins font-bold">🎊 Congratulations! 🎊</div>
+            <div class="card-body">
+                <div class="stats shadow mx-auto">
+                    <div class="stat text-center">
+                      <div class="stat-title lg:text-2xl">Your Score</div>
+                        <div class="stat-value text-7xl lg:text-9xl">
+                            <span class="countdown font-mono">
+                                <span id="counter" style="--value:${counter};"></span>
+                            </span>
+                        </div>
+                      <div class="stat-desc lg:text-2xl">52% above average</div>
+                    </div>
+                  </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}    
+
+{% block scripts %}
+    <script>
+        {% comment %} Confettti Pop Script {% endcomment %}
+        document.addEventListener("DOMContentLoaded", function () {
+            var duration = 3 * 1000; // Run for 3 seconds
+            var end = Date.now() + duration;
+
+            function randomConfetti() {
+                confetti({
+                    particleCount: Math.floor(Math.random() * 50) + 50, // 50-100 particles per burst
+                    spread: Math.random() * 100 + 50, // 50-150 spread
+                    startVelocity: Math.random() * 30 + 30, // 30-60 speed
+                    colors: ['#ff0000', '#00ff00', '#0000ff', '#ffcc00', '#ff00ff'],
+                    origin: { 
+                        x: Math.random(), // Random X position
+                        y: 1 // Confetti starts between 60% - 100% (lower half)
+                    } 
+                });
+
+                if (Date.now() < end) {
+                    setTimeout(randomConfetti, Math.random() * 300); // New burst every 100-300ms
+                }
+            }
+
+            randomConfetti(); // Start the explosion!
+        });
+
+        {% comment %} Score Incrementor Script {% endcomment %}
+        function animateCounter(targetValue, speed = 100) {
+            let currentValue = 0;
+            const counterElement = document.getElementById("counter");
+
+            function updateCounter() {
+                if (currentValue < targetValue) {
+                    currentValue++;
+                    counterElement.innerText = currentValue;
+                    counterElement.style.setProperty("--value", currentValue);
+                    setTimeout(updateCounter, speed);
+                }
+            }
+
+            updateCounter();
+        }
+
+        // Call the function to count up to 100
+        animateCounter({{score}}, 50);
+    </script>
+{% endblock %}    
