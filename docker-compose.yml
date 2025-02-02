@@ -3,8 +3,7 @@ services:
     build: .
     container_name: algolyzer_web
     volumes:
-      - .:/app
-      - static_volume:/app/static
+      - static_volume:/app/staticfiles
       - media_volume:/app/media
     expose:
       - "8000"
@@ -13,11 +12,15 @@ services:
     image: nginx:latest
     container_name: algolyzer_nginx
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
-      - static_volume:/app/static
+      - static_volume:/app/staticfiles
       - media_volume:/app/media
     ports:
       - "8000:80"
+    build:
+      context: ./nginx  # Build nginx image from the ./nginx directory
+      # This makes the nginx.conf part of the Nginx container instead of being a bind mount
+      dockerfile: Dockerfile
+    
     depends_on:
       - web
 

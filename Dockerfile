@@ -1,5 +1,5 @@
-# Use official Python image as base
-FROM python:3.12-slim
+# Use official Python image with Alpine as base
+FROM python:3.12-alpine
 
 # Set environment variables
 ENV PYTHONUNBUFFERED=1 
@@ -8,12 +8,17 @@ ENV PYTHONUNBUFFERED=1
 WORKDIR /app
 
 # Install system dependencies
-RUN apt-get update && apt-get install -y curl nginx && rm -rf /var/lib/apt/lists/*
+RUN apk update && \
+    apk add --no-cache \
+    curl \
+    nginx \
+    bash \
+    nodejs \
+    npm && \
+    rm -rf /var/cache/apk/*
 
-# Install Node.js (for Tailwind)
-RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \
-    apt-get install -y nodejs && \
-    npm install -g npm@10.9.2 
+# Install specific npm version
+RUN npm install -g npm@10.9.2 
 
 # Copy requirements.txt
 COPY ./requirements.txt /app/
@@ -29,6 +34,9 @@ RUN npm install
 COPY . /app/
 
 WORKDIR /app/Algolyzer/
+
+# Run tailwind build
+RUN npm run tw_build
 
 # Collect static files
 RUN python manage.py collectstatic --noinput
