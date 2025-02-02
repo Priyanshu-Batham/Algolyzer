@@ -1,0 +1,26 @@
+services:
+  web:
+    build: .
+    container_name: algolyzer_web
+    volumes:
+      - .:/app
+      - static_volume:/app/static
+      - media_volume:/app/media
+    expose:
+      - "8000"
+
+  nginx:
+    image: nginx:latest
+    container_name: algolyzer_nginx
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      - static_volume:/app/static
+      - media_volume:/app/media
+    ports:
+      - "8000:80"
+    depends_on:
+      - web
+
+volumes:
+  static_volume:
+  media_volume:

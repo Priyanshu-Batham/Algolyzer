@@ -38,7 +38,7 @@ The project is built using following versions of software:
 
 1. Goto [Google Developer Console](https://console.developers.google.com). Make a new OAuth Client using the following URL as the Authorized Redirect URI:
 
-    ```http://localhost:8000/accounts/google/login/callback/```
+   ```http://localhost:8000/accounts/google/login/callback/```
 
 2. Run the following commands:
 
@@ -84,8 +84,8 @@ The project is built using following versions of software:
         python manage.py runserver 8000
         ```
 
-    - # For Windows 
-        ### Recommended to use `git bash` unless you know how to cope with `ScriptExecutionPolicy` in `Powershell`
+    - # For Windows
+      ### Recommended to use `git bash` unless you know how to cope with `ScriptExecutionPolicy` in `Powershell`
 
         ```powershell
         # If you are a ps lover
@@ -142,7 +142,7 @@ The project is built using following versions of software:
 
 3. Goto `localhost:8000/admin` and login using your **superuser** credentials.
 4. Add your Topics and Questions in the `Topics` & `Questions` models under the `Quiz` tab.
-5. Open the terminal and run 
+5. Open the terminal and run
     ```bash 
     python manage.py dump_quiz
     ```
@@ -166,11 +166,11 @@ The project is built using following versions of software:
             ```
 
 2. Run Tests
-   - Navigate to the project directory and execute the test suite:
+    - Navigate to the project directory and execute the test suite:
 
-       ```bash
-       python manage.py test
-       ```
+        ```bash
+        python manage.py test
+        ```
 
 ## Committing and Pushing Changes
 
@@ -202,18 +202,18 @@ The project is built using following versions of software:
 
 ## Creating a Pull Request (PR)
 1. Open a PR
-   - Navigate to the original repository and open a PR from your branch.
-   - Use a descriptive title and message, and reference any related issues (e.g., Fixes #issue_number).
-   - Mention the Pull Request and 
+    - Navigate to the original repository and open a PR from your branch.
+    - Use a descriptive title and message, and reference any related issues (e.g., Fixes #issue_number).
+    - Mention the Pull Request and
 
 2. Address CI Pipeline Failures
-   - If the PR fails the CI pipeline, review the logs, rectify the issues, and push the changes again.
+    - If the PR fails the CI pipeline, review the logs, rectify the issues, and push the changes again.
 
 3. Await Review
-   - Be patient while the maintainers review your PR. Respond to feedback and make the required changes if needed.
+    - Be patient while the maintainers review your PR. Respond to feedback and make the required changes if needed.
 
 4. Merge
-   - Once approved, your PR will be merged into the main branch.
+    - Once approved, your PR will be merged into the main branch.
 
 ## Cleaning Up
 
@@ -223,7 +223,7 @@ The project is built using following versions of software:
     git branch -D feature_branch_name
     git fetch --prune
     ```
-  
+
 ## Additional Tips
 
 - Modify the last commit if you need to make minor changes without creating a new commit.
