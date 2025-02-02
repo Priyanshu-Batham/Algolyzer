@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mx-auto p-6">
+    <a href="{% url 'post_list_by_category' post.category.id %}" class="btn btn-outline mb-4">← Back to Posts</a>
+
+    <!-- Post Card -->
+    <div class="card bg-base-200 shadow-xl p-6">
+        <div class="card-body">
+            <h2 class="text-3xl font-bold">{{ post.title }}</h2>
+            <p class="text-gray-500 text-sm">By <strong>{{ post.author.username }}</strong> | {{ post.created_at|date:"F j, Y, g:i a" }}</p>
+
+            {% if post.image %}
+                <img src="{{ post.image.url }}" class="w-full max-h-96 object-cover rounded-lg mt-4">
+            {% endif %}
+
+            <!-- Post Content -->
+            <div class="mt-4 p-4 bg-base-100 rounded-lg shadow">
+                <p class="text-lg">{{ post.content|linebreaks }}</p>
+            </div>
+
+            <!-- Voting System -->
+            <div class="flex items-center space-x-4 mt-6">
+                <form action="{% url 'vote_post' post.id 1 %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-success flex items-center">
+                        👍 Upvote
+                    </button>
+                </form>
+                <form action="{% url 'vote_post' post.id -1 %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-error flex items-center">
+                        👎 Downvote
+                    </button>
+                </form>
+                <span class="text-xl font-bold">Votes: {{ post.total_votes }}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Comment Section -->
+    <div class="mt-6">
+        <h3 class="text-2xl font-bold mb-4">Comments</h3>
+        <div class="space-y-3">
+            {% for comment in comments %}
+                <div class="card bg-base-300 p-4 rounded-lg shadow-md">
+                    <p class="text-gray-200"><strong>{{ comment.author.username }}</strong>: {{ comment.content }}</p>
+                    <p class="text-xs text-gray-400">{{ comment.created_at|date:"F j, Y, g:i a" }}</p>
+                </div>
+            {% empty %}
+                <p class="text-gray-400 italic">No comments yet. Be the first to comment!</p>
+            {% endfor %}
+        </div>
+
+        {% if user.is_authenticated %}
+            <!-- Add Comment Form -->
+            <form action="{% url 'add_comment' post.id %}" method="POST" class="mt-4 p-4 bg-base-100 rounded-lg shadow">
+                {% csrf_token %}
+                <textarea name="content" class="textarea textarea-bordered w-full" placeholder="Add a comment..." required></textarea>
+                <button type="submit" class="btn btn-primary mt-2">Post Comment</button>
+            </form>
+        {% else %}
+            <p class="text-gray-400 mt-4">You must be logged in to comment.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

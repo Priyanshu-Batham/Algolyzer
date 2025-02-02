@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     "home",
     "quiz",
     "study",
+    "community",
 ]
 
 MIDDLEWARE = [

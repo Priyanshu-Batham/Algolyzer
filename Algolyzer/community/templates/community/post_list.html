@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mx-auto p-6">
+    <h2 class="text-3xl font-bold mb-4">Posts in {{ category.name }}</h2>
+    <a href="{% url 'category_list' %}" class="btn btn-outline mb-4">← Back to Categories</a>
+
+    {% for post in page_obj %}
+        <div class="card bg-base-200 shadow-xl p-4 mb-4">
+            <div class="card-body">
+                <h3 class="text-xl font-semibold">
+                    <a href="{% url 'post_detail' post.id %}" class="hover:underline">{{ post.title }}</a>
+                </h3>
+                <p class="text-gray-500">Votes: {{ post.total_votes|default:0 }}</p>
+            </div>
+        </div>
+    {% empty %}
+        <p class="text-gray-400">No posts available in this category.</p>
+    {% endfor %}
+
+    <!-- Pagination -->
+    <div class="flex justify-center space-x-2 mt-4">
+        {% if page_obj.has_previous %}
+            <a href="?page=1" class="btn btn-sm">First</a>
+            <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-sm">Previous</a>
+        {% endif %}
+
+        <span class="btn btn-sm btn-disabled">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}" class="btn btn-sm">Next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}" class="btn btn-sm">Last</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
