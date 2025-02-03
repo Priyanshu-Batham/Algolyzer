@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mx-auto p-6">
+    <h2 class="text-3xl font-bold mb-4">Categories</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {% for category in categories %}
+            <a href="{% url 'post_list_by_category' category.id %}" class="card bg-base-200 shadow-xl p-4 hover:bg-base-300">
+                <div class="card-body">
+                    <h3 class="text-xl font-semibold">{{ category.name }}</h3>
+                    <p class="text-sm text-gray-500">{{ category.description }}</p>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

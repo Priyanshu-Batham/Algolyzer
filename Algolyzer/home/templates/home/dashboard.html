@@ -1,14 +1,20 @@
-<h1>This is dashboard profile view</h1>
-<h2>Logged in as {{request.user.username}}</h2>
+{% extends "base.html" %}
 
-{% if user_profile %}
-<h2>Level: {{ user_profile.level }}</h2>
-<h2>XP: {{ user_profile.xp }}</h2>
-{% else %}
-<a href="{% url 'onboarding' %}">Complete Your Profile</a>
-{% endif %}
+{% block content%}
 
-<a href="{% url 'account_logout' %}">Logout</a>
+    <h1>This is dashboard profile view</h1>
+    <h2>Logged in as {{request.user.username}}</h2>
 
-{% comment %} level_up route is temporary only for dev testing {% endcomment %}
-<a href="{% url 'level_up' %}">level up</a>
+    {% if user_profile %}
+    <h2>Level: {{ user_profile.level }}</h2>
+    <h2>XP: {{ user_profile.xp }}</h2>
+    {% else %}
+    <a href="{% url 'onboarding' %}">Complete Your Profile</a>
+    {% endif %}
+
+    <a href="{% url 'account_logout' %}">Logout</a>
+
+    {% comment %} level_up route is temporary only for dev testing {% endcomment %}
+    <a href="{% url 'level_up' %}">level up</a>
+    
+{% endblock %}    
