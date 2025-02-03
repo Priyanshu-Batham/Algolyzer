@@ -2,8 +2,10 @@ services:
   web:
     build: .
     container_name: algolyzer_web
+    env_file: 
+      - .env # just for ALLOWED_HOSTS name
     volumes:
-      - static_volume:/app/staticfiles
+      - static_volume:/app/Algolyzer/staticfiles
       - media_volume:/app/media
     expose:
       - "8000"
@@ -12,7 +14,7 @@ services:
     image: nginx:latest
     container_name: algolyzer_nginx
     volumes:
-      - static_volume:/app/staticfiles
+      - static_volume:/app/static
       - media_volume:/app/media
     ports:
       - "8000:80"
