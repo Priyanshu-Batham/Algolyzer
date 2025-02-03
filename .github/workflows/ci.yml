@@ -42,11 +42,9 @@ jobs:
 
       - name: Run Django Tests
         run: |
-          # Set up the Django environment variable
-          export DJANGO_SETTINGS_MODULE=Algolyzer.Algolyzer.settings  # Replace with your actual settings module
           
           # Run Django tests with manage.py
           export PYTHONPATH=./Algolyzer:$PYTHONPATH
-          export DJANGO_SETTINGS_MODULE=Algolyzer.settings
+          export DJANGO_SETTINGS_MODULE=Algolyzer.settings.development
           cd Algolyzer
           python manage.py test

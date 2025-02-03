@@ -178,3 +178,6 @@ node_modules
 
 # TailwindCSS
 *output.css
+
+# productions static files
+staticfiles
