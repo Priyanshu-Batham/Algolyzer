@@ -5,12 +5,39 @@
     <h2 class="text-3xl font-bold mb-4">Posts in {{ category.name }}</h2>
     <a href="{% url 'category_list' %}" class="btn btn-outline mb-4">← Back to Categories</a>
 
+    {% if user.is_authenticated %}
+        <!-- Open the modal using ID.showModal() method -->
+        <button class="btn btn-primary mb-4" onclick="create_post_modal.showModal()">Create New Post</button>
+        <dialog id="create_post_modal" class="modal">
+            <form method="POST" class="modal-box">
+                {% csrf_token %}
+                <h3 class="font-bold text-lg">Create a New Post</h3>
+                <div class="form-control w-full">
+                    <label class="label">
+                        <span class="label-text">Title</span>
+                    </label>
+                    <input type="text" name="title" placeholder="Enter post title" class="input input-bordered w-full" required />
+                </div>
+                <div class="form-control w-full">
+                    <label class="label">
+                        <span class="label-text">Content</span>
+                    </label>
+                    <textarea name="content" placeholder="Enter post content" class="textarea textarea-bordered h-24" required></textarea>
+                </div>
+                <div class="modal-action">
+                    <button type="submit" class="btn btn-primary">Create Post</button>
+                    <button type="button" class="btn" onclick="create_post_modal.close()">Close</button>
+                </div>
+            </form>
+        </dialog>
+    {% endif %}
+
     {% for post in page_obj %}
         <a href="{% url 'post_detail' post.id %}" class="card bg-base-200 shadow-xl p-4 mb-4 border-2 border-solid border-primary hover:border-secondary">
             <div class="card-body">
                 <div class="text-xl font-semibold">
-                    <h1 class="">{{ post.title }}</h1>
-                </div>
+                    <h1 class="break-words">{{ post.title }}</h1>
+                </div>  
                 <p class="text-gray-500">Votes: {{ post.total_votes|default:0 }}</p>
             </div>
         </a>
@@ -19,17 +46,17 @@
     {% endfor %}
 
     <!-- Pagination -->
-    <div class="flex justify-center space-x-2 mt-4">
+    <div class="join flex justify-center mt-4">
         {% if page_obj.has_previous %}
-            <a href="?page=1" class="btn btn-sm">First</a>
-            <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-sm">Previous</a>
+            <a href="?page=1" class="join-item btn btn-primary rounded-l-full btn-outline"><<</a>
+            <a href="?page={{ page_obj.previous_page_number }}" class="join-item btn btn-primary btn-outline"><</a>
         {% endif %}
 
-        <span class="btn btn-sm btn-disabled">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+        <span class="join-item px-4 text-lg border-2 border-solid border-primary text-primary flex items-center justify-center">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
 
         {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}" class="btn btn-sm">Next</a>
-            <a href="?page={{ page_obj.paginator.num_pages }}" class="btn btn-sm">Last</a>
+            <a href="?page={{ page_obj.next_page_number }}" class="join-item btn btn-primary btn-outline">></a>
+            <a href="?page={{ page_obj.paginator.num_pages }}" class="join-item btn btn-primary rounded-r-full btn-outline">>></a>
         {% endif %}
     </div>
 </div>
