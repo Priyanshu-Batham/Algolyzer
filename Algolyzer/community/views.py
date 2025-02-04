@@ -64,6 +64,7 @@ def add_comment(request, post_id):
 @profile_required
 def vote_post(request, post_id, vote_type):
     post = get_object_or_404(Post, id=post_id)
+    vote_type = int(vote_type)
 
     # Ensure vote_type is either 1 (upvote) or -1 (downvote)
     if vote_type not in [1, -1]:

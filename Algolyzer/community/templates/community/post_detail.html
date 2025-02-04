@@ -5,7 +5,7 @@
     <a href="{% url 'post_list_by_category' post.category.id %}" class="btn btn-outline mb-4">← Back to Posts</a>
 
     <!-- Post Card -->
-    <div class="card bg-base-200 shadow-xl p-6">
+    <div class="card bg-base-200 shadow-xl lg:p-6 border-2 border-solid border-primary">
         <div class="card-body">
             <h2 class="text-3xl font-bold">{{ post.title }}</h2>
             <p class="text-gray-500 text-sm">By <strong>{{ post.author.username }}</strong> | {{ post.created_at|date:"F j, Y, g:i a" }}</p>
@@ -23,17 +23,17 @@
             <div class="flex items-center space-x-4 mt-6">
                 <form action="{% url 'vote_post' post.id 1 %}" method="POST">
                     {% csrf_token %}
-                    <button type="submit" class="btn btn-success flex items-center">
-                        👍 Upvote
+                    <button type="submit" class="btn hover:btn-success border-1 border-solid border-success flex items-center">
+                        👍
                     </button>
                 </form>
                 <form action="{% url 'vote_post' post.id -1 %}" method="POST">
                     {% csrf_token %}
-                    <button type="submit" class="btn btn-error flex items-center">
-                        👎 Downvote
+                    <button type="submit" class="btn hover:btn-error border-1 border-solid border-error flex items-center">
+                        👎
                     </button>
                 </form>
-                <span class="text-xl font-bold">Votes: {{ post.total_votes }}</span>
+                <h1 class="text-xl font-bold text-secondary">{{ total_votes }}</h1>
             </div>
         </div>
     </div>
