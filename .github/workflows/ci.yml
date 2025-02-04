@@ -1,6 +1,6 @@
 name: Python Lint, Format, and Tests
 
-on: [push, pull_request]
+on: [push]
 
 jobs:
   lint-format-test:
