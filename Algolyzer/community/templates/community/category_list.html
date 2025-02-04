@@ -2,12 +2,12 @@
 
 {% block content %}
 <div class="container mx-auto p-6">
-    <h2 class="text-3xl font-bold mb-4">Categories</h2>
+    <h1 class="font-bold font-poppins my-10 text-poppins text-5xl">Categories</h1>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {% for category in categories %}
-            <a href="{% url 'post_list_by_category' category.id %}" class="card bg-base-200 shadow-xl p-4 hover:bg-base-300">
+            <a href="{% url 'post_list_by_category' category.id %}" class="card bg-base-200 shadow-xl p-4 hover:bg-base-300 border-solid border-primary border-2 hover:border-secondary">
                 <div class="card-body">
-                    <h3 class="text-xl font-semibold">{{ category.name }}</h3>
+                    <h3 class="text-xl font-semibold capitalize">{{ category.name }}</h3>
                     <p class="text-sm text-gray-500">{{ category.description }}</p>
                 </div>
             </a>
