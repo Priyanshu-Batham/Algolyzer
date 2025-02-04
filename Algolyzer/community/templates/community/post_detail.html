@@ -2,12 +2,66 @@
 
 {% block content %}
 <div class="container mx-auto p-6">
-    <a href="{% url 'post_list_by_category' post.category.id %}" class="btn btn-outline mb-4">← Back to Posts</a>
+    <div class="flex gap-2">
+        <a href="{% url 'post_list_by_category' post.category.id %}" class="btn btn-outline mb-4">← Back to Posts</a>
+
+        {% if user == post.author %}
+            <!-- Edit Post Button -->
+            <button class="btn btn-primary mb-4" onclick="edit_post_modal.showModal()">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                </svg>
+            </button>
+            <dialog id="edit_post_modal" class="modal">
+                <form method="POST" class="modal-box">
+                    {% csrf_token %}
+                    <h3 class="font-bold text-lg">Edit Post</h3>
+                    <div class="form-control w-full">
+                        <label class="label">
+                            <span class="label-text">Title</span>
+                        </label>
+                        <input type="text" name="title" value="{{ post.title }}" class="input input-bordered w-full" required />
+                    </div>
+                    <div class="form-control w-full">
+                        <label class="label">
+                            <span class="label-text">Content</span>
+                        </label>
+                        <textarea name="content" class="textarea textarea-bordered h-24" required>{{ post.content }}</textarea>
+                    </div>
+                    <div class="modal-action">
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                        <button type="button" class="btn" onclick="edit_post_modal.close()">Close</button>
+                    </div>
+                </form>
+            </dialog>
+        {% endif %}
+
+        {% if user == post.author %}
+            <!-- Delete Post Button -->
+            <button class="btn btn-error" onclick="delete_post_modal.showModal()">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+            </button>
+            <dialog id="delete_post_modal" class="modal">
+                <form method="POST" class="modal-box">
+                    {% csrf_token %}
+                    <input type="hidden" name="_method" value="DELETE"> 
+                    <h3 class="font-bold text-lg">Delete Post</h3>
+                    <p class="py-4">Are you sure you want to delete this post? This action cannot be undone.</p>
+                    <div class="modal-action">
+                        <button type="submit" class="btn btn-error">Delete</button>
+                        <button type="button" class="btn" onclick="delete_post_modal.close()">Cancel</button>
+                    </div>
+                </form>
+            </dialog>
+        {% endif %}
+    </div>
 
     <!-- Post Card -->
     <div class="card bg-base-200 shadow-xl lg:p-6 border-2 border-solid border-primary">
         <div class="card-body">
-            <h2 class="text-3xl font-bold">{{ post.title }}</h2>
+            <h2 class="text-xl lg:text-3xl font-bold break-words">{{ post.title }}</h2>
             <p class="text-gray-500 text-sm">By <strong>{{ post.author.username }}</strong> | {{ post.created_at|date:"F j, Y, g:i a" }}</p>
 
             {% if post.image %}
@@ -16,7 +70,7 @@
 
             <!-- Post Content -->
             <div class="mt-4 p-4 bg-base-100 rounded-lg shadow">
-                <p class="text-lg">{{ post.content|linebreaks }}</p>
+                <p class="text-lg break-words">{{ post.content|linebreaks }}</p>
             </div>
 
             <!-- Voting System -->

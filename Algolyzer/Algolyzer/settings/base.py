@@ -15,16 +15,19 @@ DEBUG = False  # Will be overridden in respective settings files
 ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
+    # default django apps
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # allauth apps
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
     "allauth.socialaccount.providers.google",
+    # algolyzer apps
     "home",
     "quiz",
     "study",

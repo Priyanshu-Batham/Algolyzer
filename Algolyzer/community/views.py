@@ -15,6 +15,19 @@ def category_list(request):
 
 
 def post_list_by_category(request, category_id):
+    """Show posts in a category and allow creating new posts."""
+    category = get_object_or_404(Category, id=category_id)
+
+    if request.method == "POST" and request.user.is_authenticated:
+        title = request.POST.get("title")
+        content = request.POST.get("content")
+        if title and content:
+            Post.objects.create(
+                title=title, content=content, author=request.user, category=category
+            )
+            return redirect("post_list_by_category", category_id=category.id)
+
+    # For normal get request
     category = get_object_or_404(Category, id=category_id)
     posts = (
         Post.objects.filter(category=category)
@@ -34,8 +47,35 @@ def post_list_by_category(request, category_id):
 
 
 def post_detail(request, post_id):
-    """Show post details along with comments and voting functionality."""
     post = get_object_or_404(Post, id=post_id)
+
+    # Delete Post
+    if (
+        request.method == "POST"
+        and request.POST.get("_method") == "DELETE"
+        and request.user.is_authenticated
+    ):
+        if request.user == post.author:
+            post.delete()
+            return redirect("post_list_by_category", category_id=post.category.id)
+        else:
+            return HttpResponseForbidden("You can only delete your own posts.")
+
+    # Update Post
+    if request.method == "POST" and request.user.is_authenticated:
+        if request.user == post.author:
+            title = request.POST.get("title")
+            content = request.POST.get("content")
+            if title and content:
+                post.title = title
+                post.content = content
+                post.save()
+                return redirect("post_detail", post_id=post.id)
+        else:
+            return HttpResponseForbidden("You can only edit your own posts.")
+
+    # Read posts
+    """Show post details along with comments and voting functionality."""
     comments = post.comments.all()
     total_votes = post.votes.aggregate(Sum("vote_type"))["vote_type__sum"] or 0
 
