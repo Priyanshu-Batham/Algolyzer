@@ -51,8 +51,8 @@ The project is built using following versions of software:
         # Activate the virtual environment
         source myenv/bin/activate
 
-        # Create .env file from .env.development
-        cp .env.development .env
+        # Create .env file from .env.sample
+        cp .env.sample .env
 
         # Enter the Google client id and secret in the .env file
     
@@ -97,8 +97,8 @@ The project is built using following versions of software:
         # Activate the virtual environment
         myenv\Scripts\activate
 
-        # Create .env file from .env.development
-        cp .env.development .env
+        # Create .env file from .env.sample
+        cp .env.sample .env
 
         # Enter the Google client id and secret in the .env file
     
