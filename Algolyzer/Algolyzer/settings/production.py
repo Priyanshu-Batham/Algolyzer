@@ -18,6 +18,10 @@ DATABASES = {
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
+# Using whitenoise to serve static files (should use nginx)
+MIDDLEWARE.insert(1, "whitenoise.middleware.WhiteNoiseMiddleware")
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
 # CSRF_COOKIE_SECURE = False  # Since you're using HTTP (for now)
 # SESSION_COOKIE_SECURE = False  # Since you're using HTTP (for now)
 

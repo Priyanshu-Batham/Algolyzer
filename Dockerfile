@@ -1,5 +1,5 @@
-# Use official Python image with Alpine as base
-FROM python:3.12-alpine
+# Use Python slim image as base
+FROM python:3.12-slim
 
 # Set environment variables
 ENV PYTHONUNBUFFERED=1 
@@ -8,14 +8,14 @@ ENV PYTHONUNBUFFERED=1
 WORKDIR /app
 
 # Install system dependencies
-RUN apk update && \
-    apk add --no-cache \
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
     curl \
-    nginx \
     bash \
     nodejs \
     npm && \
-    rm -rf /var/cache/apk/*
+    rm -rf /var/lib/apt/lists/* && \
+    apt-get clean
 
 # Install specific npm version
 RUN npm install -g npm@10.9.2 
@@ -42,10 +42,8 @@ WORKDIR /app/Algolyzer/
 # Migrate database
 RUN python manage.py migrate
 
-# Set super user details
-ENV DJANGO_SUPERUSER_USERNAME=admin \
-    DJANGO_SUPERUSER_EMAIL=admin@gmail.com \
-    DJANGO_SUPERUSER_PASSWORD=admin
+# Create superuser using env values
+RUN python manage.py create_superuser
 
 # Seed the database
 RUN python manage.py loaddata data/*
