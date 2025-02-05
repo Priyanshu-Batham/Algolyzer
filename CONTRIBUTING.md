@@ -51,8 +51,8 @@ The project is built using following versions of software:
         # Activate the virtual environment
         source myenv/bin/activate
 
-        # Create .env file from .env.sample
-        cp .env.sample .env
+        # Create .env file from .env.development
+        cp .env.development .env
 
         # Enter the Google client id and secret in the .env file
     
@@ -71,8 +71,8 @@ The project is built using following versions of software:
         # Apply migrations
         python manage.py migrate
     
-        # Create a local administrator
-        python manage.py createsuperuser
+        # Create a local administrator (make sure you specify values in .env)
+        python manage.py create_superuser
 
         #seed database
         python manage.py loaddata data/*
@@ -97,8 +97,8 @@ The project is built using following versions of software:
         # Activate the virtual environment
         myenv\Scripts\activate
 
-        # Create .env file from .env.sample
-        cp .env.sample .env
+        # Create .env file from .env.development
+        cp .env.development .env
 
         # Enter the Google client id and secret in the .env file
     
@@ -117,8 +117,8 @@ The project is built using following versions of software:
         # Apply migrations
         python manage.py migrate
     
-        # Create a local administrator
-        python manage.py createsuperuser
+        # Create a local administrator (make sure you specify values in .env)
+        python manage.py create_superuser
 
         #seed database
         python manage.py loaddata data/*
@@ -131,12 +131,37 @@ The project is built using following versions of software:
         ```
 **Note - Always use `localhost:8000` instead of `127.0.0.1:8000` if you don't want access blocked from Google during development**
 
+# Using Docker for production
+1. Pull the docker image
+```bash
+docker pull priyanshubatham/algolyzer:latest
+```
+2. Create a .env file with the following contents and modify them accordingly
+```bash
+echo "
+GOOGLE_CLIENT_ID=YOUR-CLIENT-ID
+GOOGLE_SECRET_KEY=YOUR-SECRET-KEY
+
+ALLOWED_HOSTS=localhost,127.0.0.1
+CSRF_TRUSTED_ORIGINS=http://localhost,http://127.0.0.1,http://localhost:8000,http://127.0.0.1:8000
+
+DJANGO_SUPERUSER_USERNAME=admin
+DJANGO_SUPERUSER_EMAIL=admin@gmail.com
+DJANGO_SUPERUSER_PASSWORD=admin" > .env
+```
+3. Run the docker container
+```bash
+docker run --env-file .env -p 8000:8000 priyanshubatham/algolyzer:latest
+
+```
+4. Open the browser and goto `localhost:8000`
+
 # Contributing for Quiz Data
 1. Setup the project locally
 2. Make sure you have run following commands as mentioned in above steps.
 
     ```bash
-    python manage.py createsuperuser
+    python manage.py create_superuser
     python manage.py loaddata data/*
     ```
 
