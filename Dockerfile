@@ -58,4 +58,4 @@ EXPOSE 8000
 ENV DJANGO_SETTINGS_MODULE=Algolyzer.settings.production
 
 # Start the application
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--access-logfile", "-", "--error-logfile", "-", "Algolyzer.wsgi:application"]
+CMD python manage.py create_superuser && gunicorn --bind 0.0.0.0:8000 --access-logfile - --error-logfile - Algolyzer.wsgi:application
