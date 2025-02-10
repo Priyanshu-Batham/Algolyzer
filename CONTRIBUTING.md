@@ -149,12 +149,25 @@ DJANGO_SUPERUSER_USERNAME=admin
 DJANGO_SUPERUSER_EMAIL=admin@gmail.com
 DJANGO_SUPERUSER_PASSWORD=admin" > .env
 ```
-3. Run the docker container
+
+# Ensure you have redis up and running
+3. Running celery -- this step is temporary and will be written inside dockerfile and setup locally instructions.
+Linux/mac
+```bash
+celery -A Algolyzer worker --loglevel=info
+```
+Windows
+```bash
+celery -A Algolyzer worker --loglevel=info --pool=threads
+```
+
+4. Run the docker container
 ```bash
 docker run --env-file .env -p 8000:8000 priyanshubatham/algolyzer:latest
 
+
 ```
-4. Open the browser and goto `localhost:8000`
+5. Open the browser and goto `localhost:8000`
 
 # Contributing for Quiz Data
 1. Setup the project locally

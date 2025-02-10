@@ -42,14 +42,14 @@ WORKDIR /app/Algolyzer/
 # Migrate database
 RUN python manage.py migrate
 
-# Create superuser using env values
-RUN python manage.py create_superuser
-
 # Seed the database
 RUN python manage.py loaddata data/*
 
 # Collect static files
 RUN python manage.py collectstatic --noinput
+
+# Download aiml models (thinking of pushing models to github and everywhere directly)
+RUN python manage.py download_models
 
 # Expose port 8000
 EXPOSE 8000
@@ -58,4 +58,4 @@ EXPOSE 8000
 ENV DJANGO_SETTINGS_MODULE=Algolyzer.settings.production
 
 # Start the application
-CMD python manage.py create_superuser && gunicorn --bind 0.0.0.0:8000 --access-logfile - --error-logfile - Algolyzer.wsgi:application
+CMD (celery -A Algolyzer worker --loglevel=info &) && python manage.py create_superuser && gunicorn --bind 0.0.0.0:8000 --access-logfile - --error-logfile - Algolyzer.wsgi:application
