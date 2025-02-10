@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Task Status</h1>
+
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% else %}
+        <p><strong>Task ID:</strong> {{ task_id }}</p>
+        <p><strong>Status:</strong> {{ status }}</p>
+
+        {% if result %}
+            <p><strong>Result:</strong> {{ result }}</p>
+        {% else %}
+            <p>Processing... Refresh the page to check status.</p>
+        {% endif %}
+    {% endif %}
+
+    <a href="{% url 'playground_home' %}">Submit another task</a>
+{% endblock%}

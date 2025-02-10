@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mx-auto">
+    <h1 class="text-center">This is Playground App</h1>
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+    <form method="post" action="{% url 'submit_task_view' %}">
+        {% csrf_token %}
+        <label for="input_data">Enter Input:</label>
+        <input type="text" name="input_data" required>
+        
+        <label for="model_name">Select Model:</label>
+        <select name="model_name">
+            <option value="model_1">Model 1</option>
+            <option value="model_2">Model 2</option>
+        </select>
+
+        <button type="submit">Submit Task</button>
+    </form>
+</div>
+{% endblock %}

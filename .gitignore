@@ -181,3 +181,6 @@ node_modules
 
 # productions static files
 staticfiles
+
+# algolyzer playground aiml models
+aiml_models

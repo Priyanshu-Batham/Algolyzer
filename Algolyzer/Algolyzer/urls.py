@@ -26,6 +26,7 @@ urlpatterns = [
     path("quiz/", include("quiz.urls")),
     path("study/", include("study.urls")),
     path("community/", include("community.urls")),
+    path("playground/", include("playground.urls")),
     # allauth urls
     path("accounts/", include("allauth.urls")),
 ]
