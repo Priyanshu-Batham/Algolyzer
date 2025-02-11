@@ -1,11 +1,28 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.utils import timezone
 
 
 class UserProfile(models.Model):
     user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE)
+
+    # Personal Information
+    full_name = models.CharField(max_length=100)
     dob = models.DateField()
-    # fields for ranking system
+    phone_number = models.CharField(max_length=15, blank=True, null=True)
+    gender = models.CharField(
+        max_length=1,
+        choices=[("M", "Male"), ("F", "Female"), ("O", "Other")],
+        blank=True,
+        null=True,
+    )
+    address = models.TextField(blank=True, null=True)
+
+    # Education & Enrollment
+    course = models.CharField(max_length=100, default="Undecided")
+    enrollment_date = models.DateField(default=timezone.now)
+
+    # Ranking System
     xp = models.PositiveIntegerField(default=0)
     level = models.PositiveIntegerField(default=1)
 
@@ -13,13 +30,27 @@ class UserProfile(models.Model):
         return self.user.username
 
     def add_xp(self, amount):
+        """Add XP and check for level up"""
         self.xp += amount
         self.check_level_up()
+        self.save()
 
     def check_level_up(self):
-        # Example level thresholds (customize as needed)
-        level_thresholds = [0, 100, 300, 600, 1000]  # XP required for each level
+        """Update level based on XP thresholds"""
+        level_thresholds = [0, 100, 300, 600, 1000, 1500, 2100, 2800, 3600, 4500]
+        # If user has more exp than our thresholds itself then dynamically create new thresholds
+        while len(level_thresholds) <= self.level:
+            level_thresholds.append(
+                level_thresholds[-1] + (self.level * 500)
+            )  # Custom scaling
+
         for i, threshold in enumerate(level_thresholds):
             if self.xp >= threshold:
                 self.level = i + 1
-        self.save()
+
+    def get_next_level_xp(self):
+        """Returns XP required for the next level"""
+        level_thresholds = [0, 100, 300, 600, 1000, 1500, 2100, 2800, 3600, 4500]
+        if self.level < len(level_thresholds):
+            return level_thresholds[self.level] - self.xp
+        return None  # If max level is reached
