@@ -74,13 +74,24 @@ The project is built using following versions of software:
         # Create a local administrator (make sure you specify values in .env)
         python manage.py create_superuser
 
-        #seed database
+        # seed database
         python manage.py loaddata data/*
+
+        # download aiml models
+        python manage.py download_models
+
+        # start redis as a docker container
+        docker run --name redis -p 6379:6379 -d redis
+
+        # start celery
+        celery -A Algolyzer worker --loglevel=info
     
         # Now open a NEW TERMINAL and start tailwind in Algolyzer dir
         npm run tw_watch
 
-        # Goto PREVIOUS TERMINAL and Run Django server.
+        # Open Third terminal and Run Django server.
+        source myenv/bin/activate
+        cd Algolyzer
         python manage.py runserver 8000
         ```
 

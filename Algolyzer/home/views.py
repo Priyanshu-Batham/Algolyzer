@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 
-from .forms import UserProfileDOBForm
+from .forms import OnboardingForm
 from .models import UserProfile
 
 
@@ -25,7 +25,7 @@ def onboarding(request):
 
     if request.method == "POST":
         # If the profile doesn't exist, no instance is passed to the form
-        form = UserProfileDOBForm(request.POST)
+        form = OnboardingForm(request.POST)
 
         if form.is_valid():
             # Create the UserProfile only after form validation
@@ -33,7 +33,7 @@ def onboarding(request):
             return redirect("dashboard")
     else:
         # On GET request, just create an empty form (no instance)
-        form = UserProfileDOBForm()
+        form = OnboardingForm()
 
     return render(request, "home/onboarding.html", {"form": form})
 

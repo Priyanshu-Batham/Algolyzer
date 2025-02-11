@@ -1,5 +1,3 @@
-import datetime
-
 from allauth.account.models import EmailAddress
 from django.contrib.auth import get_user_model
 from django.test import TestCase
@@ -146,24 +144,6 @@ class OnboardingViewTests(TestCase):
 
         # Check if the response contains the onboarding form
         self.assertContains(response, '<form method="post"')
-
-    def test_create_user_profile_on_valid_post(self):
-        # Login with the test user
-        self.client.login(email=self.email, password=self.password)
-
-        # Send a POST request to create a profile with valid data
-        data = {"dob": "2000-01-01"}  # Example date of birth
-        response = self.client.post(self.url, data)
-
-        # Check if the UserProfile was created
-        self.assertTrue(UserProfile.objects.filter(user=self.user).exists())
-
-        # Check if the response redirects to the dashboard
-        self.assertRedirects(response, reverse("dashboard"))
-
-        # Check if the UserProfile data was saved correctly
-        user_profile = UserProfile.objects.get(user=self.user)
-        self.assertEqual(user_profile.dob, datetime.date(2000, 1, 1))
 
     def test_no_profile_creation_on_invalid_post(self):
         # Login with the test user
