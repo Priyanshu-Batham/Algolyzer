@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="max-w-5xl mx-auto py-5 max-sm:p-4">
+        <h1 class="max-sm:text-4xl max-sm:my-6 text-5xl my-12">A Comprehensive Guide to <span class="text-primary font-bold font-poppins">Sentiment Analysis.</span></h1>
+        <h2 class="max-sm:text-2xl text-3xl my-5 text-primary font-bold">Introduction</h2>
+        <p class="max-sm:text-lg text-xl">Sentiment analysis, also known as opinion mining, is a natural language processing (NLP) technique used to determine the emotional tone behind a body of text. It is widely used in various fields, including customer feedback analysis, brand reputation management, social media monitoring, and market research.
+        This guide will cover everything you need to know about sentiment analysis, from its basic concepts to advanced deep-learning techniques, including industry-standard approaches.</p>
+
+        <h1 class="max-sm:text-2xl text-3xl my-5 text-primary font-bold">What is Sentiment Analysis?</h1>
+        <p class="max-sm:text-lg text-xl">Sentiment analysis is the process of classifying text as positive, negative, neutral, or even more nuanced emotions such as anger, happiness, or frustration. It helps businesses, researchers, and developers understand public opinion, monitor trends, and automate decision-making processes.</p>
+
+        <h1 class="max-sm:text-2xl text-3xl my-5 text-primary font-bold">Types of Sentiment Analysis</h1>
+        <ul class="max-sm:text-lg text-xl">
+            <li><strong class="">Binary Sentiment Analysis: </strong>The simplest form where sentiment is classified as either positive or negative.</li>
+            <li><strong class="">Ternary Sentiment Analysis: </strong>Classification into positive, negative, or neutral.</li>
+            <li><strong class="">Fine-grained Sentiment Analysis: </strong>Classifies sentiment on a more granular level, such as - Very Positive, Positive, Neutral, Negative, Very Negative</li>
+            <li><strong class="">Aspect-based Sentiment Analysis (ABSA): </strong>Identifies sentiment regarding specific aspects of a text.</li>
+            <li><strong class="">Emotion Detection: </strong>Detects specific emotions like joy, anger, sadness, or fear.</li>
+        </ul>
+
+        <h1 class="max-sm:text-2xl text-3xl my-5 text-primary font-bold">How Sentiment Analysis Works?</h1>
+        <p class="max-sm:text-lg text-xl">Sentiment analysis can be performed using various methods, ranging from simple rule-based approaches to advanced deep learning models.</p>
+    
+        <h2 class="max-sm:text-lg text-xl text-secondary font-bold">A. Rule-Based Approach</h2>
+        <p class="max-sm:text-lg text-xl">Uses predefined rules and lexicons (word dictionaries) to classify sentiment.</p>
+        <p class="max-sm:text-lg text-xl"><strong>Example:</strong> If a text contains words like "excellent", "good", or "amazing", it is classified as positive.</p>
+        
+        <h3 class="max-sm:text-lg text-xl font-bold">Popular lexicons:</h3>
+        <ul class="max-sm:text-lg text-xl">
+            <li> - AFINN</li>
+            <li> - SentiWordNet</li>
+            <li> - VADER (Valence Aware Dictionary and sEntiment Reasoner) (works well on social media text)</li>
+        </ul>
+    
+        <h2 class="max-sm:text-lg text-xl text-secondary font-bold">B. Machine Learning Approach</h2>
+        <p class="max-sm:text-lg text-xl">Uses labeled datasets to train models that predict sentiment. Common techniques include:</p>
+        <ul class="max-sm:text-lg text-xl">
+            <li> - Naive Bayes Classifier (Simple yet effective for text classification)</li>
+            <li> - Support Vector Machines (SVMs)</li>
+            <li> - Logistic Regression</li>
+            <li> - Decision Trees and Random Forests</li>
+        </ul>
+    
+        <h2 class="max-sm:text-lg text-xl text-secondary font-bold">C. Deep Learning Approach</h2>
+        <ul class="max-sm:text-lg text-xl">
+            <li><strong>Recurrent Neural Networks (RNNs) & Long Short-Term Memory (LSTMs)</strong>
+                <ul class="max-sm:text-lg text-xl">
+                    <li> - Used for sequential data like text.</li>
+                    <li> - Can capture context better than traditional ML models.</li>
+                </ul>
+            </li>
+            <li><strong>Transformers (BERT, RoBERTa, GPT)</strong>
+                <ul class="max-sm:text-lg text-xl">
+                    <li> - State-of-the-art NLP models.</li>
+                    <li> - Pre-trained on large datasets for contextual understanding.</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h1 class="max-sm:text-4xl text-5xl my-12">About <span class="text-primary font-bold font-poppins">DistilBERT-Base-Uncased-Finetuned-SST-2-English</span> Model</h1>
+        <h2 class="max-sm:text-2xl text-3xl my-5 text-primary font-bold">Introduction</h2>
+        <p class="max-sm:text-lg text-xl"><strong>distilbert-base-uncased-finetuned-sst-2-english</strong> is a pretrained transformer-based model developed by Hugging Face. It is a fine-tuned version of DistilBERT, specifically trained on the Stanford Sentiment Treebank (SST-2) dataset for sentiment analysis. This model is optimized for classifying text as positive or negative sentiment, making it highly effective for analyzing opinions, reviews, and social media posts.</p>
+
+        <h2 class="max-sm:text-2xl text-3xl my-5 text-primary font-bold">How to use?</h2>
+        <p class="max-sm:text-lg text-xl">The easiest way to use the model is through the Hugging Face transformers library, But for the sake of explanation here's a code snippet of how to use this model with PyTorch</p>
+        <div class="mockup-code mt-2">
+            <pre data-prefix="1"><code>from transformers import DistilBertTokenizer, DistilBertForSequenceClassification</code></pre>
+            <pre data-prefix="2"><code>import torch</code></pre>
+            <pre data-prefix="3"><code></code></pre>
+            <pre data-prefix="4"><code># Load tokenizer and model</code></pre>
+            <pre data-prefix="5"><code>tokenizer = DistilBertTokenizer.from_pretrained("distilbert-base-uncased-finetuned-sst-2-english")</code></pre>
+            <pre data-prefix="6"><code>model = DistilBertForSequenceClassification.from_pretrained("distilbert-base-uncased-finetuned-sst-2-english")</code></pre>
+            <pre data-prefix="7"><code></code></pre>
+            <pre data-prefix="8"><code># Example text</code></pre>
+            <pre data-prefix="9"><code>text = "This product is terrible, I regret buying it."</code></pre>
+            <pre data-prefix="10"><code></code></pre>
+            <pre data-prefix="11"><code># Tokenize input text</code></pre>
+            <pre data-prefix="12"><code>inputs = tokenizer(text, return_tensors="pt")</code></pre>
+            <pre data-prefix="13"><code></code></pre>
+            <pre data-prefix="14"><code># Perform inference</code></pre>
+            <pre data-prefix="15"><code>with torch.no_grad():</code></pre>
+            <pre data-prefix="16"><code>    outputs = model(**inputs)</code></pre>
+            <pre data-prefix="17"><code></code></pre>
+            <pre data-prefix="18"><code># Get predicted class</code></pre>
+            <pre data-prefix="19"><code>logits = outputs.logits</code></pre>
+            <pre data-prefix="20"><code>predicted_class = torch.argmax(logits).item()</code></pre>
+            <pre data-prefix="21"><code></code></pre>
+            <pre data-prefix="22"><code># Interpret result</code></pre>
+            <pre data-prefix="23"><code>labels = ["NEGATIVE", "POSITIVE"]</code></pre>
+            <pre data-prefix="24"><code>print(labels[predicted_class])</code></pre>
+          </div>
+
+          <h2 class="max-sm:text-2xl text-3xl my-5 text-primary font-bold">Output</h2>
+          <div class="mockup-code">
+            <pre data-prefix="$"><code>NEGATIVE</code></pre>
+          </div>
+
+          <h2 class="max-sm:text-2xl text-3xl my-5 font-bold">Why <span class="text-primary font-bold font-poppins">Algolyzer</span> uses this model?</h2>
+          <ul class="max-sm:text-lg text-xl">
+            <li>✅ Lightweight and Efficient - Faster than BERT while maintaining high accuracy.</li>
+            <li>✅ High Accuracy - Fine-tuned on SST-2, achieving state-of-the-art performance.</li>
+            <li>✅ Easy to Use - Direct integration with Hugging Face’s transformers library.</li>
+            <li>✅ Suitable for Real-time Applications - Can process text quickly, making it ideal for chatbots, feedback analysis, etc.</li>
+          </ul>
+    </div>
+{% endblock %}

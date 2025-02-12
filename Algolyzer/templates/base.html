@@ -22,6 +22,7 @@
   {% url 'playground_home' as playground_url %}
   {% url 'home' as home_url %}
   {% url 'category_list' as community_url %}
+  {% url 'study_home' as study_url %}
 
   <div class="navbar bg-base-100 font-bold">
     <div class="navbar-start">
@@ -34,18 +35,21 @@
         
         {% comment %} mobile navbar links {% endcomment %}
         <ul tabindex="0" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
+          <li role="tab" class="tab {% if request.path == home_url %}tab-active{% endif %}">
+              <a href="{{ home_url }}">Home</a>
+          </li>
           <li role="tab" class="tab {% if request.path == quiz_url %}tab-active{% endif %}">
             <a href="{{ quiz_url }}">Quiz</a>
           </li>
-        <li role="tab" class="tab {% if request.path == playground_url %}tab-active{% endif %}">
-            <a href="{{ playground_url }}">Playground</a>
-        </li>
-        <li role="tab" class="tab {% if request.path == home_url %}tab-active{% endif %}">
-            <a href="{{ home_url }}">Home</a>
-        </li>
-        <li role="tab" class="tab {% if request.path == community_url %}tab-active{% endif %}">
-            <a href="{{ community_url }}">Community</a>
-        </li>
+          <li role="tab" class="tab {% if request.path == playground_url %}tab-active{% endif %}">
+              <a href="{{ playground_url }}">Playground</a>
+          </li>
+          <li role="tab" class="tab {% if request.path == study_url %}tab-active{% endif %}">
+            <a href="{{ study_url }}">Study</a>
+          </li>
+          <li role="tab" class="tab {% if request.path == community_url %}tab-active{% endif %}">
+              <a href="{{ community_url }}">Community</a>
+          </li>
         </ul>
       </div>
       <a href="{%url "home" %}" class="btn btn-ghost text-xl">ALG</a>
@@ -62,6 +66,9 @@
       </li>
       <li role="tab" class="tab {% if request.path == playground_url %}tab-active{% endif %}">
           <a href="{{ playground_url }}">Playground</a>
+      </li>
+      <li role="tab" class="tab {% if request.path == study_url %}tab-active{% endif %}">
+        <a href="{{ study_url }}">Study</a>
       </li>
       <li role="tab" class="tab {% if request.path == community_url %}tab-active{% endif %}">
           <a href="{{ community_url }}">Community</a>
