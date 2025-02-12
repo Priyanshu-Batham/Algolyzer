@@ -25,6 +25,6 @@ docker-compose up --build
 ```
 ## Open a web browser and goto
 ```bash
-http://localhost:8080
+http://localhost:8000
 ```
 **Note - Always use `localhost:8000` instead of `127.0.0.1:8000` if you don't want access blocked from Google during development**
