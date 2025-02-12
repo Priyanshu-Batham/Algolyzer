@@ -7,15 +7,9 @@ from transformers import AutoModelForSequenceClassification, AutoTokenizer, pipe
 
 from .models import PlaygroundTask
 
-# Load ML models at startup (avoid reloading for each request)
-MODEL_REGISTRY = {
-    "model_1": "distilbert-base-uncased-finetuned-sst-2-english",  # Replace with actual model paths
-    "model_2": "model_2",
-}
-
 
 @shared_task(bind=True)
-def process_ml_task(self, task_db_id, model_name, input_data):
+def sentiment_analysis_task(self, task_db_id, input_data):
     """Celery task to process ML model input."""
     try:
         # Fetch the task from the database
@@ -23,10 +17,11 @@ def process_ml_task(self, task_db_id, model_name, input_data):
         task.status = "PROCESSING"
         task.save()
 
-        # Load the selected model
-        model_path = MODEL_REGISTRY.get(model_name)
         MODEL_DIR = os.path.join(
-            settings.BASE_DIR, "playground", "aiml_models", model_path
+            settings.BASE_DIR,
+            "playground",
+            "aiml_models",
+            "distilbert-base-uncased-finetuned-sst-2-english",
         )
 
         # Load model from saved directory
@@ -37,7 +32,9 @@ def process_ml_task(self, task_db_id, model_name, input_data):
         )
 
         if not model:
-            raise ValueError(f"Model '{model_name}' not found.")
+            raise ValueError(
+                "Model 'distilbert-base-uncased-finetuned-sst-2-english' not found."
+            )
 
         # Process the input with the model
         result = sentiment_pipeline(input_data)[0]
