@@ -5,6 +5,7 @@
     <h1 class="text-center my-10 font-bold font-poppins text-5xl">Playground</h1>
     <h1 class="font-bold text-xl mb-5">Pre-Trained AIML Models</h1>
 
+    {% comment %} Sentiment Analysis {% endcomment %}
     <div class="flex flex-col gap-5">
         
         <div class="rounded-xl border-2 border-solid border-primary p-5 hover:border-secondary">
@@ -12,7 +13,7 @@
                 <h1 class="text-4xl my-2 p-4 text-primary">Sentiment Analysis</h1>
                 <div class="flex gap-4">
                     <a href="{% url "sentiment_analysis" %}" class="btn btn-accent font-bold font-poppins max-md:flex-1">Try Now</a>
-                    <a href="#" class="btn btn-primary btn-outline max-md:flex-1">Learn More</a>
+                    <a href="{% url "sentiment_analysis_study" %}" class="btn btn-primary btn-outline max-md:flex-1">Learn More</a>
                 </div>
             </div>
             <div class="flex flex-col md:flex-row gap-4">
@@ -58,6 +59,7 @@
             </div>
         </div>
 
+        {% comment %} Text Classifier {% endcomment %}
         <div class="rounded-xl border-2 border-solid border-primary p-5 hover:border-secondary">
             <div class="flex md:items-center justify-between md:flex-row flex-col">
                 <h1 class="text-4xl my-2 p-4 text-primary">Text Classifier</h1>

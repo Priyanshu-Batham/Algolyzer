@@ -1,20 +1,24 @@
 import json
 
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
+from home.decorators import profile_required
 from playground.tasks import sentiment_analysis_task
 
 from .models import PlaygroundTask
 
 
+@login_required
+@profile_required
 # Home Page
 def playground_home(request):
     """Renders the playground home page."""
     return render(request, "playground/home.html")
 
 
+@login_required
+@profile_required
 # Task Submission View
-
-
 def sentiment_analysis(request):
     """Handles sentiment analysis model submission and task status retrieval."""
     user = request.user  # Ensure the user is authenticated
