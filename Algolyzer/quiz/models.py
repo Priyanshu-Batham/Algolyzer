@@ -39,6 +39,16 @@ class Question(models.Model):
         help_text="Correct answer should be 'a', 'b', 'c', or 'd'",
     )
 
+    def get_option_text(self, option_key):
+        """Returns the full text of the option based on the key (a, b, c, d)."""
+        option_mapping = {
+            "a": self.option_a,
+            "b": self.option_b,
+            "c": self.option_c,
+            "d": self.option_d,
+        }
+        return option_mapping.get(option_key, "Invalid Option")
+
     def __str__(self):
         return self.text
 

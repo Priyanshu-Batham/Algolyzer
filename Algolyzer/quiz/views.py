@@ -111,14 +111,22 @@ def quiz_question(request, topic_id):
     )
 
 
-@login_required
-@profile_required
 def quiz_results(request, topic_id):
     topic = get_object_or_404(Topic, id=topic_id)
     quiz_progress = get_object_or_404(QuizProgress, topic=topic, user=request.user)
     if not quiz_progress.completed:
         return redirect("quiz_question", topic_id=topic.id)
+
     answers = UserAnswer.objects.filter(user=request.user, topic=topic)
+    for answer in answers:
+        # Add full option text to each answer
+        answer.selected_option_text = answer.question.get_option_text(
+            answer.selected_answer
+        )
+        answer.correct_option_text = answer.question.get_option_text(
+            answer.question.correct_answer
+        )
+
     score = answers.filter(is_correct=True).count()
     total = Question.objects.filter(topic=topic).count()
 
@@ -126,6 +134,7 @@ def quiz_results(request, topic_id):
         "topic": topic,
         "score": score,
         "total": total,
+        "answers": answers,
     }
 
     return render(request, "quiz/results.html", context=context)

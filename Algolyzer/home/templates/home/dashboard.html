@@ -1,20 +1,140 @@
 {% extends "base.html" %}
 
-{% block content%}
+{% block content %}
+<div class="container mx-auto p-4">
+  <h1 class="text-3xl font-bold mb-8">Dashboard</h1>
 
-    <h1>This is dashboard profile view</h1>
-    <h2>Logged in as {{request.user.username}}</h2>
+  <!-- User Progress Section -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <!-- XP Card -->
+    <div class="stat bg-base-200 shadow-lg border-2 border-solid border-primary hover:border-secondary rounded-lg">
+      <div class="stat-figure text-primary">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.65 0-3 1.35-3 3s1.35 3 3 3 3-1.35 3-3-1.35-3-3-3zm0 6c-1.65 0-3-1.35-3-3s1.35-3 3-3 3 1.35 3 3-1.35 3-3 3zM5 3h14c1.1 0 2 .9 2 2v14c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V5c0-1.1.9-2 2-2z"/>
+        </svg>
+      </div>
+      <div class="stat-title">Your XP</div>
+      <div class="stat-value text-primary">{{ user_profile.xp }} XP</div>
+      <div class="stat-desc">Level {{ user_profile.level }}</div>
+      <progress class="progress progress-primary w-full" value="{{ progress_percentage }}" max="100"></progress>
+      <div class="text-sm mt-1">{{ user_profile.get_next_level_xp }} XP to next level</div>
+    </div>
+  
+    <!-- Quiz Progress Card -->
+    <div class="stat bg-base-200 shadow-lg border-2 border-solid border-secondary hover:border-primary rounded-lg">
+      <div class="stat-figure text-secondary">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+        </svg>
+      </div>
+      <div class="stat-title">Quizzes Completed</div>
+      <div class="stat-value text-secondary">{{ completed_quizzes }}</div>
+      <div class="stat-desc">Out of {{ total_quizzes }} topics</div>
+    </div>
+  
+    <!-- Tasks Card -->
+    <div class="stat bg-base-200 shadow-lg border-2 border-solid border-primary hover:border-secondary rounded-lg">
+      <div class="stat-figure text-primary">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+        </svg>
+      </div>
+      <div class="stat-title">Tasks</div>
+      <div class="stat-value text-primary">{{ completed_tasks }} Completed</div>
+      <div class="stat-desc">{{ pending_tasks }} Pending</div>
+    </div>
+  
+    <!-- Forum Activity Card -->
+    <div class="stat bg-base-200 shadow-lg border-2 border-solid border-secondary hover:border-primary rounded-lg">
+      <div class="stat-figure text-secondary">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-1a8 8 0 10-16 0v1h5"/>
+        </svg>
+      </div>
+      <div class="stat-title">Forum Activity</div>
+      <div class="stat-value text-secondary">{{ total_posts }} Posts</div>
+      <div class="stat-desc">{{ total_comments }} Comments</div>
+    </div>
+  </div>
+  
+  <!-- Recent Activity Section -->
+  <div class="mb-8">
+    <h2 class="text-2xl font-bold mb-4">Recent Activity</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Recent Quizzes -->
+      <div class="card bg-base-200 shadow-lg border-2 border-solid border-primary hover:border-secondary">
+        <div class="card-body">
+          <h3 class="card-title">Recent Quizzes</h3>
+          <ul>
+            {% for progress in recent_quizzes %}
+            <li class="mb-2 bg-neutral p-4">
+              <p class="font-semibold">{{ progress.topic.name }}</p>
+              <p class="text-sm">Completed on {{ progress.updated_at|date:"M d, Y" }}</p>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
 
-    {% if user_profile %}
-    <h2>Level: {{ user_profile.level }}</h2>
-    <h2>XP: {{ user_profile.xp }}</h2>
-    {% else %}
-    <a href="{% url 'onboarding' %}">Complete Your Profile</a>
-    {% endif %}
+      <!-- Recent Tasks -->
+      <div class="card bg-base-200 shadow-lg border-2 border-solid border-primary hover:border-secondary">
+        <div class="card-body">
+          <h3 class="card-title">Recent Tasks</h3>
+          <ul>
+            {% for task in recent_tasks %}
+            <li class="mb-2 bg-neutral p-4">
+              <p class="font-semibold">{{ task.model_name }}</p>
+              <p class="text-sm">
+                Status: <span class="badge badge-secondary">{{ task.status }}</span>
+              </p>
+              <p class="text-sm">Created on {{ task.created_at|date:"M d, Y" }}</p>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    <a href="{% url 'account_logout' %}">Logout</a>
+  <!-- Forum Activity Section -->
+  <div class="mb-8">
+    <h2 class="text-2xl font-bold mb-4">Forum Activity</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Recent Posts -->
+      <div class="card bg-base-200 shadow-lg border-2 border-solid border-primary hover:border-secondary">
+        <div class="card-body">
+          <h3 class="card-title">Recent Posts</h3>
+          <ul>
+            {% for post in recent_posts %}
+            <li class="mb-2 bg-neutral p-4">
+              <p class="font-semibold">{{ post.title }}</p>
+              <p class="text-sm">In {{ post.category.name }}</p>
+              <p class="text-sm">Posted on {{ post.created_at|date:"M d, Y" }}</p>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
 
-    {% comment %} level_up route is temporary only for dev testing {% endcomment %}
-    <a href="{% url 'level_up' %}">level up</a>
-    
-{% endblock %}    
+      <!-- Recent Comments -->
+      <div class="card bg-base-200 shadow-lg border-2 border-solid border-primary hover:border-secondary">
+        <div class="card-body">
+          <h3 class="card-title">Recent Comments</h3>
+          <ul>
+            {% for comment in recent_comments %}
+            <li class="mb-2 bg-neutral p-4">
+              <p class="font-semibold">{{ comment.content|truncatechars:50 }}</p>
+              <p class="text-sm">On {{ comment.post.title }}</p>
+              <p class="text-sm">Posted on {{ comment.created_at|date:"M d, Y" }}</p>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% comment %} Level Up {% endcomment %}
+  <a href="{% url "level_up" %}" class="btn btn-accent">Level +</a>
+</div>
+{% endblock %}

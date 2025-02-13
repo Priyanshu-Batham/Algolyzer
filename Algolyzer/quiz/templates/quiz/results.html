@@ -1,29 +1,70 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="container min-h-[70vh] lg:min-h-[80vh] mx-auto flex items-center justify-center">
-        <div class="card bg-neutral p-3 lg:p-8 shadow-xl border-solid border-primary border-4 mt-5">
-            <div class="text-center text-2xl lg:text-7xl font-bold my-3 lg:my-7 text-primary font-poppins font-bold">🎊 Congratulations! 🎊</div>
-            <div class="card-body">
-                <div class="stats shadow mx-auto">
-                    <div class="stat text-center">
-                      <div class="stat-title lg:text-2xl">Your Score</div>
-                        <div class="stat-value text-7xl lg:text-9xl">
-                            <span class="countdown font-mono">
-                                <span id="counter" style="--value:${counter};"></span>
-                            </span>
+    <div class="container mx-auto flex items-center justify-center my-6">
+        <div class="card bg-neutral p-2 lg:p-8 shadow-xl border-solid border-primary border-4 mt-5">
+            <div class="text-center text-2xl lg:text-7xl font-bold my-3 lg:my-7 text-primary font-poppins">🎊 Congratulations! 🎊</div>
+            <div class="w-full p-2">
+                <div class="flex items-center justify-center">
+                    <div class="stats shadow mx-auto">
+                        <div class="stat text-center">
+                        <div class="stat-title lg:text-2xl">Your Score</div>
+                            <div class="stat-value text-7xl lg:text-9xl">
+                                <span class="countdown font-mono">
+                                    <span id="counter" style="--value:${counter};"></span>
+                                </span>
+                            </div>
+                        <div class="stat-desc lg:text-2xl">52% above average</div>
                         </div>
-                      <div class="stat-desc lg:text-2xl">52% above average</div>
                     </div>
-                  </div>
+                </div>
+
+                <!-- Separate Accordions for Each Question -->
+                <div class="mt-10 space-y-2 md:space-y-4">
+                    {% for answer in answers %}
+                        <div class="collapse collapse-arrow bg-base-200">
+                            <input type="checkbox" id="accordion-{{ forloop.counter }}" class="peer" />
+                            <label for="accordion-{{ forloop.counter }}" class="collapse-title text-xl font-medium">
+                                <span class="{% if answer.is_correct %}text-success{% else %}text-error{% endif %}">
+                                    {{ answer.question.text }}
+                                </span>
+                                <span class="ml-2 text-sm">
+                                    {% if answer.is_correct %}✅{% else %}❌{% endif %}
+                                </span>
+                            </label>
+                            <div class="collapse-content">
+                                <div class="card bg-base-100 shadow-xl">
+                                    <div class="card-body">
+                                        <p class="text-lg">
+                                            <span class="font-bold">Your Answer:</span> 
+                                            <span class="{% if answer.is_correct %}text-success{% else %}text-error{% endif %}">
+                                                {{ answer.get_selected_answer_display }} - 
+                                                {{ answer.selected_option_text }}
+                                            </span>
+                                        </p>
+                                        {% if not answer.is_correct %}
+                                            <p class="text-lg">
+                                                <span class="font-bold">Correct Answer:</span> 
+                                                <span class="text-success">
+                                                    {{ answer.question.get_correct_answer_display }} - 
+                                                    {{ answer.correct_option_text }}
+                                                </span>
+                                            </p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
             </div>
         </div>
     </div>
-{% endblock %}    
+{% endblock %}
 
 {% block scripts %}
     <script>
-        {% comment %} Confettti Pop Script {% endcomment %}
+        {% comment %} Confetti Pop Script {% endcomment %}
         document.addEventListener("DOMContentLoaded", function () {
             var duration = 3 * 1000; // Run for 3 seconds
             var end = Date.now() + duration;
@@ -68,4 +109,4 @@
         // Call the function to count up to 100
         animateCounter({{score}}, 50);
     </script>
-{% endblock %}    
+{% endblock %}
