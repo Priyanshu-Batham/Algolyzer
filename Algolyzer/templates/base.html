@@ -8,7 +8,7 @@
   <!-- Link to the main CSS file -->
   {% load static %}
   <link rel="stylesheet" href="{% static 'output.css' %}">
-
+  <link rel="icon" type="image/x-icon" href="{% static 'algolyzer.png' %}">
   <!-- JS scripts -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0"></script>
   <!-- Additional head content can be added by child templates -->
@@ -52,7 +52,9 @@
           </li>
         </ul>
       </div>
-      <a href="{%url "home" %}" class="btn btn-ghost text-xl">ALG</a>
+      <a href="{%url "home" %}" class="btn btn-ghost text-xl">
+          <img alt="home" class='w-full h-full object-cover' src="{% static 'algolyzer.png' %}" />
+      </a>
     </div>
     <div class="navbar-center hidden lg:flex">
 
