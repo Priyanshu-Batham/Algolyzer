@@ -114,7 +114,7 @@ def quiz_question(request, topic_id):
 
 def quiz_results(request, topic_id):
     topic = get_object_or_404(Topic, id=topic_id)
-    #print(topic)
+    # print(topic)
     quiz_progress = get_object_or_404(QuizProgress, topic=topic, user=request.user)
     if not quiz_progress.completed:
         return redirect("quiz_question", topic_id=topic.id)
@@ -140,7 +140,9 @@ def quiz_results(request, topic_id):
     # Add XP to the user's profile based on the topic difficulty
     user_profile = UserProfile.objects.get(user=request.user)
     print(topic.difficulty)
-    xp_to_add = XP_REWARDS.get(topic.difficulty, 0) * score # Default to 0 if difficulty is not found
+    xp_to_add = (
+        XP_REWARDS.get(topic.difficulty, 0) * score
+    )  # Default to 0 if difficulty is not found
     print(xp_to_add * score)
     user_profile.add_xp(xp_to_add)
 
