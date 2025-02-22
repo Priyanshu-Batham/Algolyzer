@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from home.decorators import profile_required
+from home.models import UserProfile
 
 from .forms import QuizForm
 from .models import Question, QuizProgress, Topic, UserAnswer
@@ -113,6 +114,7 @@ def quiz_question(request, topic_id):
 
 def quiz_results(request, topic_id):
     topic = get_object_or_404(Topic, id=topic_id)
+    #print(topic)
     quiz_progress = get_object_or_404(QuizProgress, topic=topic, user=request.user)
     if not quiz_progress.completed:
         return redirect("quiz_question", topic_id=topic.id)
@@ -129,12 +131,25 @@ def quiz_results(request, topic_id):
 
     score = answers.filter(is_correct=True).count()
     total = Question.objects.filter(topic=topic).count()
+    XP_REWARDS = {
+        "Easy": 2,
+        "Medium": 5,
+        "Hard": 10,
+        "Veteran": 20,
+    }
+    # Add XP to the user's profile based on the topic difficulty
+    user_profile = UserProfile.objects.get(user=request.user)
+    print(topic.difficulty)
+    xp_to_add = XP_REWARDS.get(topic.difficulty, 0) * score # Default to 0 if difficulty is not found
+    print(xp_to_add * score)
+    user_profile.add_xp(xp_to_add)
 
     context = {
         "topic": topic,
         "score": score,
         "total": total,
         "answers": answers,
+        "xp": xp_to_add,
     }
 
     return render(request, "quiz/results.html", context=context)
