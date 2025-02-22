@@ -5,8 +5,7 @@ from transformers import AutoModel, AutoTokenizer
 
 # Define models to download
 MODELS = {
-    "sentiment-analysis": "distilbert-base-uncased-finetuned-sst-2-english",
-    "text-classification": "facebook/bart-large-mnli",
+    "sentiment-analysis": "finiteautomata/bertweet-base-sentiment-analysis",
 }
 
 # Define directory for saving models

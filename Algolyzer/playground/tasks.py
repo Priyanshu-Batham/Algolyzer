@@ -21,7 +21,7 @@ def sentiment_analysis_task(self, task_db_id, input_data):
             settings.BASE_DIR,
             "playground",
             "aiml_models",
-            "distilbert-base-uncased-finetuned-sst-2-english",
+            "finiteautomata_bertweet-base-sentiment-analysis",
         )
 
         # Load model from saved directory
@@ -33,7 +33,7 @@ def sentiment_analysis_task(self, task_db_id, input_data):
 
         if not model:
             raise ValueError(
-                "Model 'distilbert-base-uncased-finetuned-sst-2-english' not found."
+                "Model 'finiteautomata_bertweet-base-sentiment-analysis' not found."
             )
 
         # Process the input with the model
