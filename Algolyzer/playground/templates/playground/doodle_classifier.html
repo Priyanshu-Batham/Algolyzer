@@ -4,20 +4,22 @@
 <div class="max-w-5xl mx-auto my-5 p-2 bg-base-200 shadow-lg ">
     <div class="p-2 lg:p-5 rounded-xl border-2 border-solid border-primary">
         <h1 class="text-4xl font-bold text-center my-5">Doodle Classifier</h1>
-        
-        <!-- Drawing Canvas -->
-        <div class="flex flex-col items-center">
-            <canvas id="doodleCanvas" width="300" height="300" class="border-2 border-solid border-primary bg-white"></canvas>
-            <div class="mt-3">
-                <button id="clearCanvas" class="btn btn-error">Clear</button>
-            </div>
+
+        <!-- Canvas for Doodling -->
+        <div class="flex justify-center">
+            <canvas id="doodleCanvas" width="200" height="200" class="border-2 border-primary rounded-lg"></canvas>
+        </div>
+
+        <!-- Buttons -->
+        <div class="flex justify-center gap-4 mt-4">
+            <button id="clearCanvas" class="btn btn-secondary">Clear</button>
+            <button id="submitDoodle" class="btn btn-primary">Submit</button>
         </div>
 
         <!-- Form -->
         <form method="POST" id="doodleForm" class="space-y-4">
             {% csrf_token %}
-            <input type="hidden" name="doodle_data" id="doodleData">
-            <button type="submit" id="submit-btn" class="btn btn-primary w-full">Submit</button>
+            <input type="hidden" name="image_data" id="imageData">
         </form>
 
         <!-- Previous Results -->
@@ -31,7 +33,7 @@
                         Submitted Doodle
                     </div>
                     <div class="collapse-content flex flex-col items-center justify-center">
-                        <img src="data:image/png;base64,{{ result.input_data }}" class="w-32 h-32 border rounded-md shadow" alt="Doodle"/>
+                        <!-- <img src="data:image/png;base64,{{ result.input_data }}" class="w-32 h-32 border rounded-md shadow" alt="Doodle"/> -->
                         <div class="stats stats-vertical lg:stats-horizontal shadow mt-4">
                             <div class="stat place-items-center">
                               <div class="stat-title">Status</div>
@@ -41,15 +43,15 @@
                           
                             <div class="stat place-items-center">
                               <div class="stat-title">Prediction</div>
-                              <div class="stat-value text-accent">{{ result.result.label }}</div>
-                              <div class="stat-desc">Circle | Square | Triangle | Star</div>
+                              <div class="stat-value text-accent">{{ result.result }}</div>
+                              <div class="stat-desc">Number 0 to 9</div>
                             </div>
                           
-                            <div class="stat place-items-center">
+                            <!-- <div class="stat place-items-center">
                               <div class="stat-title">Confidence</div>
                               <div class="stat-value">{{ result.result.score|truncatechars:7 }}</div>
                               <div class="stat-desc">Between 0 to 1</div>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -62,52 +64,48 @@
 </div>
 
 <script>
-    const canvas = document.getElementById("doodleCanvas");
-    const ctx = canvas.getContext("2d");
-    const doodleDataInput = document.getElementById("doodleData");
-    let drawing = false;
+    const canvas = document.getElementById('doodleCanvas');
+    const ctx = canvas.getContext('2d');
+    const imageDataInput = document.getElementById('imageData');
+    const clearCanvasButton = document.getElementById('clearCanvas');
+    const submitDoodleButton = document.getElementById('submitDoodle');
+    const doodleForm = document.getElementById('doodleForm');
 
-    canvas.addEventListener("mousedown", () => { drawing = true; });
-    canvas.addEventListener("mouseup", () => { drawing = false; ctx.beginPath(); });
-    canvas.addEventListener("mousemove", draw);
+    // Set up canvas drawing
+    let isDrawing = false;
 
-    function draw(event) {
-        if (!drawing) return;
-        ctx.lineWidth = 5;
-        ctx.lineCap = "round";
-        ctx.strokeStyle = "black";
-        ctx.lineTo(event.offsetX, event.offsetY);
+    canvas.addEventListener('mousedown', () => isDrawing = true);
+    canvas.addEventListener('mouseup', () => isDrawing = false);
+    canvas.addEventListener('mousemove', draw);
+    // In the canvas initialization, set background to white and drawing color to black
+    ctx.fillStyle = 'white';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.strokeStyle = 'black';  // Keep drawing color as black
+
+    function draw(e) {
+        if (!isDrawing) return;
+        ctx.lineWidth = 10;
+        ctx.lineCap = 'round';
+        ctx.strokeStyle = 'black';
+        
+
+        ctx.lineTo(e.offsetX, e.offsetY);
         ctx.stroke();
         ctx.beginPath();
-        ctx.moveTo(event.offsetX, event.offsetY);
+        ctx.moveTo(e.offsetX, e.offsetY);
     }
 
-    document.getElementById("clearCanvas").addEventListener("click", function () {
+    // Clear canvas
+    clearCanvasButton.addEventListener('click', () => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
     });
 
-    // document.getElementById("doodleForm").addEventListener("submit", function () {
-    //     doodleDataInput.value = canvas.toDataURL("image/png");
-    // });
-
-
-    document.getElementById("submit-btn").addEventListener("click", function () {
-    let imageData = canvas.toDataURL("image/png"); // Get base64 data
-    print("this is working")
-        
-    let formData = new FormData();
-    formData.append("image_data", imageData);
-
-    fetch("{% url 'doodle_classifier' %}", {
-        method: "POST",
-        body: formData,
-        headers: {
-            "X-CSRFToken": "{{ csrf_token }}"
-        }
-    }).then(response => response.json())
-      .then(data => console.log(data))
-      .catch(error => console.error(error));
-});
-
+    // Submit doodle
+    submitDoodleButton.addEventListener('click', () => {
+        // Convert canvas to PNG image
+        const imageData = canvas.toDataURL('image/png');
+        imageDataInput.value = imageData;
+        doodleForm.submit();
+    });
 </script>
 {% endblock %}

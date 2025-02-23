@@ -1,22 +1,13 @@
 import os
-import io
-import base64
-import numpy as np
-from PIL import Image
 
 from celery import shared_task
 from django.conf import settings
 from django.utils.timezone import now
+from PIL import Image
 from transformers import AutoModelForSequenceClassification, AutoTokenizer, pipeline
-import torch
-import torchvision.transforms as transforms
-from torchvision import models
-
-
-from django.utils.timezone import now
-import tensorflow as tf
 
 from .models import PlaygroundTask
+
 
 @shared_task(bind=True)
 def sentiment_analysis_task(self, task_db_id, input_data):
@@ -64,105 +55,39 @@ def sentiment_analysis_task(self, task_db_id, input_data):
     return task.result  # Celery stores the result
 
 
-
-# @shared_task(bind=True)
-# def doodle_classifier_task(self, task_db_id):
-#     try:
-#         # Fetch the task from the database
-#         task = PlaygroundTask.objects.get(id=task_db_id)
-#         task.status = "PROCESSING"
-#         task.save()
-
-#         # Load the pre-trained model
-#         model = tf.keras.applications.MobileNetV2(weights='imagenet')
-#         model = tf.keras.Model(inputs=model.input, outputs=model.layers[-2].output)
-
-#         # Load and preprocess the image
-#         img = Image.open(task.input_image.path)
-
-#         # Convert RGBA to RGB if the image has 4 channels
-#         if img.mode == 'RGBA':
-#             img = img.convert('RGB')
-
-#         # Resize the image to the required input size
-#         img = img.resize((224, 224))
-
-#         # Convert the image to a numpy array
-#         img_array = tf.keras.preprocessing.image.img_to_array(img)
-
-#         # Add batch dimension
-#         img_array = tf.expand_dims(img_array, axis=0)
-
-#         # Preprocess the image for MobileNetV2
-#         img_array = tf.keras.applications.mobilenet_v2.preprocess_input(img_array)
-
-#         # Log the shape of the input array
-#         print("Image shape after preprocessing:", img_array.shape)
-
-#         # Predict the class
-#         predictions = model.predict(img_array)
-#         predicted_class = np.argmax(predictions, axis=1)
-
-#         # Update the task in the database
-#         task.status = "COMPLETED"
-#         task.result = {"class": int(predicted_class), "confidence": float(np.max(predictions))}
-#         task.completed_at = now()
-#         task.save()
-
-#     except Exception as e:
-#         task.status = "FAILED"
-#         task.result = {"error": str(e)}
-#         task.save()
-#         print(f"Error in doodle_classifier_task: {e}")
-
-#     return task.result
+# Load the pre-trained MNIST model from Hugging Face
+mnist_classifier = pipeline(
+    "image-classification", model="farleyknight/mnist-digit-classification-2022-09-04"
+)
 
 
-@shared_task(bind=True)
-def doodle_classifier_task(self, task_db_id, image_data):
-    """Celery task to classify doodle images."""
+@shared_task
+def doodle_classifier_task(task_id):
     try:
-        # Fetch the task from the database
-        task = PlaygroundTask.objects.get(id=task_db_id)
-        task.status = "PROCESSING"
-        task.save()
+        # Get the task
+        task = PlaygroundTask.objects.get(id=task_id)
 
-        # Decode the Base64 image
-        image = Image.open(io.BytesIO(base64.b64decode(image_data)))
+        # Open the saved PNG image from the input_image field
+        image = Image.open(task.input_image.path)
+        print("image being loaded: ", image.filename)
 
-        # Define image transformations
-        transform = transforms.Compose([
-            transforms.Grayscale(num_output_channels=3),  # Convert to 3-channel grayscale
-            transforms.Resize((64, 64)),
-            transforms.ToTensor(),
-            transforms.Normalize((0.5,), (0.5,))
-        ])
+        # Run inference using the pre-trained model
+        result = mnist_classifier(image)
+        print(str(result))
+        best_prediction = max(result, key=lambda x: x["score"])
+        best_label = best_prediction["label"]
+        # print("Label: ", best_label, "Score: ", best_score)
 
-        image = transform(image).unsqueeze(0)  # Add batch dimension
-
-        # Load a lightweight pretrained model
-        model = models.mobilenet_v2(pretrained=True)
-        model.classifier[1] = torch.nn.Linear(model.last_channel, 4)  # Adjust for 4 categories
-        model.eval()
-
-        # Dummy labels for 4 categories
-        categories = ["Circle", "Square", "Triangle", "Star"]
-
-        with torch.no_grad():
-            outputs = model(image)
-            _, predicted = torch.max(outputs, 1)
-            result = categories[predicted.item()]
-
-        # Update the task in the database
+        # Update the task with the result
+        task.result = best_label  # Convert the result to a string for storage
         task.status = "COMPLETED"
-        task.result = result
-        task.completed_at = now()
         task.save()
 
     except Exception as e:
+        # Handle any errors that occur during processing
+        task = PlaygroundTask.objects.get(id=task_id)
+        task.result = str(e)  # Store the error message
         task.status = "FAILED"
-        task.result = str(e)
         task.save()
-        # raise e
 
-    return task.result  # Celery stores the result
+    return task.result

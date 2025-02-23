@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import playground_home, sentiment_analysis, doodle_classifier
+from .views import doodle_classifier, playground_home, sentiment_analysis
 
 urlpatterns = [
     path("", playground_home, name="playground_home"),
