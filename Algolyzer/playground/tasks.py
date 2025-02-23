@@ -3,6 +3,7 @@ import os
 from celery import shared_task
 from django.conf import settings
 from django.utils.timezone import now
+from PIL import Image
 from transformers import AutoModelForSequenceClassification, AutoTokenizer, pipeline
 
 from .models import PlaygroundTask
@@ -52,3 +53,41 @@ def sentiment_analysis_task(self, task_db_id, input_data):
         # raise e
 
     return task.result  # Celery stores the result
+
+
+# Load the pre-trained MNIST model from Hugging Face
+mnist_classifier = pipeline(
+    "image-classification", model="farleyknight/mnist-digit-classification-2022-09-04"
+)
+
+
+@shared_task
+def doodle_classifier_task(task_id):
+    try:
+        # Get the task
+        task = PlaygroundTask.objects.get(id=task_id)
+
+        # Open the saved PNG image from the input_image field
+        image = Image.open(task.input_image.path)
+        print("image being loaded: ", image.filename)
+
+        # Run inference using the pre-trained model
+        result = mnist_classifier(image)
+        print(str(result))
+        best_prediction = max(result, key=lambda x: x["score"])
+        best_label = best_prediction["label"]
+        # print("Label: ", best_label, "Score: ", best_score)
+
+        # Update the task with the result
+        task.result = best_label  # Convert the result to a string for storage
+        task.status = "COMPLETED"
+        task.save()
+
+    except Exception as e:
+        # Handle any errors that occur during processing
+        task = PlaygroundTask.objects.get(id=task_id)
+        task.result = str(e)  # Store the error message
+        task.status = "FAILED"
+        task.save()
+
+    return task.result
