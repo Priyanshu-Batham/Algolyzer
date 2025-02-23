@@ -56,12 +56,14 @@
                             >
                             {% if field.name == 'password' %}
                                 <button
-                                    type="button"
-                                    class="absolute inset-y-0 right-2 flex items-center btn btn-sm btn-ghost transform -translate-y-1/2 top-1/2"
-                                    onclick="togglePasswordVisibility('{{ field.id_for_label }}')"
+                                        type="button"
+                                        class="absolute inset-y-0 right-2 flex items-center btn btn-sm btn-ghost transform -translate-y-1/2 top-1/2"
+                                        onclick="togglePasswordVisibility('{{ field.id_for_label }}', this)"
                                 >
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825l4.5-4.5M21 12a9 9 0 11-6-8.47" />
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 eye-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <!-- Open Eye Icon -->
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                                     </svg>
                                 </button>
                             {% endif %}
@@ -114,14 +116,29 @@
 {% endblock extra_body %}
 
 {% block scripts %}
-<script>
-    function togglePasswordVisibility(inputId) {
-        const input = document.getElementById(inputId);
-        if (input.type === "password") {
-            input.type = "text";
-        } else {
-            input.type = "password";
+
+
+    <script>
+        function togglePasswordVisibility(inputId, button) {
+            const input = document.getElementById(inputId);
+            const icon = button.querySelector(".eye-icon");
+
+            if (input.type === "password") {
+                input.type = "text";
+                // Change to Closed Eye Icon
+                icon.innerHTML = `
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12s3-5 9-5 9 5 9 5-3 5-9 5-9-5-9-5z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.53 9.53a3 3 0 014.24 4.24" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1l22 22" />
+            `;
+            } else {
+                input.type = "password";
+                // Change to Open Eye Icon
+                icon.innerHTML = `
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+            `;
+            }
         }
-    }
-</script>
+    </script
 {% endblock %}
