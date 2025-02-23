@@ -91,12 +91,3 @@ def onboarding(request):
         form = OnboardingForm()
 
     return render(request, "home/onboarding.html", {"form": form})
-
-
-# level_up view is temporary only for dev testing
-@login_required
-def level_up(request):
-    if UserProfile.objects.filter(user=request.user).exists():
-        user_profile = UserProfile.objects.get(user=request.user)
-        user_profile.add_xp(100)
-        return redirect("dashboard")
