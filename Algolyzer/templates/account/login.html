@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load allauth i18n %}
 {% block head_title %}
-    {% trans "Sign In" %}
+{% trans "Sign In" %}
 {% endblock head_title %}
 
 {% block content %}
@@ -12,96 +12,90 @@
                 {% trans "Sign In" %}
             </h1>
             {% if not SOCIALACCOUNT_ONLY %}
-                <p class="text-sm text-center text-secondary mt-2">
-                    {% blocktranslate %}
-                        If you don't have an account, please
-                        <a href="{{ signup_url }}" class="link link-primary">sign up</a> first.
-                    {% endblocktranslate %}
-                </p>
+            <p class="text-sm text-center text-secondary mt-2">
+                {% blocktranslate %}
+                If you don't have an account, please
+                <a href="{{ signup_url }}" class="link link-primary">sign up</a> first.
+                {% endblocktranslate %}
+            </p>
             {% endif %}
 
             <form method="post" action="{% url 'account_login' %}" class="mt-6 space-y-4">
                 {% csrf_token %}
                 {% if form.non_field_errors %}
-                    <div class="text-error text-sm text-center">
-                        {% for error in form.non_field_errors %}
-                            {{ error }}
-                        {% endfor %}
-                    </div>
+                <div class="text-error text-sm text-center">
+                    {% for error in form.non_field_errors %}
+                    {{ error }}
+                    {% endfor %}
+                </div>
                 {% endif %}
 
-                
+
                 {% for field in form %}
-                    {% if field.label == 'Remember Me' %}
-                        <div class="flex items-center gap-2">
-                            <input
-                                type="checkbox"
-                                name="{{ field.name }}"
-                                id="{{ field.id_for_label }}"
-                                value="{{ field.value|default:'' }}"
-                                class="checkbox checkbox-primary"
-                                {% if field.value %} checked {% endif %}
-                            >
-                            <span class="label-text">{{ field.label }}</span>
-                        </div>
-                    {% else %}
-                        <div class="form-control relative">
-                            <input
-                                type="{% if field.name == 'password' %}password{% else %}{{ field.type }}{% endif %}"
-                                name="{{ field.name }}"
-                                id="{{ field.id_for_label }}"
-                                value="{{ field.value|default:'' }}"
-                                placeholder="{{ field.label }}"
-                                class="input input-bordered input-primary"
-                            >
-                            {% if field.name == 'password' %}
-                                <button
-                                        type="button"
-                                        class="absolute inset-y-0 right-2 flex items-center btn btn-sm btn-ghost transform -translate-y-1/2 top-1/2"
-                                        onclick="togglePasswordVisibility('{{ field.id_for_label }}', this)"
-                                >
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 eye-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <!-- Open Eye Icon -->
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                    </svg>
-                                </button>
-                            {% endif %}
-                            {% for error in field.errors %}
-                                <span class="text-error text-sm">{{ error }}</span>
-                            {% endfor %}
-                        </div>
+                {% if field.label == 'Remember Me' %}
+                <div class="flex items-center gap-2">
+                    <input type="checkbox" name="{{ field.name }}" id="{{ field.id_for_label }}"
+                        value="{{ field.value|default:'' }}" class="checkbox checkbox-primary" {% if field.value %}
+                        checked {% endif %}>
+                    <span class="label-text">{{ field.label }}</span>
+                </div>
+                {% else %}
+                <div class="form-control relative">
+                    <input type="{% if field.name == 'password' %}password{% else %}{{ field.type }}{% endif %}"
+                        name="{{ field.name }}" id="{{ field.id_for_label }}" value="{{ field.value|default:'' }}"
+                        placeholder="{{ field.label }}" class="input input-bordered input-primary">
+                    {% if field.name == 'password' %}
+                    <button type="button"
+                        class="absolute inset-y-0 right-2 flex items-center btn btn-sm btn-ghost transform -translate-y-1/2 top-1/2"
+                        onclick="togglePasswordVisibility('{{ field.id_for_label }}', this)">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 eye-icon" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <!-- Open Eye Icon -->
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                    </button>
                     {% endif %}
+                </div> <!--end of form-control--> 
+
+
+                {% for error in field.errors %}
+                <span class="text-error text-sm">{{ error }}</span>
                 {% endfor %}
-                
+
+                {% endif %}
+                {% endfor %}
+
                 {{ redirect_field }}
-                
+
                 <button type="submit" class="btn btn-primary btn-block">
                     {% trans "Sign In" %}
                 </button>
             </form>
 
             {% if LOGIN_BY_CODE_ENABLED or PASSKEY_LOGIN_ENABLED %}
-                <div class="divider">OR</div>
-                <div class="btn-group-vertical w-full">
-                    {% if PASSKEY_LOGIN_ENABLED %}
-                        <a href="{{ passkey_login_url }}" class="btn btn-outline btn-primary btn-block">
-                            {% trans "Sign in with a passkey" %}
-                        </a>
-                    {% endif %}
-                    {% if LOGIN_BY_CODE_ENABLED %}
-                        <a href="{{ request_login_code_url }}" class="btn btn-outline btn-primary btn-block">
-                            {% trans "Mail me a sign-in code" %}
-                        </a>
-                    {% endif %}
-                </div>
+            <div class="divider">OR</div>
+            <div class="btn-group-vertical w-full">
+                {% if PASSKEY_LOGIN_ENABLED %}
+                <a href="{{ passkey_login_url }}" class="btn btn-outline btn-primary btn-block">
+                    {% trans "Sign in with a passkey" %}
+                </a>
+                {% endif %}
+                {% if LOGIN_BY_CODE_ENABLED %}
+                <a href="{{ request_login_code_url }}" class="btn btn-outline btn-primary btn-block">
+                    {% trans "Mail me a sign-in code" %}
+                </a>
+                {% endif %}
+            </div>
             {% endif %}
 
             {% if SOCIALACCOUNT_ENABLED %}
-                <div class="divider">Or Use a Third Party App</div>
-                <div class="text-center">
-                    {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
-                </div>
+            <div class="divider">Or Use a Third Party App</div>
+            <div class="text-center">
+                {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
+            </div>
             {% endif %}
         </div>
     </div>
@@ -109,36 +103,36 @@
 {% endblock content %}
 
 {% block extra_body %}
-    {{ block.super }}
-    {% if PASSKEY_LOGIN_ENABLED %}
-        {% include "mfa/webauthn/snippets/login_script.html" with button_id="passkey_login" %}
-    {% endif %}
+{{ block.super }}
+{% if PASSKEY_LOGIN_ENABLED %}
+{% include "mfa/webauthn/snippets/login_script.html" with button_id="passkey_login" %}
+{% endif %}
 {% endblock extra_body %}
 
 {% block scripts %}
 
 
-    <script>
-        function togglePasswordVisibility(inputId, button) {
-            const input = document.getElementById(inputId);
-            const icon = button.querySelector(".eye-icon");
+<script>
+    function togglePasswordVisibility(inputId, button) {
+        const input = document.getElementById(inputId);
+        const icon = button.querySelector(".eye-icon");
 
-            if (input.type === "password") {
-                input.type = "text";
-                // Change to Closed Eye Icon
-                icon.innerHTML = `
+        if (input.type === "password") {
+            input.type = "text";
+            // Change to Closed Eye Icon
+            icon.innerHTML = `
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12s3-5 9-5 9 5 9 5-3 5-9 5-9-5-9-5z" />
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.53 9.53a3 3 0 014.24 4.24" />
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1l22 22" />
             `;
-            } else {
-                input.type = "password";
-                // Change to Open Eye Icon
-                icon.innerHTML = `
+        } else {
+            input.type = "password";
+            // Change to Open Eye Icon
+            icon.innerHTML = `
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
             `;
-            }
         }
-    </script
+    }
+</script
 {% endblock %}

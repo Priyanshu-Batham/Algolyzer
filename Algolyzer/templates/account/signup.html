@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load allauth i18n %}
 {% block head_title %}
-    {% trans "Signup" %}
+{% trans "Signup" %}
 {% endblock head_title %}
 
 {% block content %}
@@ -13,8 +13,8 @@
             </h1>
             <p class="text-sm text-center text-secondary mt-2">
                 {% blocktranslate %}
-                    Already have an account? Then please
-                    <a href="{{ login_url }}" class="link link-primary">sign in</a>.
+                Already have an account? Then please
+                <a href="{{ login_url }}" class="link link-primary">sign in</a>.
                 {% endblocktranslate %}
             </p>
 
@@ -25,27 +25,24 @@
                 <div class="form-control relative">
                     <input
                         type="{% if field.name == 'password1' or field.name == 'password2' %}password{% else %}{{ field.type }}{% endif %}"
-                        name="{{ field.name }}"
-                        id="{{ field.id_for_label }}"
-                        value="{{ field.value|default:'' }}"
-                        placeholder="{{field.label}}"
-                        class="input input-bordered input-primary"
-                    >
+                        name="{{ field.name }}" id="{{ field.id_for_label }}" value="{{ field.value|default:'' }}"
+                        placeholder="{{field.label}}" class="input input-bordered input-primary">
                     {% if field.name == 'password1' or field.name == 'password2' %}
-                        <button
-                            type="button"
-                            class="absolute inset-y-0 right-2 flex items-center btn btn-sm btn-ghost transform -translate-y-1/2 top-1/2"
-                            onclick="togglePasswordVisibility('{{ field.id_for_label }}')"
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825l4.5-4.5M21 12a9 9 0 11-6-8.47" />
-                            </svg>
-                        </button>
+                    <button type="button"
+                        class="absolute inset-y-0 right-2 flex items-center btn btn-sm btn-ghost transform -translate-y-1/2 top-1/2"
+                        onclick="togglePasswordVisibility('{{ field.id_for_label }}')">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M13.875 18.825l4.5-4.5M21 12a9 9 0 11-6-8.47" />
+                        </svg>
+                    </button>
                     {% endif %}
-                    {% for error in field.errors %}
-                        <span class="text-error text-sm">{{ error }}</span>
-                    {% endfor %}
-                </div>
+                </div> <!--end of form-control -->
+                {% for error in field.errors %}
+                <span class="text-error text-sm">{{ error }}</span>
+                {% endfor %}
+
                 {% endfor %}
                 {{ redirect_field }}
 
@@ -74,7 +71,7 @@
 {% endblock content %}
 
 {% block extra_body %}
-    {{ block.super }}
+{{ block.super }}
 {% endblock extra_body %}
 
 {% block scripts %}
