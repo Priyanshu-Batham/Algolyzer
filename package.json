@@ -4,6 +4,8 @@
   "description": "A platform for learning about AI/ML models and algorithms from theoretical to executing pre-trained models all at one place.",
   "main": "index.js",
   "scripts": {
+    "lint": "eslint . --fix",
+    "format": "prettier --write .",
     "tw_build": "npx tailwindcss build -i Algolyzer/static/input.css -o Algolyzer/static/output.css",
     "tw_watch": "npx tailwindcss -i Algolyzer/static/input.css -o Algolyzer/static/output.css --watch"
   },
@@ -19,9 +21,13 @@
   },
   "homepage": "https://github.com/Priyanshu-Batham/Algolyzer#readme",
   "devDependencies": {
+    "@eslint/js": "^9.21.0",
     "autoprefixer": "^10.4.20",
     "daisyui": "^4.12.23",
+    "eslint": "^9.21.0",
+    "globals": "^16.0.0",
     "postcss": "^8.5.1",
+    "prettier": "^3.5.2",
     "tailwindcss": "^3.4.17"
   }
 }

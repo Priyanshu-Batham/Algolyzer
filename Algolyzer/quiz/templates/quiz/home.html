@@ -1,101 +1,100 @@
-{% extends 'base.html' %}
-
-{% block content %}
+{% extends 'base.html' %} {% block content %}
 <div class="container mx-auto">
-    <h1 class="text-center my-10 font-bold font-poppins text-5xl">Available Quiz Topics</h1>
+  <h1 class="text-center my-10 font-bold font-poppins text-5xl">
+    Available Quiz Topics
+  </h1>
 
-    <ul class="timeline max-md:timeline-compact timeline-vertical">
+  <ul class="timeline max-md:timeline-compact timeline-vertical">
+    {% for item in data %} {% comment %}
+    <a href="{% url 'quiz_topic' topic.id %}"> {{ topic.name }} </a>
+    {% endcomment %}
+    <li>
+      {% if not forloop.first %}
+      <hr class="bg-primary" />
+      {% endif %}
 
-        {% for item in data %}
+      <div
+        class="timeline-{% if forloop.counter0|divisibleby:2 %}start{% else %}end{% endif %} timeline-box min-w-full"
+      >
+        <div class="bg-base-200 collapse">
+          <input type="checkbox" class="peer" />
+          <div
+            class="collapse-title bg-primary text-center text-xl text-primary-content peer-checked:bg-secondary peer-checked:text-secondary-content"
+          >
+            {{ item.topic.name }}
+          </div>
+          <div
+            class="collapse-content bg-primary text-primary-content peer-checked:bg-secondary peer-checked:text-secondary-content"
+          >
+            {% comment %} Detailed Card {% endcomment %}
+            <div class="card bg-base-100 shadow-xl">
+              <div class="stats stats-vertical lg:stats-horizontal shadow">
+                <div class="stat place-items-center">
+                  <div class="stat-title">Your Score</div>
 
-            {% comment %} <a href="{% url 'quiz_topic' topic.id %}">
-                {{ topic.name }}
-            </a> {% endcomment %}
-            <li>
+                  <div class="stat-value">{{item.score}}</div>
 
-              {% if not forloop.first %}
-                <hr class="bg-primary" />
-              {% endif %}
-
-                <div class="timeline-{% if forloop.counter0|divisibleby:2 %}start{% else %}end{% endif %} timeline-box min-w-full">
-                    <div class="bg-base-200 collapse">
-                        <input type="checkbox" class="peer" />
-                        <div
-                          class="collapse-title bg-primary text-center text-xl text-primary-content peer-checked:bg-secondary peer-checked:text-secondary-content">
-
-                          {{ item.topic.name }}
-
-                        </div>
-                        <div
-                          class="collapse-content bg-primary text-primary-content peer-checked:bg-secondary peer-checked:text-secondary-content">
-
-                          {% comment %} Detailed Card {% endcomment %}
-                          <div class="card bg-base-100 shadow-xl">
-                            <div class="stats stats-vertical lg:stats-horizontal shadow">
-                                <div class="stat place-items-center">
-                                  <div class="stat-title">Your Score</div>
-
-                                  <div class="stat-value">{{item.score}}</div>
-
-                                  <div class="stat-desc">Excellent</div>
-                                </div>
-                              
-                                <div class="stat place-items-center">
-                                  <div class="stat-title">Total Questions</div>
-
-                                  <div class="stat-value">{{item.total}}</div>
-
-                                  <div class="stat-desc">↗︎ 400 (22%)</div>
-                                </div>
-                              
-                                <div class="stat place-items-center">
-                                  <div class="stat-title">Difficulty</div>
-
-                                  <div class="stat-value">{{item.topic.difficulty}}</div>
-
-                                  <div class="stat-desc">↘︎ 90 (14%)</div>
-                                </div>
-                              </div>
-
-
-                            <div class="card-body text-base-content">
-                              <h2 class="card-title">Lets Go!</h2>
-
-                              <p>{{item.topic.description}}</p>
-                              <div class="card-actions justify-end">
-                                <a class="btn text-accent-foreground font-bold btn-accent" href="{% url 'quiz_topic' item.topic.id %}">
-
-                                    Play Now
-                                </a>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                </div>
-                <div class="timeline-middle">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                    class="text-primary h-5 w-5">
-                    <path
-                      fill-rule="evenodd"
-                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-                      clip-rule="evenodd" />
-                  </svg>
+                  <div class="stat-desc">Excellent</div>
                 </div>
 
-                {% if not forloop.last %}
-                  <hr class="bg-primary" />
-                {% endif %}
+                <div class="stat place-items-center">
+                  <div class="stat-title">Total Questions</div>
 
-              </li>
+                  <div class="stat-value">{{item.total}}</div>
 
-        {% empty %}
-            <p>No topics available at the moment. Please check back later!</p>
-        {% endfor %}
-    </ul>
+                  <div class="stat-desc">↗︎ 400 (22%)</div>
+                </div>
+
+                <div class="stat place-items-center">
+                  <div class="stat-title">Difficulty</div>
+
+                  <div class="stat-value">{{item.topic.difficulty}}</div>
+
+                  <div class="stat-desc">↘︎ 90 (14%)</div>
+                </div>
+              </div>
+
+              <div class="card-body text-base-content">
+                <h2 class="card-title">Lets Go!</h2>
+
+                <p>{{item.topic.description}}</p>
+                <div class="card-actions justify-end">
+                  <a
+                    class="btn text-accent-foreground font-bold btn-accent"
+                    href="{% url 'quiz_topic' item.topic.id %}"
+                  >
+                    Play Now
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="timeline-middle">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+          class="text-primary h-5 w-5"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+            clip-rule="evenodd"
+          />
+        </svg>
+      </div>
+
+      {% if not forloop.last %}
+      <hr class="bg-primary" />
+      {% endif %}
+    </li>
+
+    {% empty %}
+    <p>No topics available at the moment. Please check back later!</p>
+    {% endfor %}
+  </ul>
 </div>
 
 {% endblock content %}
