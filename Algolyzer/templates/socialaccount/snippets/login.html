@@ -1,15 +1,6 @@
-{% load i18n %}
-{% load allauth %}
-{% load socialaccount %}
-{% get_providers as socialaccount_providers %}
-{% if socialaccount_providers %}
-    {% comment %} {% if not SOCIALACCOUNT_ONLY %}
-        {% element hr %}
-        {% endelement %}
-        {% element h2 %}
-            {% translate "Use a third-party" %}
-        {% endelement %}
-    {% endif %} {% endcomment %}
-    {% include "socialaccount/snippets/provider_list.html" with process="login" %}
-    {% include "socialaccount/snippets/login_extra.html" %}
-{% endif %}
+{% load i18n %} {% load allauth %} {% load socialaccount %} {% get_providers as
+socialaccount_providers %} {% if socialaccount_providers %} {% comment %} {% if
+not SOCIALACCOUNT_ONLY %} {% element hr %} {% endelement %} {% element h2 %} {%
+translate "Use a third-party" %} {% endelement %} {% endif %} {% endcomment %}
+{% include "socialaccount/snippets/provider_list.html" with process="login" %}
+{% include "socialaccount/snippets/login_extra.html" %} {% endif %}

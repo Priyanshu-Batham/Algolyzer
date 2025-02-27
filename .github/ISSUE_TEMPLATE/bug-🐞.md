@@ -1,19 +1,22 @@
 ---
 name: "Bug \U0001F41E"
 about: Template to use for raising issues related to bugs
-title: 'Bug: Title of Issue'
+title: "Bug: Title of Issue"
 labels: bug, enhancement
-assignees: ''
-
+assignees: ""
 ---
 
 ## Explanation
+
 -
--
-Screenshot (optional)
+- Screenshot (optional)
+
 ## Reason
+
 -
 -
+
 ## Possible Fixes
+
 -
 -

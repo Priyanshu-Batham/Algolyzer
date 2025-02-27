@@ -5,7 +5,7 @@ on: [push]
 jobs:
   lint-format-test:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -13,14 +13,14 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 22.13.0  
+          node-version: 22.13.0
 
       - name: Install Node.js dependencies
         run: npm install
 
       - name: Build Tailwind CSS
         run: npm run tw_build
-        
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
@@ -42,7 +42,7 @@ jobs:
 
       - name: Run Django Tests
         run: |
-          
+
           # Run Django tests with manage.py
           export PYTHONPATH=./Algolyzer:$PYTHONPATH
           export DJANGO_SETTINGS_MODULE=Algolyzer.settings.development
