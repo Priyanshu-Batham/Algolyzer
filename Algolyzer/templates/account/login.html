@@ -67,10 +67,11 @@
                                     </svg>
                                 </button>
                             {% endif %}
+                        </div> <!--end of form-control -->
                             {% for error in field.errors %}
                                 <span class="text-error text-sm">{{ error }}</span>
                             {% endfor %}
-                        </div>
+                        
                     {% endif %}
                 {% endfor %}
                 
