@@ -1,7 +1,4 @@
-{% extends 'base.html' %}
-
-{% block extra_head %}
-{% load static %}
+{% extends 'base.html' %} {% block extra_head %} {% load static %}
 <style>
   .custom-bg {
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' version='1.1' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svgjs='http://svgjs.dev/svgjs' width='1440' height='560' preserveAspectRatio='none' viewBox='0 0 1440 560'%3e%3cg mask='url(%26quot%3b%23SvgjsMask1014%26quot%3b)' fill='none'%3e%3crect width='1440' height='560' x='0' y='0' fill='url(%26quot%3b%23SvgjsRadialGradient1015%26quot%3b)'%3e%3c/rect%3e%3cpath d='M642.9654146854123 448.008881386778L493.63035271445483 381.52062807497987 427.14209940265664 530.8556900459373 576.4771613736141 597.3439433577355z' fill='rgba(129%2c 140%2c 248%2c 0.4)' class='triangle-float2'%3e%3c/path%3e%3cpath d='M343.32939124370614 518.7488142047744L223.35705008495643 465.33368647727707 169.94192235745913 585.3060276360268 289.91426351620885 638.7211553635241z' fill='rgba(129%2c 140%2c 248%2c 0.4)' class='triangle-float2'%3e%3c/path%3e%3cpath d='M102.574%2c522.614C143.865%2c523.394%2c192.914%2c525.337%2c213.3%2c489.421C233.566%2c453.716%2c206.068%2c413.131%2c184.569%2c378.154C164.535%2c345.561%2c140.753%2c311.729%2c102.574%2c309.277C60.749%2c306.591%2c21.327%2c330.193%2c0.058%2c366.306C-21.53%2c402.961%2c-24.467%2c449.799%2c-1.137%2c485.371C20.454%2c518.291%2c63.212%2c521.871%2c102.574%2c522.614' fill='rgba(129%2c 140%2c 248%2c 0.4)' class='triangle-float3'%3e%3c/path%3e%3cpath d='M764.974730933528 116.75244271161412L674.2484566343678-22.953768379094214 534.5422455436594 67.772505920066 625.2685198428196 207.47871701077435z' fill='rgba(129%2c 140%2c 248%2c 0.4)' class='triangle-float2'%3e%3c/path%3e%3cpath d='M467.21%2c314.96C493.922%2c316.066%2c518.092%2c298.333%2c530.142%2c274.468C541.162%2c252.642%2c533.349%2c228.159%2c521.961%2c206.523C509.439%2c182.734%2c494.051%2c156.4%2c467.21%2c154.907C438.614%2c153.316%2c413.074%2c173.914%2c400.781%2c199.781C389.919%2c222.637%2c400.058%2c247.684%2c412.701%2c269.605C425.358%2c291.551%2c441.898%2c313.912%2c467.21%2c314.96' fill='rgba(129%2c 140%2c 248%2c 0.4)' class='triangle-float1'%3e%3c/path%3e%3cpath d='M-31.445646907245287 464.4333085189713L55.46656109247506 518.7420836047652 22.86312817854861 377.5211005192509z' fill='rgba(129%2c 140%2c 248%2c 0.4)' class='triangle-float2'%3e%3c/path%3e%3cpath d='M359.98656868352845 490.85729997201213L422.9388067844127 639.1634790358801 508.2927477473964 427.9050618711279z' fill='rgba(129%2c 140%2c 248%2c 0.4)' class='triangle-float3'%3e%3c/path%3e%3cpath d='M483.14 464.62 a157.33 157.33 0 1 0 314.66 0 a157.33 157.33 0 1 0 -314.66 0z' fill='rgba(129%2c 140%2c 248%2c 0.4)' class='triangle-float1'%3e%3c/path%3e%3cpath d='M540.997%2c390.118C566.051%2c388.23%2c586.399%2c372.881%2c599.893%2c351.687C614.743%2c328.364%2c626.354%2c300.277%2c613.927%2c275.577C600.497%2c248.882%2c570.874%2c235.196%2c540.997%2c234.621C510.009%2c234.024%2c479.015%2c246.115%2c463.036%2c272.672C446.599%2c299.989%2c446.783%2c335.337%2c464.415%2c361.899C480.541%2c386.193%2c511.92%2c392.31%2c540.997%2c390.118' fill='rgba(129%2c 140%2c 248%2c 0.4)' class='triangle-float2'%3e%3c/path%3e%3cpath d='M1138.9 252.84 a141.35 141.35 0 1 0 282.7 0 a141.35 141.35 0 1 0 -282.7 0z' fill='rgba(129%2c 140%2c 248%2c 0.4)' class='triangle-float1'%3e%3c/path%3e%3cpath d='M944.6473791103808 407.04088349687305L948.3110396965784 302.12737100788456 843.3975272075899 298.463710421687 839.7338666213923 403.37722291067547z' fill='rgba(129%2c 140%2c 248%2c 0.4)' class='triangle-float2'%3e%3c/path%3e%3cpath d='M953.178%2c466.779C1010.487%2c469.607%2c1075.938%2c471.728%2c1108.028%2c424.161C1142.767%2c372.668%2c1133.154%2c302.456%2c1099.066%2c250.53C1067.968%2c203.159%2c1009.75%2c185%2c953.178%2c188.28C902.424%2c191.222%2c859.69%2c222.081%2c833.914%2c265.901C807.719%2c310.435%2c796.334%2c365.657%2c822.711%2c410.084C848.657%2c453.784%2c902.418%2c464.275%2c953.178%2c466.779' fill='rgba(129%2c 140%2c 248%2c 0.4)' class='triangle-float3'%3e%3c/path%3e%3cpath d='M1000.4805782775344 212.4325816278753L1019.0090082934871 132.17713402541352 889.3616218818181 144.51221280271528z' fill='rgba(129%2c 140%2c 248%2c 0.4)' class='triangle-float1'%3e%3c/path%3e%3cpath d='M126.22 25.81 a127.67 127.67 0 1 0 255.34 0 a127.67 127.67 0 1 0 -255.34 0z' fill='rgba(129%2c 140%2c 248%2c 0.4)' class='triangle-float1'%3e%3c/path%3e%3cpath d='M279.9950357149242 336.1781694117393L325.60765817348135 449.073371608755 438.50286037049705 403.4607491501978 392.89023791193983 290.5655469531821z' fill='rgba(129%2c 140%2c 248%2c 0.4)' class='triangle-float3'%3e%3c/path%3e%3cpath d='M61.02626671937857 112.00835499114905L64.65763220038546 215.9970566680996 168.64633387733602 212.3656911870927 165.0149683963291 108.37698951014215z' fill='rgba(129%2c 140%2c 248%2c 0.4)' class='triangle-float3'%3e%3c/path%3e%3cpath d='M730.64 512.15 a161.2 161.2 0 1 0 322.4 0 a161.2 161.2 0 1 0 -322.4 0z' fill='rgba(129%2c 140%2c 248%2c 0.4)' class='triangle-float2'%3e%3c/path%3e%3cpath d='M413.03 29.21 a152.5 152.5 0 1 0 305 0 a152.5 152.5 0 1 0 -305 0z' fill='rgba(129%2c 140%2c 248%2c 0.4)' class='triangle-float1'%3e%3c/path%3e%3cpath d='M969.950847392723 200.39277937254417L1134.6313195547407 197.51827103854663 1131.7568112207432 32.83779887652881 967.0763390587254 35.71230721052635z' fill='rgba(129%2c 140%2c 248%2c 0.4)' class='triangle-float3'%3e%3c/path%3e%3cpath d='M1464.5127589230692 299.2592965025807L1338.4782288704976 197.19854643477188 1236.4174788026887 323.2330764873436 1362.4520088552604 425.2938265551524z' fill='rgba(129%2c 140%2c 248%2c 0.4)' class='triangle-float3'%3e%3c/path%3e%3c/g%3e%3cdefs%3e%3cmask id='SvgjsMask1014'%3e%3crect width='1440' height='560' fill='white'%3e%3c/rect%3e%3c/mask%3e%3cradialGradient cx='50%25' cy='100%25' r='912.14' gradientUnits='userSpaceOnUse' id='SvgjsRadialGradient1015'%3e%3cstop stop-color='%230e2a47' offset='0'%3e%3c/stop%3e%3cstop stop-color='rgba(15%2c 23%2c 42%2c 1)' offset='0.73'%3e%3c/stop%3e%3c/radialGradient%3e%3cstyle%3e %40keyframes float1 %7b 0%25%7btransform: translate(0%2c 0)%7d 50%25%7btransform: translate(-10px%2c 0)%7d 100%25%7btransform: translate(0%2c 0)%7d %7d .triangle-float1 %7b animation: float1 5s infinite%3b %7d %40keyframes float2 %7b 0%25%7btransform: translate(0%2c 0)%7d 50%25%7btransform: translate(-5px%2c -5px)%7d 100%25%7btransform: translate(0%2c 0)%7d %7d .triangle-float2 %7b animation: float2 4s infinite%3b %7d %40keyframes float3 %7b 0%25%7btransform: translate(0%2c 0)%7d 50%25%7btransform: translate(0%2c -10px)%7d 100%25%7btransform: translate(0%2c 0)%7d %7d .triangle-float3 %7b animation: float3 6s infinite%3b %7d %3c/style%3e%3c/defs%3e%3c/svg%3e");
@@ -10,21 +7,32 @@
     background-repeat: no-repeat;
   }
 </style>
-{% endblock %}
+{% endblock %} {% block content %}
+<div class="custom-bg">
+  <div
+    class="container mx-auto text-center flex flex-col items-center justify-center min-h-[80vh] lg:min-h-[95vh]"
+  >
+    {% comment %}
+    <p class="text-xl lg:text-3xl font-bold">Welcome to</p>
+    {% endcomment %}
+    <h1 class="text-5xl md:text-8xl font-poppins font-bold">Easiest way to</h1>
+    <h1 class="text-5xl md:text-8xl font-poppins font-bold">Learn AI-ML</h1>
+    <p class="p-6 max-w-lg font-bold lg:text-lg">
+      Become the next Algo Expert with <span class="">Algolyzer</span>
+    </p>
 
-{% block content %}
-  <div class="custom-bg">
-    <div class="container mx-auto text-center flex flex-col items-center justify-center min-h-[80vh] lg:min-h-[95vh]">
-
-      {% comment %} <p class='text-xl lg:text-3xl font-bold'>Welcome to</p> {% endcomment %}
-      <h1 class="text-5xl md:text-8xl font-poppins font-bold">Easiest way to </h1>
-      <h1 class="text-5xl md:text-8xl font-poppins font-bold ">Learn AI-ML </h1>
-      <p class="p-6 max-w-lg font-bold lg:text-lg">Become the next Algo Expert with <span class="">Algolyzer</span></p>
-
-      <div class="flex gap-2 lg:gap-5">
-          <a href="https://github.com/priyanshu-batham/Algolyzer" class="btn btn-sm lg:btn-md lg:btn-wide btn-outline">Contribute</a>
-        <a href="{% url 'dashboard' %}" class="btn btn-sm  lg:btn-md lg:btn-wide btn-primary">Get Started</a>
-      </div>
+    <div class="flex gap-2 lg:gap-5">
+      <a
+        href="https://github.com/priyanshu-batham/Algolyzer"
+        class="btn btn-sm lg:btn-md lg:btn-wide btn-outline"
+        >Contribute</a
+      >
+      <a
+        href="{% url 'dashboard' %}"
+        class="btn btn-sm lg:btn-md lg:btn-wide btn-primary"
+        >Get Started</a
+      >
     </div>
   </div>
+</div>
 {% endblock %}

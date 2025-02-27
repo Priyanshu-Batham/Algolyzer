@@ -1,38 +1,55 @@
-{% extends "base.html" %}
-
-{% block content %}
+{% extends "base.html" %} {% block content %}
 <div class="container mx-auto">
-    {% comment %} Steps {% endcomment %}
-    <div class="overflow-x-scroll my-9">
-        <ul class="steps w-full">
-            {% for i in total_array %}
-                <li class="step 
-                {% if i <= progress.current_question %}step-primary{% endif %}
-                "></li>
-            {% endfor %}
-        </ul>
+  {% comment %} Steps {% endcomment %}
+  <div class="overflow-x-scroll my-9">
+    <ul class="steps w-full">
+      {% for i in total_array %}
+      <li
+        class="step {% if i <= progress.current_question %}step-primary{% endif %}"
+      ></li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <form
+    method="post"
+    class="card border-solid border-primary p-4 md:p-10 border-2 bg-base-100 shadow-xl rounded-xl"
+  >
+    {% csrf_token %}
+
+    <div class="">
+      <h3 class="text-lg font-bold text-primary mb-4">
+        {{ form.answer.label }}
+      </h3>
+      {# Display question text #}
+
+      <div class="space-y-3">
+        {% for choice in form.answer %}
+        <label
+          class="flex items-center space-x-3 p-3 border border-primary rounded-lg cursor-pointer hover:bg-secondary hover:text-secondary-content transition-all"
+        >
+          {{ choice.tag }}
+          <!-- This is the radio input button -->
+          <span class="text-md">{{ choice.choice_label }}</span>
+          <!-- This is the text of the option -->
+        </label>
+        {% endfor %}
+      </div>
     </div>
 
-    <form method="post" class="card border-solid border-primary p-4 md:p-10 border-2 bg-base-100 shadow-xl rounded-xl">
-        {% csrf_token %}
-        
-        <div class="">
-            <h3 class="text-lg font-bold text-primary mb-4">{{ form.answer.label }}</h3>  {# Display question text #}
-            
-            <div class="space-y-3">
-                {% for choice in form.answer %}
-                    <label class="flex items-center space-x-3 p-3 border border-primary rounded-lg cursor-pointer hover:bg-secondary hover:text-secondary-content transition-all">
-                        {{ choice.tag }}  <!-- This is the radio input button -->
-                        <span class="text-md">{{ choice.choice_label }}</span>  <!-- This is the text of the option -->
-                    </label>
-                {% endfor %}
-            </div>
-        </div>
-        
-        <button type="submit" class="btn btn-secondary text-secondary-content font-bold w-full mt-5">Submit</button>
-    </form>
-    
-    
-    {% comment %} <p>Question {{ progress.current_question|add:1 }} of {{ progress.topic.question_set.count }}</p> {% endcomment %}
+    <button
+      type="submit"
+      class="btn btn-secondary text-secondary-content font-bold w-full mt-5"
+    >
+      Submit
+    </button>
+  </form>
+
+  {% comment %}
+  <p>
+    Question {{ progress.current_question|add:1 }} of {{
+    progress.topic.question_set.count }}
+  </p>
+  {% endcomment %}
 </div>
 {% endblock %}

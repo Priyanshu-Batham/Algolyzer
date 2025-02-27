@@ -1,125 +1,211 @@
-{% extends 'base.html' %}
-
-{% block content %}
+{% extends 'base.html' %} {% block content %}
 <div class="container mx-auto p-6">
-    <div class="flex gap-2">
-        <a href="{% url 'post_list_by_category' post.category.id %}" class="btn btn-outline mb-4">← Back to Posts</a>
+  <div class="flex gap-2">
+    <a
+      href="{% url 'post_list_by_category' post.category.id %}"
+      class="btn btn-outline mb-4"
+      >← Back to Posts</a
+    >
 
-        {% if user == post.author %}
-            <!-- Edit Post Button -->
-            <button class="btn btn-primary mb-4" onclick="edit_post_modal.showModal()">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                </svg>
-            </button>
-            <dialog id="edit_post_modal" class="modal">
-                <form method="POST" class="modal-box">
-                    {% csrf_token %}
-                    <h3 class="font-bold text-lg">Edit Post</h3>
-                    <div class="form-control w-full">
-                        <label class="label">
-                            <span class="label-text">Title</span>
-                        </label>
-                        <input type="text" name="title" value="{{ post.title }}" class="input input-bordered w-full" required />
-                    </div>
-                    <div class="form-control w-full">
-                        <label class="label">
-                            <span class="label-text">Content</span>
-                        </label>
-                        <textarea name="content" class="textarea textarea-bordered h-24" required>{{ post.content }}</textarea>
-                    </div>
-                    <div class="modal-action">
-                        <button type="submit" class="btn btn-primary">Save Changes</button>
-                        <button type="button" class="btn" onclick="edit_post_modal.close()">Close</button>
-                    </div>
-                </form>
-            </dialog>
-        {% endif %}
-
-        {% if user == post.author %}
-            <!-- Delete Post Button -->
-            <button class="btn btn-error" onclick="delete_post_modal.showModal()">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                </svg>
-            </button>
-            <dialog id="delete_post_modal" class="modal">
-                <form method="POST" class="modal-box">
-                    {% csrf_token %}
-                    <input type="hidden" name="_method" value="DELETE"> 
-                    <h3 class="font-bold text-lg">Delete Post</h3>
-                    <p class="py-4">Are you sure you want to delete this post? This action cannot be undone.</p>
-                    <div class="modal-action">
-                        <button type="submit" class="btn btn-error">Delete</button>
-                        <button type="button" class="btn" onclick="delete_post_modal.close()">Cancel</button>
-                    </div>
-                </form>
-            </dialog>
-        {% endif %}
-    </div>
-
-    <!-- Post Card -->
-    <div class="card bg-base-200 shadow-xl lg:p-6 border-2 border-solid border-primary">
-        <div class="card-body">
-            <h2 class="text-xl lg:text-3xl font-bold break-words">{{ post.title }}</h2>
-            <p class="text-gray-500 text-sm">By <strong>{{ post.author.username }}</strong> | {{ post.created_at|date:"F j, Y, g:i a" }}</p>
-
-            {% if post.image %}
-                <img src="{{ post.image.url }}" class="w-full max-h-96 object-cover rounded-lg mt-4">
-            {% endif %}
-
-            <!-- Post Content -->
-            <div class="mt-4 p-4 bg-base-100 rounded-lg shadow">
-                <p class="text-lg break-words">{{ post.content|linebreaks }}</p>
-            </div>
-
-            <!-- Voting System -->
-            <div class="flex items-center space-x-4 mt-6">
-                <form action="{% url 'vote_post' post.id 1 %}" method="POST">
-                    {% csrf_token %}
-                    <button type="submit" class="btn hover:btn-success border-1 border-solid border-success flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" class="h-5 w-5">
-                            <path fill="#63E6BE" d="M214.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 141.2 160 448c0 17.7 14.3 32 32 32s32-14.3 32-32l0-306.7L329.4 246.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z"/>
-                        </svg>
-                    </button>
-                </form>
-                <form action="{% url 'vote_post' post.id -1 %}" method="POST">
-                    {% csrf_token %}
-                    <button type="submit" class="btn hover:btn-error border-1 border-solid border-error flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" class="h-5 w-5">
-                            <path fill="#ed333b" d="M169.4 470.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 370.8 224 64c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 306.7L54.6 265.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"/>
-                        </svg>
-                    </button>
-                </form>
-                <h1 class="text-xl font-bold text-secondary">{{ total_votes }}</h1>
-            </div>
+    {% if user == post.author %}
+    <!-- Edit Post Button -->
+    <button class="btn btn-primary mb-4" onclick="edit_post_modal.showModal()">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-6 w-6"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+        />
+      </svg>
+    </button>
+    <dialog id="edit_post_modal" class="modal">
+      <form method="POST" class="modal-box">
+        {% csrf_token %}
+        <h3 class="font-bold text-lg">Edit Post</h3>
+        <div class="form-control w-full">
+          <label class="label">
+            <span class="label-text">Title</span>
+          </label>
+          <input
+            type="text"
+            name="title"
+            value="{{ post.title }}"
+            class="input input-bordered w-full"
+            required
+          />
         </div>
-    </div>
-
-    <!-- Comment Section -->
-    <div class="mt-6">
-        <h3 class="text-2xl font-bold mb-4">Comments</h3>
-        <div class="space-y-3">
-            {% for comment in comments %}
-                <div class="card bg-base-300 p-4 rounded-lg shadow-md">
-                    <p class="text-gray-200"><strong>{{ comment.author.username }}</strong>: {{ comment.content }}</p>
-                    <p class="text-xs text-gray-400">{{ comment.created_at|date:"F j, Y, g:i a" }}</p>
-                </div>
-            {% empty %}
-                <p class="text-gray-400 italic">No comments yet. Be the first to comment!</p>
-            {% endfor %}
+        <div class="form-control w-full">
+          <label class="label">
+            <span class="label-text">Content</span>
+          </label>
+          <textarea
+            name="content"
+            class="textarea textarea-bordered h-24"
+            required
+          >
+{{ post.content }}</textarea
+          >
         </div>
+        <div class="modal-action">
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+          <button type="button" class="btn" onclick="edit_post_modal.close()">
+            Close
+          </button>
+        </div>
+      </form>
+    </dialog>
+    {% endif %} {% if user == post.author %}
+    <!-- Delete Post Button -->
+    <button class="btn btn-error" onclick="delete_post_modal.showModal()">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-6 w-6"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+        />
+      </svg>
+    </button>
+    <dialog id="delete_post_modal" class="modal">
+      <form method="POST" class="modal-box">
+        {% csrf_token %}
+        <input type="hidden" name="_method" value="DELETE" />
+        <h3 class="font-bold text-lg">Delete Post</h3>
+        <p class="py-4">
+          Are you sure you want to delete this post? This action cannot be
+          undone.
+        </p>
+        <div class="modal-action">
+          <button type="submit" class="btn btn-error">Delete</button>
+          <button type="button" class="btn" onclick="delete_post_modal.close()">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </dialog>
+    {% endif %}
+  </div>
 
-        {% if user.is_authenticated %}
-            <!-- Add Comment Form -->
-            <form action="{% url 'add_comment' post.id %}" method="POST" class="mt-4 p-4 bg-base-100 rounded-lg shadow">
-                {% csrf_token %}
-                <textarea name="content" class="textarea textarea-bordered w-full" placeholder="Add a comment..." required></textarea>
-                <button type="submit" class="btn btn-primary mt-2">Post Comment</button>
-            </form>
-        {% else %}
-            <p class="text-gray-400 mt-4">You must be logged in to comment.</p>
-        {% endif %}
+  <!-- Post Card -->
+  <div
+    class="card bg-base-200 shadow-xl lg:p-6 border-2 border-solid border-primary"
+  >
+    <div class="card-body">
+      <h2 class="text-xl lg:text-3xl font-bold break-words">
+        {{ post.title }}
+      </h2>
+      <p class="text-gray-500 text-sm">
+        By <strong>{{ post.author.username }}</strong> | {{
+        post.created_at|date:"F j, Y, g:i a" }}
+      </p>
+
+      {% if post.image %}
+      <img
+        src="{{ post.image.url }}"
+        class="w-full max-h-96 object-cover rounded-lg mt-4"
+      />
+      {% endif %}
+
+      <!-- Post Content -->
+      <div class="mt-4 p-4 bg-base-100 rounded-lg shadow">
+        <p class="text-lg break-words">{{ post.content|linebreaks }}</p>
+      </div>
+
+      <!-- Voting System -->
+      <div class="flex items-center space-x-4 mt-6">
+        <form action="{% url 'vote_post' post.id 1 %}" method="POST">
+          {% csrf_token %}
+          <button
+            type="submit"
+            class="btn hover:btn-success border-1 border-solid border-success flex items-center"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 384 512"
+              class="h-5 w-5"
+            >
+              <path
+                fill="#63E6BE"
+                d="M214.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 141.2 160 448c0 17.7 14.3 32 32 32s32-14.3 32-32l0-306.7L329.4 246.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z"
+              />
+            </svg>
+          </button>
+        </form>
+        <form action="{% url 'vote_post' post.id -1 %}" method="POST">
+          {% csrf_token %}
+          <button
+            type="submit"
+            class="btn hover:btn-error border-1 border-solid border-error flex items-center"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 384 512"
+              class="h-5 w-5"
+            >
+              <path
+                fill="#ed333b"
+                d="M169.4 470.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 370.8 224 64c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 306.7L54.6 265.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"
+              />
+            </svg>
+          </button>
+        </form>
+        <h1 class="text-xl font-bold text-secondary">{{ total_votes }}</h1>
+      </div>
     </div>
+  </div>
+
+  <!-- Comment Section -->
+  <div class="mt-6">
+    <h3 class="text-2xl font-bold mb-4">Comments</h3>
+    <div class="space-y-3">
+      {% for comment in comments %}
+      <div class="card bg-base-300 p-4 rounded-lg shadow-md">
+        <p class="text-gray-200">
+          <strong>{{ comment.author.username }}</strong>: {{ comment.content }}
+        </p>
+        <p class="text-xs text-gray-400">
+          {{ comment.created_at|date:"F j, Y, g:i a" }}
+        </p>
+      </div>
+      {% empty %}
+      <p class="text-gray-400 italic">
+        No comments yet. Be the first to comment!
+      </p>
+      {% endfor %}
+    </div>
+
+    {% if user.is_authenticated %}
+    <!-- Add Comment Form -->
+    <form
+      action="{% url 'add_comment' post.id %}"
+      method="POST"
+      class="mt-4 p-4 bg-base-100 rounded-lg shadow"
+    >
+      {% csrf_token %}
+      <textarea
+        name="content"
+        class="textarea textarea-bordered w-full"
+        placeholder="Add a comment..."
+        required
+      ></textarea>
+      <button type="submit" class="btn btn-primary mt-2">Post Comment</button>
+    </form>
+    {% else %}
+    <p class="text-gray-400 mt-4">You must be logged in to comment.</p>
+    {% endif %}
+  </div>
 </div>
 {% endblock %}

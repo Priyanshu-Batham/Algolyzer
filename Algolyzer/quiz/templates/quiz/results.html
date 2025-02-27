@@ -1,111 +1,126 @@
-{% extends 'base.html' %}
-
-{% block content %}
-    <div class="container mx-auto flex items-center justify-center my-6">
-        <div class="card bg-neutral p-2 lg:p-8 shadow-xl border-solid border-primary border-4 mt-5">
-            <div class="text-center text-2xl lg:text-7xl font-bold my-3 lg:my-7 text-primary font-poppins">🎊 Congratulations! 🎊</div>
-            <div class="w-full p-2">
-                <div class="flex items-center justify-center">
-                    <div class="stats shadow mx-auto">
-                        <div class="stat text-center">
-                        <div class="stat-title lg:text-2xl">Your Score</div>
-                            <div class="stat-value text-7xl lg:text-9xl">
-                                <span class="countdown font-mono">
-                                    <span id="counter" style="--value:${counter};"></span>
-                                </span>
-                            </div>
-                        <div class="stat-desc lg:text-2xl text-accent">Experience earned: +{{ xp }}</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Separate Accordions for Each Question -->
-                <div class="mt-10 space-y-2 md:space-y-4">
-                    {% for answer in answers %}
-                        <div class="collapse collapse-arrow bg-base-200">
-                            <input type="checkbox" id="accordion-{{ forloop.counter }}" class="peer" />
-                            <label for="accordion-{{ forloop.counter }}" class="collapse-title text-xl font-medium">
-                                <span class="{% if answer.is_correct %}text-success{% else %}text-error{% endif %}">
-                                    {{ answer.question.text }}
-                                </span>
-                                <span class="ml-2 text-sm">
-                                    {% if answer.is_correct %}✅{% else %}❌{% endif %}
-                                </span>
-                            </label>
-                            <div class="collapse-content">
-                                <div class="card bg-base-100 shadow-xl">
-                                    <div class="card-body">
-                                        <p class="text-lg">
-                                            <span class="font-bold">Your Answer:</span> 
-                                            <span class="{% if answer.is_correct %}text-success{% else %}text-error{% endif %}">
-                                                {{ answer.get_selected_answer_display }} - 
-                                                {{ answer.selected_option_text }}
-                                            </span>
-                                        </p>
-                                        {% if not answer.is_correct %}
-                                            <p class="text-lg">
-                                                <span class="font-bold">Correct Answer:</span> 
-                                                <span class="text-success">
-                                                    {{ answer.question.get_correct_answer_display }} - 
-                                                    {{ answer.correct_option_text }}
-                                                </span>
-                                            </p>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
+{% extends 'base.html' %} {% block content %}
+<div class="container mx-auto flex items-center justify-center my-6">
+  <div
+    class="card bg-neutral p-2 lg:p-8 shadow-xl border-solid border-primary border-4 mt-5"
+  >
+    <div
+      class="text-center text-2xl lg:text-7xl font-bold my-3 lg:my-7 text-primary font-poppins"
+    >
+      🎊 Congratulations! 🎊
     </div>
-{% endblock %}
+    <div class="w-full p-2">
+      <div class="flex items-center justify-center">
+        <div class="stats shadow mx-auto">
+          <div class="stat text-center">
+            <div class="stat-title lg:text-2xl">Your Score</div>
+            <div class="stat-value text-7xl lg:text-9xl">
+              <span class="countdown font-mono">
+                <span id="counter" style="--value: ${counter}"></span>
+              </span>
+            </div>
+            <div class="stat-desc lg:text-2xl text-accent">
+              Experience earned: +{{ xp }}
+            </div>
+          </div>
+        </div>
+      </div>
 
-{% block scripts %}
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            var duration = 3 * 1000; // Run for 3 seconds
-            var end = Date.now() + duration;
+      <!-- Separate Accordions for Each Question -->
+      <div class="mt-10 space-y-2 md:space-y-4">
+        {% for answer in answers %}
+        <div class="collapse collapse-arrow bg-base-200">
+          <input
+            type="checkbox"
+            id="accordion-{{ forloop.counter }}"
+            class="peer"
+          />
+          <label
+            for="accordion-{{ forloop.counter }}"
+            class="collapse-title text-xl font-medium"
+          >
+            <span
+              class="{% if answer.is_correct %}text-success{% else %}text-error{% endif %}"
+            >
+              {{ answer.question.text }}
+            </span>
+            <span class="ml-2 text-sm">
+              {% if answer.is_correct %}✅{% else %}❌{% endif %}
+            </span>
+          </label>
+          <div class="collapse-content">
+            <div class="card bg-base-100 shadow-xl">
+              <div class="card-body">
+                <p class="text-lg">
+                  <span class="font-bold">Your Answer:</span>
+                  <span
+                    class="{% if answer.is_correct %}text-success{% else %}text-error{% endif %}"
+                  >
+                    {{ answer.get_selected_answer_display }} - {{
+                    answer.selected_option_text }}
+                  </span>
+                </p>
+                {% if not answer.is_correct %}
+                <p class="text-lg">
+                  <span class="font-bold">Correct Answer:</span>
+                  <span class="text-success">
+                    {{ answer.question.get_correct_answer_display }} - {{
+                    answer.correct_option_text }}
+                  </span>
+                </p>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %} {% block scripts %}
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+      var duration = 3 * 1000; // Run for 3 seconds
+      var end = Date.now() + duration;
 
-            function randomConfetti() {
-                confetti({
-                    particleCount: Math.floor(Math.random() * 50) + 50, // 50-100 particles per burst
-                    spread: Math.random() * 100 + 50, // 50-150 spread
-                    startVelocity: Math.random() * 30 + 30, // 30-60 speed
-                    colors: ['#ff0000', '#00ff00', '#0000ff', '#ffcc00', '#ff00ff'],
-                    origin: { 
-                        x: Math.random(), // Random X position
-                        y: 1 // Confetti starts between 60% - 100% (lower half)
-                    } 
-                });
+      function randomConfetti() {
+          confetti({
+              particleCount: Math.floor(Math.random() * 50) + 50, // 50-100 particles per burst
+              spread: Math.random() * 100 + 50, // 50-150 spread
+              startVelocity: Math.random() * 30 + 30, // 30-60 speed
+              colors: ['#ff0000', '#00ff00', '#0000ff', '#ffcc00', '#ff00ff'],
+              origin: {
+                  x: Math.random(), // Random X position
+                  y: 1 // Confetti starts between 60% - 100% (lower half)
+              }
+          });
 
-                if (Date.now() < end) {
-                    setTimeout(randomConfetti, Math.random() * 300); // New burst every 100-300ms
-                }
-            }
+          if (Date.now() < end) {
+              setTimeout(randomConfetti, Math.random() * 300); // New burst every 100-300ms
+          }
+      }
 
-            randomConfetti(); // Start the explosion!
-        });
+      randomConfetti(); // Start the explosion!
+  });
 
-        
-        function animateCounter(targetValue, speed = 100) {
-            let currentValue = 0;
-            const counterElement = document.getElementById("counter");
 
-            function updateCounter() {
-                if (currentValue < targetValue) {
-                    currentValue++;
-                    counterElement.innerText = currentValue;
-                    counterElement.style.setProperty("--value", currentValue);
-                    setTimeout(updateCounter, speed);
-                }
-            }
+  function animateCounter(targetValue, speed = 100) {
+      let currentValue = 0;
+      const counterElement = document.getElementById("counter");
 
-            updateCounter();
-        }
+      function updateCounter() {
+          if (currentValue < targetValue) {
+              currentValue++;
+              counterElement.innerText = currentValue;
+              counterElement.style.setProperty("--value", currentValue);
+              setTimeout(updateCounter, speed);
+          }
+      }
 
-        // Call the function to count up to 100
-        animateCounter({{score}}, 50);
-    </script>
+      updateCounter();
+  }
+
+  // Call the function to count up to 100
+  animateCounter({{score}}, 50);
+</script>
 {% endblock %}
