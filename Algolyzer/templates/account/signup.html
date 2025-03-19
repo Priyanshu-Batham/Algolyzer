@@ -5,87 +5,84 @@
 {% endblock head_title %}
 
 {% block content %}
-<div class="flex justify-center items-center min-h-screen bg-base-200">
-    <div class="card w-full max-w-md shadow-lg bg-base-100">
-        <div class="card-body">
-            <h1 class="text-2xl font-bold text-center text-primary">
-                {% trans "Sign Up" %}
-            </h1>
-            <p class="text-sm text-center text-secondary mt-2">
-                {% blocktranslate %}
-                    Already have an account? Then please
-                    <a href="{{ login_url }}" class="link link-primary">sign in</a>.
-                {% endblocktranslate %}
-            </p>
-
-            {% if not SOCIALACCOUNT_ONLY %}
-            <form method="post" action="{% url 'account_signup' %}" class="mt-6 space-y-4">
-                {% csrf_token %}
-                {% for field in form %}
-                <div class="form-control relative">
-                    <input
-                        type="{% if field.name == 'password1' or field.name == 'password2' %}password{% else %}{{ field.type }}{% endif %}"
-                        name="{{ field.name }}"
-                        id="{{ field.id_for_label }}"
-                        value="{{ field.value|default:'' }}"
-                        placeholder="{{field.label}}"
-                        class="input input-bordered input-primary"
-                    >
-                    {% if field.name == 'password1' or field.name == 'password2' %}
-                        <button
-                            type="button"
-                            class="absolute inset-y-0 right-2 flex items-center btn btn-sm btn-ghost transform -translate-y-1/2 top-1/2"
-                            onclick="togglePasswordVisibility('{{ field.id_for_label }}')"
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825l4.5-4.5M21 12a9 9 0 11-6-8.47" />
-                            </svg>
-                        </button>
-                    {% endif %}
-                    {% for error in field.errors %}
-                        <span class="text-error text-sm">{{ error }}</span>
-                    {% endfor %}
-                </div>
-                {% endfor %}
-                {{ redirect_field }}
-
-                <button type="submit" class="btn btn-primary btn-block">
+    <div class="flex justify-center items-center min-h-screen bg-base-200">
+        <div class="card w-full max-w-md shadow-lg bg-base-100">
+            <div class="card-body">
+                <h1 class="text-2xl font-bold text-center text-primary">
                     {% trans "Sign Up" %}
-                </button>
-            </form>
-            {% endif %}
+                </h1>
+                <p class="text-sm text-center text-secondary mt-2">
+                    {% blocktranslate %}
+                        Already have an account? Then please
+                        <a href="{{ login_url }}" class="link link-primary">sign in</a>.
+                    {% endblocktranslate %}
+                </p>
 
-            {% if PASSKEY_SIGNUP_ENABLED %}
-            <div class="divider">OR</div>
-            <a href="{{ signup_by_passkey_url }}" class="btn btn-outline btn-primary btn-block">
-                {% trans "Sign up using a passkey" %}
-            </a>
-            {% endif %}
+                {% if not SOCIALACCOUNT_ONLY %}
+                    <form method="post" action="{% url 'account_signup' %}" class="mt-6 space-y-4">
+                        {% csrf_token %}
+                        {% for field in form %}
+                            <div class="form-control relative">
+                                <input
+                                        type="{% if field.name == 'password1' or field.name == 'password2' %}password{% else %}{{ field.type }}{% endif %}"
+                                        name="{{ field.name }}"
+                                        id="{{ field.id_for_label }}"
+                                        value="{{ field.value|default:'' }}"
+                                        placeholder="{{field.label}}"
+                                        class="input input-bordered input-primary"
+                                >
+                                {% if field.name == 'password1' or field.name == 'password2' %}
+                                    <button
+                                            type="button"
+                                            class="absolute inset-y-0 right-2 flex items-center btn btn-sm btn-ghost transform -translate-y-1/2 top-1/2"
+                                            onclick="togglePasswordVisibility('{{ field.id_for_label }}', this)"
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 eye-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <!-- Open Eye Icon -->
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                        </svg>
+                                    </button>
+                                {% endif %}
+                                {% for error in field.errors %}
+                                    <span class="text-error text-sm">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% endfor %}
+                        {{ redirect_field }}
 
-            {% if SOCIALACCOUNT_ENABLED %}
-            <div class="divider">Or Use a Third Party App</div>
-            <div class="text-center">
-                {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
+                        <button type="submit" class="btn btn-primary btn-block">
+                            {% trans "Sign Up" %}
+                        </button>
+                    </form>
+                {% endif %}
             </div>
-            {% endif %}
         </div>
     </div>
-</div>
 {% endblock content %}
 
-{% block extra_body %}
-    {{ block.super }}
-{% endblock extra_body %}
-
 {% block scripts %}
-<script>
-    function togglePasswordVisibility(inputId) {
-        const input = document.getElementById(inputId);
-        if (input.type === "password") {
-            input.type = "text";
-        } else {
-            input.type = "password";
+    <script>
+        function togglePasswordVisibility(inputId, button) {
+            const input = document.getElementById(inputId);
+            const icon = button.querySelector(".eye-icon");
+
+            if (input.type === "password") {
+                input.type = "text";
+                // Change to Closed Eye Icon
+                icon.innerHTML = `
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12s3-5 9-5 9 5 9 5-3 5-9 5-9-5-9-5z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.53 9.53a3 3 0 014.24 4.24" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1l22 22" />
+                `;
+            } else {
+                input.type = "password";
+                // Change to Open Eye Icon
+                icon.innerHTML = `
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                `;
+            }
         }
-    }
-</script>
+    </script>
 {% endblock %}

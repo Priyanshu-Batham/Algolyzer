@@ -4,11 +4,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% block title %}My Django App{% endblock %}</title>
+  <title>{% block title %}Algolyzer{% endblock %}</title>
   <!-- Link to the main CSS file -->
   {% load static %}
   <link rel="stylesheet" href="{% static 'output.css' %}">
-  <link rel="icon" type="image/x-icon" href="{% static 'algolyzer.png' %}">
+  <link rel="icon" type="image/x-icon" href="{% static 'algolyzer.ico' %}">
   <!-- JS scripts -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0"></script>
   <!-- Additional head content can be added by child templates -->
@@ -53,7 +53,7 @@
         </ul>
       </div>
       <a href="{%url "home" %}" class="btn btn-ghost text-xl">
-          <img alt="home" class='w-full h-full object-cover' src="{% static 'algolyzer.png' %}" />
+          <img alt="home" class='w-full h-full object-cover' src="{% static 'algolyzer.ico' %}" />
       </a>
     </div>
     <div class="navbar-center hidden lg:flex">
@@ -117,7 +117,7 @@
   <footer class="footer bg-base-200 text-base-content border-base-300 border-t px-10 py-4">
     <aside class="grid-flow-col items-center">
       <a href="{% url 'home' %}" class="w-[30px]">
-          <img alt="Algolyzer logo" class="w-full h-full object-cover" src="{% static 'algolyzer.png' %}" />
+          <img alt="Algolyzer logo" class="w-full h-full object-cover" src="{% static 'algolyzer.ico' %}" />
       </a>
       <p>
         pbvs
