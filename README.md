@@ -14,7 +14,7 @@ A platform for learning about AI/ML models and algorithms from theoretical to ex
 
 ## Status 
 - 60-70% complete
-- No deployments yet.
+- Initial deployment at [link](http://algolyzer.servehttp.com)
 - Focusing on finishing the core modules of Algolyzer
 
 ## Progress
