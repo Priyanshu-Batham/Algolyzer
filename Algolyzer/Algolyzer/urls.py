@@ -18,6 +18,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 
+admin.site.site_header = "Algolyzer Admin"
+admin.site.site_title = "Algolyzer"
+admin.site.index_title = "Welcome to Algolyzer"
+
 urlpatterns = [
     # admin url
     path("admin/", admin.site.urls),
