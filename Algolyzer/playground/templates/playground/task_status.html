@@ -1,20 +1,65 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Task Status</h1>
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-6">Task Status</h1>
 
     {% if error %}
-        <p style="color: red;">{{ error }}</p>
+        <div class="alert alert-error">
+            <span>{{ error }}</span>
+        </div>
     {% else %}
-        <p><strong>Task ID:</strong> {{ task_id }}</p>
-        <p><strong>Status:</strong> {{ status }}</p>
+        <div class="flex flex-col items-center space-y-6">
+            <!-- Radial Progress -->
+            <div class="radial-progress" style="--value:{{ progress_value }};" role="progressbar" aria-valuenow="{{ progress_value }}" aria-valuemin="0" aria-valuemax="100">
+                <span class="text-lg font-bold">{{ progress_value }}%</span>
+            </div>
 
-        {% if result %}
-            <p><strong>Result:</strong> {{ result }}</p>
-        {% else %}
-            <p>Processing... Refresh the page to check status.</p>
-        {% endif %}
+            <div class="text-center space-y-2">
+                <p class="text-lg"><strong>Task ID:</strong> {{ task_id }}</p>
+                <p class="text-lg"><strong>Status:</strong> <span id="status-text">{{ status }}</span></p>
+            </div>
+
+            {% if result %}
+                <div class="card bg-base-100 shadow-xl w-full max-w-2xl">
+                    <div class="card-body">
+                        <h2 class="card-title">Result</h2>
+                        <p>{{ result }}</p>
+                    </div>
+                </div>
+            {% else %}
+                <p class="text-lg">Processing... Status will update automatically.</p>
+            {% endif %}
+        </div>
     {% endif %}
 
-    <a href="{% url 'playground_home' %}">Submit another task</a>
-{% endblock%}
+    <div class="mt-8 text-center">
+        <a href="{% url 'playground_home' %}" class="btn btn-primary">Submit another task</a>
+    </div>
+</div>
+
+{% block extra_js %}
+<script>
+    function updateProgress() {
+        const statusText = document.getElementById('status-text');
+        const radialProgress = document.querySelector('.radial-progress');
+        
+        if (statusText.textContent === 'PROCESSING') {
+            // Increment progress by 5% every 2 seconds while processing
+            const currentValue = parseInt(radialProgress.style.getPropertyValue('--value') || '0');
+            const newValue = Math.min(currentValue + 5, 95);
+            radialProgress.style.setProperty('--value', newValue);
+            radialProgress.setAttribute('aria-valuenow', newValue);
+            radialProgress.querySelector('span').textContent = `${newValue}%`;
+        } else if (statusText.textContent === 'COMPLETED') {
+            radialProgress.style.setProperty('--value', '100');
+            radialProgress.setAttribute('aria-valuenow', '100');
+            radialProgress.querySelector('span').textContent = '100%';
+        }
+    }
+
+    // Update progress every 2 seconds if status is PROCESSING
+    setInterval(updateProgress, 2000);
+</script>
+{% endblock %}
+{% endblock %}

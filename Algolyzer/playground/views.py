@@ -41,7 +41,7 @@ def sentiment_analysis(request):
         task.celery_task_id = celery_task.id
         task.save()
 
-        return redirect("sentiment_analysis")
+        return redirect("task_status", task_id=celery_task.id)
 
     else:
         """Handles task status retrieval."""
@@ -94,7 +94,7 @@ def doodle_classifier(request):
         task.celery_task_id = celery_task.id
         task.save()
 
-        return redirect("doodle_classifier")
+        return redirect("task_status", task_id=celery_task.id)
 
     else:
         # Fetch previous results
@@ -104,3 +104,38 @@ def doodle_classifier(request):
 
         context = {"previous_results": previous_results}
         return render(request, "playground/doodle_classifier.html", context=context)
+
+
+@login_required
+@profile_required
+def task_status(request, task_id):
+    """View to check task status and show progress."""
+    try:
+        task = PlaygroundTask.objects.get(celery_task_id=task_id, user=request.user)
+
+        # Calculate progress value based on status
+        if task.status == "COMPLETED":
+            progress_value = 100
+        elif task.status == "PROCESSING":
+            # Calculate progress based on time elapsed since creation
+            from datetime import datetime, timezone
+
+            now = datetime.now(timezone.utc)
+            elapsed = (now - task.created_at).total_seconds()
+            # Assuming average processing time is 30 seconds
+            progress_value = min(int((elapsed / 30) * 95), 95)
+        elif task.status == "FAILED":
+            progress_value = 0
+        else:  # PENDING
+            progress_value = 0
+
+        context = {
+            "task_id": task_id,
+            "status": task.status,
+            "result": task.result,
+            "progress_value": progress_value,
+        }
+        return render(request, "playground/task_status.html", context=context)
+    except PlaygroundTask.DoesNotExist:
+        context = {"error": "Task not found"}
+        return render(request, "playground/task_status.html", context=context)
