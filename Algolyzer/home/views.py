@@ -19,6 +19,10 @@ def dashboard(request):
     # Fetch the user's profile
     user_profile = UserProfile.objects.filter(user=request.user).first()
 
+    # Redirect to onboarding if no profile exists
+    if not user_profile:
+        return redirect("onboarding")
+
     # Calculate XP progress percentage
     next_level_xp = user_profile.get_next_level_xp()
     progress_percentage = (
