@@ -28,16 +28,6 @@
             {% endif %}
         </div>
 
-        <!-- Email Address -->
-        <div class="form-control">
-            <label class="label font-semibold">Email Address</label>
-            <input type="email" name="email" value="{{ form.email.value|default_if_none:'' }}" 
-                    class="input input-bordered input-primary w-full" placeholder="example@email.com" required>
-            {% if form.email.errors %}
-                <p class="text-error text-sm">{{ form.email.errors.0 }}</p>
-            {% endif %}
-        </div>
-
         <!-- Phone Number -->
         <div class="form-control">
             <label class="label font-semibold">Phone Number</label>
@@ -71,27 +61,7 @@
                 <p class="text-error text-sm">{{ form.address.errors.0 }}</p>
             {% endif %}
         </div>
-
-        <!-- Course -->
-        <div class="form-control">
-            <label class="label font-semibold">Course Enrolled</label>
-            <input type="text" name="course" value="{{ form.course.value|default_if_none:'' }}" 
-                    class="input input-bordered input-primary w-full" placeholder="Course Name" required>
-            {% if form.course.errors %}
-                <p class="text-error text-sm">{{ form.course.errors.0 }}</p>
-            {% endif %}
-        </div>
-
-        <!-- Enrollment Date -->
-        <div class="form-control">
-            <label class="label font-semibold">Enrollment Date</label>
-            <input type="date" name="enrollment_date" value="{{ form.enrollment_date.value|default_if_none:'' }}" 
-                    class="input input-bordered input-primary w-full" required>
-            {% if form.enrollment_date.errors %}
-                <p class="text-error text-sm">{{ form.enrollment_date.errors.0 }}</p>
-            {% endif %}
-        </div>
-
+    
         <!-- Submit Button -->
         <div class="flex justify-between items-center mt-6">
             <a href="{% url 'dashboard' %}" class="btn btn-outline">Skip</a>
