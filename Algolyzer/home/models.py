@@ -1,6 +1,5 @@
 from django.contrib.auth import get_user_model
 from django.db import models
-from django.utils import timezone
 
 
 class UserProfile(models.Model):
@@ -17,10 +16,6 @@ class UserProfile(models.Model):
         null=True,
     )
     address = models.TextField(blank=True, null=True)
-
-    # Education & Enrollment
-    course = models.CharField(max_length=100, default="Undecided")
-    enrollment_date = models.DateField(default=timezone.now)
 
     # Ranking System
     xp = models.PositiveIntegerField(default=0)
