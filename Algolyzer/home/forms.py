@@ -17,12 +17,6 @@ class OnboardingForm(forms.ModelForm):
         required=True,
     )
 
-    email = forms.EmailField(
-        widget=forms.EmailInput(attrs={"class": "form-control"}),
-        label="Email Address",
-        required=True,
-    )
-
     phone_number = forms.CharField(
         widget=forms.TextInput(
             attrs={"class": "form-control", "placeholder": "+1234567890"}
@@ -45,27 +39,12 @@ class OnboardingForm(forms.ModelForm):
         required=True,
     )
 
-    course = forms.CharField(
-        widget=forms.TextInput(attrs={"class": "form-control"}),
-        label="Course Enrolled",
-        max_length=100,
-        required=True,
-    )
-
-    enrollment_date = forms.DateField(
-        widget=forms.DateInput(attrs={"type": "date", "class": "form-control"}),
-        label="Enrollment Date",
-    )
-
     class Meta:
         model = UserProfile
         fields = [
             "full_name",
             "dob",
-            "email",
             "phone_number",
             "gender",
             "address",
-            "course",
-            "enrollment_date",
         ]
