@@ -97,15 +97,5 @@ STATIC_URL = "/static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-# Celery Configurations
-# settings.py
-
-# Celery Settings
-CELERY_BROKER_URL = os.getenv(
-    "CELERY_BROKER_URL", "redis://localhost:6379/0"
-)  # URL for Redis
-CELERY_ACCEPT_CONTENT = ["json"]  # Accept JSON formatted tasks
-CELERY_TASK_SERIALIZER = "json"  # Use JSON serialization
-
 # AIML downloaded models directory
 MODEL_DIR = "/aiml_models"
