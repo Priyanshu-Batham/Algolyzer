@@ -1,11 +1,15 @@
 import base64
 import json
+import os
 
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.files.base import ContentFile
 from django.shortcuts import redirect, render
+from django.utils.timezone import now
 from home.decorators import profile_required
-from playground.tasks import doodle_classifier_task, sentiment_analysis_task
+from PIL import Image
+from transformers import AutoModelForSequenceClassification, AutoTokenizer, pipeline
 
 from .models import PlaygroundTask
 
@@ -28,17 +32,47 @@ def sentiment_analysis(request):
     if request.method == "POST":
         input_data = request.POST.get("input_data")
 
-        # Create a task entry in the database
-        task = PlaygroundTask.objects.create(
-            user=user,
-            input_data=input_data,
-            model_name="sentiment_analysis",
-            status="PENDING",
-        )
-
         # Call Celery and attach the Celery task ID to the database entry
-        celery_task = sentiment_analysis_task.apply_async(args=[task.id, input_data])
-        task.celery_task_id = celery_task.id
+        try:
+            MODEL_DIR = os.path.join(
+                settings.BASE_DIR,
+                "playground",
+                "aiml_models",
+                "finiteautomata_bertweet-base-sentiment-analysis",
+            )
+
+            # Load model from saved directory
+            tokenizer = AutoTokenizer.from_pretrained(MODEL_DIR)
+            model = AutoModelForSequenceClassification.from_pretrained(MODEL_DIR)
+            sentiment_pipeline = pipeline(
+                "sentiment-analysis", model=model, tokenizer=tokenizer
+            )
+
+            if not model:
+                raise ValueError(
+                    "Model 'finiteautomata_bertweet-base-sentiment-analysis' not found."
+                )
+
+            # Process the input with the model
+            result = sentiment_pipeline(input_data)[0]
+
+            # Create a task entry in the database
+            task = PlaygroundTask.objects.create(
+                user=user,
+                input_data=input_data,
+                model_name="sentiment_analysis",
+                result=str(result),
+                completed_at=now(),
+                status="COMPLETED",
+            )
+
+            task.save()
+
+        except Exception as e:
+            task.status = "FAILED"
+            task.result = str(e)
+            task.save()
+            # raise e
         task.save()
 
         return redirect("sentiment_analysis")
@@ -51,17 +85,20 @@ def sentiment_analysis(request):
         ).order_by("-created_at")
 
         for task in previous_results:
-            if task.result:
-                try:
-                    # Replace single quotes with double quotes to make it valid JSON
-                    formatted_result = task.result.replace("'", '"')
-                    task.result = json.loads(formatted_result)
-                except json.JSONDecodeError:
-                    task.result = (
-                        {}
-                    )  # If JSON is invalid, set it as an empty dictionary
+            try:
+                # Replace single quotes with double quotes to make it valid JSON
+                formatted_result = task.result.replace("'", '"')
+                task.result = json.loads(formatted_result)
+            except json.JSONDecodeError:
+                task.result = {}  # If JSON is invalid, set it as an empty dictionary
         context = {"previous_results": previous_results}
         return render(request, "playground/sentiment_analysis.html", context=context)
+
+
+# Load the pre-trained MNIST model from Hugging Face
+mnist_classifier = pipeline(
+    "image-classification", model="farleyknight/mnist-digit-classification-2022-09-04"
+)
 
 
 @login_required
@@ -82,7 +119,6 @@ def doodle_classifier(request):
             user=user,
             input_data=image_data,  # Store the base64 data for reference
             model_name="doodle_classifier",
-            status="PENDING",
         )
 
         # Save the image file to the task's input_image field
@@ -90,8 +126,27 @@ def doodle_classifier(request):
         task.save()
 
         # Call Celery task
-        celery_task = doodle_classifier_task.apply_async(args=[task.id])
-        task.celery_task_id = celery_task.id
+        try:
+            # Open the saved PNG image from the input_image field
+            image = Image.open(task.input_image.path)
+            print("image being loaded: ", image.filename)
+
+            # Run inference using the pre-trained model
+            result = mnist_classifier(image)
+            print(str(result))
+            best_prediction = max(result, key=lambda x: x["score"])
+            best_label = best_prediction["label"]
+            # print("Label: ", best_label, "Score: ", best_score)
+
+            # Update the task with the result
+            task.result = best_label  # Convert the result to a string for storage
+            task.status = "COMPLETED"
+            task.save()
+
+        except Exception as e:
+            # Handle any errors that occur during processing
+            task.result = str(e)  # Store the error message
+            task.status = "FAILED"
         task.save()
 
         return redirect("doodle_classifier")
