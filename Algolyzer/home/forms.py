@@ -1,4 +1,8 @@
+import re
+from datetime import date
+
 from django import forms
+from django.core.exceptions import ValidationError
 
 from .models import UserProfile
 
@@ -22,7 +26,7 @@ class OnboardingForm(forms.ModelForm):
             attrs={"class": "form-control", "placeholder": "+1234567890"}
         ),
         label="Phone Number",
-        max_length=15,
+        max_length=15,  # Increased to accommodate country codes
         required=True,
     )
 
@@ -48,3 +52,33 @@ class OnboardingForm(forms.ModelForm):
             "gender",
             "address",
         ]
+
+    def clean_phone_number(self):
+        phone_number = self.cleaned_data.get("phone_number")
+
+        # Remove all non-digit characters
+        # cleaned_number = re.sub(r'[^\d+]', '', phone_number)
+
+        # Check if the number contains only digits and optional + at start
+        if not re.match(r"^\+?\d+$", phone_number):
+            raise ValidationError(
+                "Phone number must contain only numbers and an optional + at the start."
+            )
+
+        # Check minimum length (adjust according to your requirements)
+        if len(phone_number) < 10:
+            raise ValidationError("Phone number must be at least 10 digits long.")
+
+        return phone_number
+
+    def clean_dob(self):
+        dob = self.cleaned_data.get("dob")
+        today = date.today()
+
+        # Calculate age
+        age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
+
+        if age < 12:
+            raise ValidationError("You must be at least 12 years old to register.")
+
+        return dob
