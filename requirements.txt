@@ -33,6 +33,7 @@ identify==2.6.4
 idna==3.10
 isort==5.13.2
 Jinja2==3.1.5
+joblib==1.4.2
 keras==3.8.0
 kombu==5.4.2
 libclang==18.1.1
@@ -58,7 +59,6 @@ nvidia-curand-cu12==10.3.5.147
 nvidia-cusolver-cu12==11.6.1.9
 nvidia-cusparse-cu12==12.3.1.170
 nvidia-cusparselt-cu12==0.6.2
-nvidia-nccl-cu12==2.21.5
 nvidia-nvjitlink-cu12==12.4.127
 nvidia-nvtx-cu12==12.4.127
 opt_einsum==3.4.0
@@ -83,6 +83,8 @@ regex==2024.11.6
 requests==2.32.3
 rich==13.9.4
 safetensors==0.5.2
+scikit-learn==1.6.1
+scipy==1.15.2
 setuptools==75.8.0
 six==1.17.0
 sqlparse==0.5.3
@@ -90,15 +92,16 @@ sympy==1.13.1
 tensorboard==2.18.0
 tensorboard-data-server==0.7.2
 tensorflow==2.18.0
+tensorflow_intel==2.18.0
 termcolor==2.5.0
 tf_keras==2.18.0
+threadpoolctl==3.6.0
 tokenizers==0.21.0
 torch==2.6.0
 torchaudio==2.6.0
 torchvision==0.21.0
 tqdm==4.67.1
 transformers==4.48.3
-triton==3.2.0
 typing_extensions==4.12.2
 tzdata==2025.1
 urllib3==2.3.0

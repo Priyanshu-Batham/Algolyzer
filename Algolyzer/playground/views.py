@@ -2,6 +2,7 @@ import base64
 import json
 import os
 
+import numpy as np
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.files.base import ContentFile
@@ -9,6 +10,7 @@ from django.shortcuts import redirect, render
 from django.utils.timezone import now
 from home.decorators import profile_required
 from PIL import Image
+from sklearn.linear_model import LinearRegression
 from transformers import AutoModelForSequenceClassification, AutoTokenizer, pipeline
 
 from .models import PlaygroundTask
@@ -159,3 +161,48 @@ def doodle_classifier(request):
 
         context = {"previous_results": previous_results}
         return render(request, "playground/doodle_classifier.html", context=context)
+
+
+@login_required
+def linear_regression(request):
+    if request.method == "POST":
+        # Collect form data (values from 5 sliders)
+        values = [
+            float(request.POST.get("value_1", 0)),
+            float(request.POST.get("value_2", 0)),
+            float(request.POST.get("value_3", 0)),
+            float(request.POST.get("value_4", 0)),
+            float(request.POST.get("value_5", 0)),
+        ]
+
+        # Prepare data for linear regression
+        X = np.array(range(1, 6)).reshape(-1, 1)  # Indices 1 to 5
+        y = np.array(values)  # Slider values
+
+        # Train linear regression model
+        model = LinearRegression()
+        model.fit(X, y)
+
+        # Predict the next value (for index 6)
+        next_index = np.array([[6]])
+        predicted_value = model.predict(next_index)[0]
+
+        # Get regression line parameters for plotting
+        slope = model.coef_[0]
+        intercept = model.intercept_
+
+        # Pass data to template
+        return render(
+            request,
+            "playground/linear_regression.html",
+            {
+                "predicted_value": round(predicted_value, 2),
+                "input_values": values,
+                "slope": slope,
+                "intercept": intercept,
+                "show_chart": True,  # Flag to display chart
+            },
+        )
+
+    else:
+        return render(request, "playground/linear_regression.html")
