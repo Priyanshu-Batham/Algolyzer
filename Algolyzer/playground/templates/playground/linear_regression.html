@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto my-5 p-2 bg-base-200 shadow-lg ">
+    <div class="p-2 lg:p-5 rounded-xl border-2 border-solid border-primary">
+        <h1 class="text-4xl font-bold text-center my-5">Linear Regression</h1>
+        
+
+        <form method="POST" class="space-y-4">
+            {% csrf_token %}
+            <label class="block text-lg font-semibold px-4">Enter values:</label>
+            
+            {% for i in "12345" %}
+            <div class="px-4">
+                <label class="label">
+                    <span class="label-text">Value {{ forloop.counter }}</span>
+                    <span class="label-text-alt" id="slider-value-{{ forloop.counter }}">5</span>
+                </label>
+                <input 
+                    type="range" 
+                    name="value_{{ forloop.counter }}" 
+                    min="0" 
+                    max="10" 
+                    value="5" 
+                    class="range range-primary" 
+                    oninput="document.getElementById('slider-value-{{ forloop.counter }}').textContent = this.value"
+                />
+            </div>
+            {% endfor %}
+        
+            <button class="btn btn-primary w-full">Submit</button>
+        </form>
+
+        {% if predicted_value %}
+        <div class="px-4 py-4">
+            <div class="alert alert-info">
+                <p><strong>Input Values:</strong> {{ input_values|join:", " }}</p>
+                <p><strong>Prediction:</strong> The next value is {{ predicted_value }}.</p>
+            </div>
+        </div>
+        {% endif %}
+        
+        {% if show_chart %}
+            <div class="px-4 py-4">
+                <div class="card bg-base-100 shadow-xl">
+                    <div class="card-body">
+                        <h2 class="card-title">Linear Regression Chart</h2>
+                        <canvas id="regressionChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            {% block scripts %}
+            <script>
+                // Prepare data for Chart.js
+                const inputValues = {{ input_values|safe }};
+                const predictedValue = {{ predicted_value|safe }};
+                const slope = {{ slope|safe }};
+                const intercept = {{ intercept|safe }};
+    
+                // Data points (indices 1 to 5 for inputs, 6 for prediction)
+                const dataPoints = inputValues.map((val, idx) => ({
+                    x: idx + 1,
+                    y: val
+                })).concat([{ x: 6, y: predictedValue }]);
+    
+                // Regression line points (extend slightly for visibility)
+                const linePoints = [
+                    { x: 0.5, y: intercept + 0.5 * slope },
+                    { x: 6.5, y: intercept + 6.5 * slope }
+                ];
+    
+                // Initialize Chart.js
+                const ctx = document.getElementById('regressionChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'scatter',
+                    data: {
+                        datasets: [
+                            {
+                                label: 'Data Points',
+                                data: dataPoints,
+                                backgroundColor: 'rgb(59, 130, 246)', // DaisyUI primary color
+                                borderColor: 'rgb(59, 130, 246)',
+                                showLine: false,
+                                pointRadius: 6
+                            },
+                            {
+                                label: 'Regression Line',
+                                data: linePoints,
+                                type: 'line',
+                                borderColor: 'rgb(239, 68, 68)', // Contrast color (red)
+                                backgroundColor: 'transparent',
+                                fill: false,
+                                pointRadius: 0,
+                                borderWidth: 2
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            x: {
+                                title: { display: true, text: 'Index' },
+                                min: 0,
+                                max: 7
+                            },
+                            y: {
+                                title: { display: true, text: 'Value' },
+                                min: 0,
+                                max: 12
+                            }
+                        },
+                        plugins: {
+                            legend: { display: true }
+                        }
+                    }
+                });
+            </script>
+            {% endblock %}
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}
