@@ -7,57 +7,7 @@
 
     <div class="flex flex-col gap-5">
         
-        {% comment %} Sentiment Analysis {% endcomment %}
-        <div class="rounded-xl border-2 border-solid border-primary p-5 hover:border-secondary">
-            <div class="flex md:items-center justify-between md:flex-row flex-col">
-                <h1 class="text-4xl my-2 p-4 text-primary">Sentiment Analysis</h1>
-                <div class="flex gap-4">
-                    <a href="{% url "sentiment_analysis" %}" class="btn text-white btn-accent font-bold font-poppins max-md:flex-1">Try Now</a>
-                    <a href="{% url "sentiment_analysis_study" %}" class="btn btn-primary btn-outline max-md:flex-1">Learn More</a>
-                </div>
-            </div>
-            <div class="flex flex-col md:flex-row gap-4">
-                {% comment %} Left Segment {% endcomment %}
-                <div>
-                    <div class="stats shadow max-w-lg">                  
-                        <div class="stat">
-                            <div class="stat-title">Accuracy</div>
-                            <div class="stat-value text-primary">97%</div>
-                            <div class="stat-desc">↗︎ 400 (22%)</div>
-                        </div>
-                        
-                        <div class="stat">
-                            <div class="stat-title">Ratings</div>
-                            <div class="stat-value">
-                                <form class="rating rating-md rating-half">
-                                    <input type="radio" name="rating-10" class="mask mask-star-2 mask-half-1 bg-yellow-400" disabled/>
-                                    <input type="radio" name="rating-10" class="mask mask-star-2 mask-half-2 bg-yellow-400" disabled/>
-                                    <input
-                                    type="radio"
-                                    name="rating-10"
-                                    class="mask mask-star-2 mask-half-1 bg-yellow-400" disabled/>
-                                    <input type="radio" name="rating-10" class="mask mask-star-2 mask-half-2 bg-yellow-400" disabled/>
-                                    <input type="radio" name="rating-10" class="mask mask-star-2 mask-half-1 bg-yellow-400" disabled/>
-                                    <input type="radio" name="rating-10" class="mask mask-star-2 mask-half-2 bg-yellow-400" disabled/>
-                                    <input type="radio" name="rating-10" class="mask mask-star-2 mask-half-1 bg-yellow-400" disabled/>
-                                    <input type="radio" name="rating-10" class="mask mask-star-2 mask-half-2 bg-yellow-400" checked="checked" disabled/>
-                                    <input type="radio" name="rating-10" class="mask mask-star-2 mask-half-1 bg-yellow-400" disabled/>
-                                    <input type="radio" name="rating-10" class="mask mask-star-2 mask-half-2 bg-yellow-400" disabled/>
-                                </form>
-                            </div>
-                            <div class="stat-desc">↘︎ 90 (14%)</div>
-                        </div>
-                    </div>
-                </div>
-
-                {% comment %} Right Segment {% endcomment %}
-                <div>
-                    <p>Sentiment analysis is an NLP technique used to classify text as positive or negative, helping businesses and researchers analyze public opinion.
-                        distilbert-base-uncased-finetuned-sst-2-english is a lighter, faster version of BERT, fine-tuned on the SST-2 dataset for sentiment classification. It retains BERT’s accuracy while being more efficient, making it ideal for real-time sentiment detection. 🚀
-                    </p>
-                </div>
-            </div>
-        </div>
+        
 
         
         {% comment %} Linear Regression {% endcomment %}
@@ -110,6 +60,110 @@
                 </div>
             </div>
         </div>
+
+        {% comment %} K-Means Clustering {% endcomment %}
+        <div class="rounded-xl border-2 border-solid border-primary p-5 hover:border-secondary">
+            <div class="flex md:items-center justify-between md:flex-row flex-col">
+                <h1 class="text-4xl my-2 p-4 text-primary">K-Means Clustering</h1>
+                <div class="flex gap-4">
+                    <a href="{% url "kmeans_clustering" %}" class="btn text-white btn-accent font-bold font-poppins max-md:flex-1">Try Now</a>
+                    <a href="#" class="btn btn-primary btn-outline max-md:flex-1">Learn More</a>
+                </div>
+            </div>
+            <div class="flex flex-col md:flex-row gap-4">
+                {% comment %} Left Segment {% endcomment %}
+                <div>
+                    <div class="stats shadow max-w-lg">                  
+                        <div class="stat">
+                            <div class="stat-title">Accuracy</div>
+                            <div class="stat-value text-primary">81%</div>
+                            <div class="stat-desc">↗︎ 400 (22%)</div>
+                        </div>
+                        
+                        <div class="stat">
+                            <div class="stat-title">Ratings</div>
+                            <div class="stat-value">
+                                <form class="rating rating-md rating-half">
+                                    <input type="radio" name="rating-10" class="mask mask-star-2 mask-half-1 bg-yellow-400" disabled/>
+                                    <input type="radio" name="rating-10" class="mask mask-star-2 mask-half-2 bg-yellow-400" disabled/>
+                                    <input
+                                    type="radio"
+                                    name="rating-10"
+                                    class="mask mask-star-2 mask-half-1 bg-yellow-400" disabled/>
+                                    <input type="radio" name="rating-10" class="mask mask-star-2 mask-half-2 bg-yellow-400" disabled/>
+                                    <input type="radio" name="rating-10" class="mask mask-star-2 mask-half-1 bg-yellow-400"disabled/>
+                                    <input type="radio" name="rating-10" class="mask mask-star-2 mask-half-2 bg-yellow-400" disabled/>
+                                    <input type="radio" name="rating-10" class="mask mask-star-2 mask-half-1 bg-yellow-400" disabled/>
+                                    <input type="radio" name="rating-10" class="mask mask-star-2 mask-half-2 bg-yellow-400" checked="checked" disabled/>
+                                    <input type="radio" name="rating-10" class="mask mask-star-2 mask-half-1 bg-yellow-400" disabled/>
+                                    <input type="radio" name="rating-10" class="mask mask-star-2 mask-half-2 bg-yellow-400" disabled/>
+                                </form>
+                            </div>
+                            <div class="stat-desc">↘︎ 90 (14%)</div>
+                        </div>
+                    </div>
+                </div>
+                
+                {% comment %} Right Segment {% endcomment %}
+                <div>
+                    <p>{% lorem 1 b random %}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        {% comment %} Sentiment Analysis {% endcomment %}
+        <div class="rounded-xl border-2 border-solid border-primary p-5 hover:border-secondary">
+            <div class="flex md:items-center justify-between md:flex-row flex-col">
+                <h1 class="text-4xl my-2 p-4 text-primary">Sentiment Analysis</h1>
+                <div class="flex gap-4">
+                    <a href="{% url "sentiment_analysis" %}" class="btn text-white btn-accent font-bold font-poppins max-md:flex-1">Try Now</a>
+                    <a href="{% url "sentiment_analysis_study" %}" class="btn btn-primary btn-outline max-md:flex-1">Learn More</a>
+                </div>
+            </div>
+            <div class="flex flex-col md:flex-row gap-4">
+                {% comment %} Left Segment {% endcomment %}
+                <div>
+                    <div class="stats shadow max-w-lg">                  
+                        <div class="stat">
+                            <div class="stat-title">Accuracy</div>
+                            <div class="stat-value text-primary">90%</div>
+                            <div class="stat-desc">↗︎ 400 (22%)</div>
+                        </div>
+                        
+                        <div class="stat">
+                            <div class="stat-title">Ratings</div>
+                            <div class="stat-value">
+                                <form class="rating rating-md rating-half">
+                                    <input type="radio" name="rating-10" class="mask mask-star-2 mask-half-1 bg-yellow-400" disabled/>
+                                    <input type="radio" name="rating-10" class="mask mask-star-2 mask-half-2 bg-yellow-400" disabled/>
+                                    <input
+                                    type="radio"
+                                    name="rating-10"
+                                    class="mask mask-star-2 mask-half-1 bg-yellow-400" disabled/>
+                                    <input type="radio" name="rating-10" class="mask mask-star-2 mask-half-2 bg-yellow-400" disabled/>
+                                    <input type="radio" name="rating-10" class="mask mask-star-2 mask-half-1 bg-yellow-400" disabled/>
+                                    <input type="radio" name="rating-10" class="mask mask-star-2 mask-half-2 bg-yellow-400" disabled/>
+                                    <input type="radio" name="rating-10" class="mask mask-star-2 mask-half-1 bg-yellow-400" disabled/>
+                                    <input type="radio" name="rating-10" class="mask mask-star-2 mask-half-2 bg-yellow-400" checked="checked" disabled/>
+                                    <input type="radio" name="rating-10" class="mask mask-star-2 mask-half-1 bg-yellow-400" disabled/>
+                                    <input type="radio" name="rating-10" class="mask mask-star-2 mask-half-2 bg-yellow-400" disabled/>
+                                </form>
+                            </div>
+                            <div class="stat-desc">↘︎ 90 (14%)</div>
+                        </div>
+                    </div>
+                </div>
+
+                {% comment %} Right Segment {% endcomment %}
+                <div>
+                    <p>Sentiment analysis is an NLP technique used to classify text as positive or negative, helping businesses and researchers analyze public opinion.
+                        distilbert-base-uncased-finetuned-sst-2-english is a lighter, faster version of BERT, fine-tuned on the SST-2 dataset for sentiment classification. It retains BERT’s accuracy while being more efficient, making it ideal for real-time sentiment detection. 🚀
+                    </p>
+                </div>
+            </div>
+        </div>
+
         {% comment %} Doodle Classifier {% endcomment %}
         <div class="rounded-xl border-2 border-solid border-primary p-5 hover:border-secondary">
             <div class="flex md:items-center justify-between md:flex-row flex-col">
