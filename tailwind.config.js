@@ -18,7 +18,7 @@ module.exports = {
   // DaisyUI Theme setup
   daisyui: {
     themes: [
-      "retro",
+      "winter",
     ],
   },
 }
