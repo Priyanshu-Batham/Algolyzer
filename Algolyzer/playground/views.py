@@ -12,6 +12,7 @@ from home.decorators import profile_required
 from PIL import Image
 from sklearn.cluster import KMeans
 from sklearn.linear_model import LinearRegression
+from sklearn.svm import SVR
 from transformers import AutoModelForSequenceClassification, AutoTokenizer, pipeline
 
 from .models import PlaygroundTask
@@ -265,3 +266,80 @@ def kmeans_clustering(request):
 
     else:
         return render(request, "playground/kmeans_clustering.html")
+
+
+@login_required
+def svm_regression(request):
+    if request.method == "POST":
+        # Collect form data
+        values_json = request.POST.get("values", "[]")
+        try:
+            input_values = json.loads(values_json)
+            if not input_values or len(input_values) < 2:
+                raise ValueError("At least two data points are required for prediction")
+
+            # Convert input values to numpy array
+            input_array = np.array(input_values)  # Shape: (n, 2) for [temp, hum]
+            X = input_array[:-1]  # Features: all but last point (temp, hum)
+            y_temp = input_array[1:, 0]  # Target: temperature (shifted)
+            y_hum = input_array[1:, 1]  # Target: humidity (shifted)
+
+            # Train SVR models
+            svr_temp = SVR(kernel="rbf", C=100, gamma="scale")
+            svr_hum = SVR(kernel="rbf", C=100, gamma="scale")
+            svr_temp.fit(X, y_temp)
+            svr_hum.fit(X, y_hum)
+
+            # Predict the next temperature and humidity
+            last_features = input_array[-1].reshape(1, -1)  # Last [temp, hum]
+            predicted_temp = svr_temp.predict(last_features)[0]
+            predicted_hum = svr_hum.predict(last_features)[0]
+
+            # Prepare processed values (input data with indices for charting)
+            processed_values = [
+                {"index": i, "temp": float(temp), "hum": float(hum)}
+                for i, (temp, hum) in enumerate(input_values)
+            ]
+
+            # Prepare data for Chart.js
+            chart_data = {
+                "historical": processed_values,
+                "predicted": {
+                    "index": len(input_values),  # Next index
+                    "temp": float(predicted_temp),
+                    "hum": float(predicted_hum),
+                },
+            }
+
+            # Pass data to template
+            return render(
+                request,
+                "playground/svm_regression.html",
+                {
+                    "input_values": input_values,
+                    "processed_values": processed_values,
+                    "predicted_value": {
+                        "temp": round(predicted_temp, 2),
+                        "hum": round(predicted_hum, 2),
+                    },
+                    "show_chart": True,
+                    "chart_data": json.dumps(chart_data),
+                },
+            )
+
+        except (json.JSONDecodeError, ValueError) as e:
+            # Handle invalid input
+            return render(
+                request,
+                "playground/svm_regression.html",
+                {
+                    "error": (
+                        str(e)
+                        if str(e)
+                        else "Invalid input. Please enter valid numbers."
+                    )
+                },
+            )
+
+    else:
+        return render(request, "playground/svm_regression.html")
