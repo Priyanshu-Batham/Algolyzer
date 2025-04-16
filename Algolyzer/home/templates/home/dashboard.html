@@ -72,7 +72,7 @@
           <h3 class="card-title">Recent Quizzes</h3>
           <ul>
             {% for progress in recent_quizzes %}
-            <li class="mb-2 bg-neutral p-4">
+            <li class="mb-2 bg-gray-100 p-4">
               <p class="font-semibold">{{ progress.topic.name }}</p>
               <p class="text-sm">Completed on {{ progress.updated_at|date:"M d, Y" }}</p>
             </li>
@@ -87,7 +87,7 @@
           <h3 class="card-title">Recent Tasks</h3>
           <ul>
             {% for task in recent_tasks %}
-            <li class="mb-2 bg-neutral p-4">
+            <li class="mb-2 bg-gray-100 p-4">
               <p class="font-semibold">{{ task.model_name }}</p>
               <p class="text-sm">
                 Status: <span class="badge badge-secondary">{{ task.status }}</span>
