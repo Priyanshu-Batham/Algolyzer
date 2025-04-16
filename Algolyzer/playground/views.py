@@ -10,6 +10,7 @@ from django.shortcuts import redirect, render
 from django.utils.timezone import now
 from home.decorators import profile_required
 from PIL import Image
+from sklearn.cluster import KMeans
 from sklearn.linear_model import LinearRegression
 from transformers import AutoModelForSequenceClassification, AutoTokenizer, pipeline
 
@@ -206,3 +207,61 @@ def linear_regression(request):
 
     else:
         return render(request, "playground/linear_regression.html")
+
+
+@login_required
+def kmeans_clustering(request):
+    if request.method == "POST":
+        # Collect form data
+        values_json = request.POST.get("values", "[]")
+        try:
+            input_values = json.loads(values_json)
+            if not input_values:
+                raise ValueError("No values provided")
+
+            # Convert input values to numpy array for K-Means
+            X = np.array(input_values).reshape(-1, 1)  # Reshape for single feature
+
+            # Apply K-Means clustering
+            n_clusters = min(len(input_values), 3)  # Limit to 3 clusters or fewer
+            kmeans = KMeans(n_clusters=n_clusters, random_state=42)
+            kmeans.fit(X)
+
+            # Get cluster labels
+            labels = kmeans.labels_.tolist()
+
+            # Prepare classified values (pair each value with its cluster)
+            classified_values = list(zip(input_values, labels))
+
+            # Prepare data for Chart.js
+            chart_data = {
+                "values": input_values,
+                "labels": labels,
+                "clusters": [
+                    {"x": float(val), "cluster": int(label)}
+                    for val, label in classified_values
+                ],
+            }
+
+            # Pass data to template
+            return render(
+                request,
+                "playground/kmeans_clustering.html",
+                {
+                    "input_values": input_values,
+                    "classified_values": classified_values,
+                    "show_chart": True,
+                    "chart_data": json.dumps(chart_data),  # Serialize for JavaScript
+                },
+            )
+
+        except (json.JSONDecodeError, ValueError):
+            # Handle invalid input
+            return render(
+                request,
+                "playground/kmeans_clustering.html",
+                {"error": "Please enter valid numbers."},
+            )
+
+    else:
+        return render(request, "playground/kmeans_clustering.html")

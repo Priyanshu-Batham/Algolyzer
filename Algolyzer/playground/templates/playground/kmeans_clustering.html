@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto my-5 p-2 bg-base-200 shadow-lg ">
+    <div class="p-2 lg:p-5 rounded-xl border-2 border-solid border-primary">
+        <h1 class="text-4xl font-bold text-center my-5">K-Means Clustering</h1>
+        
+
+        <form method="POST" class="space-y-4" id="kmeansForm">
+            {% csrf_token %}
+            <div class="px-4">
+                <label class="block text-lg font-semibold mb-2">Enter values:</label>
+                <div class="flex gap-2 mb-4">
+                    <input type="number" id="valueInput" name="temp_value" class="input input-bordered w-full max-w-xs" placeholder="Enter a number" step="any">
+                    <button type="button" onclick="addValue()" class="btn btn-secondary">Add</button>
+                </div>
+                <div id="valuesList" class="mb-4">
+                    <p><strong>Added Values:</strong> <span id="displayValues">None</span></p>
+                </div>
+                <input type="hidden" name="values" id="valuesInput">
+            </div>           
+        
+            <button type="submit" class="btn btn-primary w-full">Submit</button>
+        </form>
+
+        {% if error %}
+        <div class="px-4 py-4">
+            <div class="alert alert-error">
+                <p>{{ error }}</p>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if classified_values %}
+        <div class="px-4 py-4">
+            <div class="alert alert-info">
+                <p><strong>Input Values:</strong> {{ input_values|join:", " }}</p>
+                <p><strong>Clusters:</strong></p>
+                <ul>
+                    {% for value, cluster in classified_values %}
+                    <li>Value: {{ value }} → Cluster: {{ cluster }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if show_chart %}
+            <div class="px-4 py-4">
+                <div class="card bg-base-100 shadow-xl">
+                    <div class="card-body">
+                        <h2 class="card-title">K-Means Clustering Chart</h2>
+                        <canvas id="kmeansclusteringChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+    let values = [];
+
+    function addValue() {
+        const input = document.getElementById('valueInput');
+        const value = parseFloat(input.value);
+        
+        if (!isNaN(value)) {
+            values.push(value);
+            updateValuesDisplay();
+            input.value = ''; // Clear input field
+        } else {
+            alert('Please enter a valid number');
+        }
+    }
+
+    function updateValuesDisplay() {
+        const display = document.getElementById('displayValues');
+        const valuesInput = document.getElementById('valuesInput');
+        
+        if (values.length > 0) {
+            display.textContent = values.join(', ');
+            valuesInput.value = JSON.stringify(values); // Store values in hidden input
+        } else {
+            display.textContent = 'None';
+            valuesInput.value = '';
+        }
+    }
+
+    // Update hidden input before form submission
+    document.getElementById('kmeansForm').addEventListener('submit', function() {
+        document.getElementById('valuesInput').value = JSON.stringify(values);
+    });
+
+
+    {% if show_chart %}
+        // Prepare data for Chart.js
+        const chartData = {{ chart_data|safe }};
+        const ctx = document.getElementById('kmeansclusteringChart').getContext('2d');
+
+        // Define colors for clusters
+        const clusterColors = [
+            'rgba(255, 99, 132, 0.6)',  // Red
+            'rgba(54, 162, 235, 0.6)',  // Blue
+            'rgba(75, 192, 192, 0.6)'   // Teal
+        ];
+
+        // Create datasets for each cluster
+        const datasets = [];
+        const uniqueClusters = [...new Set(chartData.labels)];
+
+        uniqueClusters.forEach((cluster, index) => {
+            const clusterPoints = chartData.clusters
+                .filter(point => point.cluster === cluster)
+                .map(point => ({
+                    x: point.x,
+                    y: 0  // Fixed y for 1D data visualization
+                }));
+            
+            datasets.push({
+                label: `Cluster ${cluster}`,
+                data: clusterPoints,
+                backgroundColor: clusterColors[index % clusterColors.length],
+                pointRadius: 6,
+                pointHoverRadius: 8
+            });
+        });
+
+        // Render scatter plot
+        new Chart(ctx, {
+            type: 'scatter',
+            data: {
+                datasets: datasets
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Value'
+                        },
+                        ticks: {
+                            stepSize: 1
+                        }
+                    },
+                    y: {
+                        display: false  // Hide y-axis for 1D data
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: true
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return `Value: ${context.raw.x}, Cluster: ${context.dataset.label.split(' ')[1]}`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    {% endif %}
+</script>
+{% endblock %}
