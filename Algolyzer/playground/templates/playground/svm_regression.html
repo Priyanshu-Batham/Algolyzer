@@ -1,0 +1,253 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto my-5 p-2 bg-base-200 shadow-lg ">
+    <div class="p-2 lg:p-5 rounded-xl border-2 border-solid border-primary">
+        <h1 class="text-4xl font-bold text-center my-5">Support Vector Regression</h1>
+        
+
+        <form method="POST" class="space-y-4" id="svmForm">
+            {% csrf_token %}
+            <div class="px-4">
+                <label class="block text-lg font-semibold mb-2">Enter values:</label>
+                <div class="flex flex-col gap-2 mb-4">
+                    <div class="flex gap-2">
+                        <input type="number" id="tempInput" name="temp_value" class="input input-bordered w-full max-w-xs" placeholder="Temperature (°C)" step="any">
+                        <input type="number" id="humInput" name="hum_value" class="input input-bordered w-full max-w-xs" placeholder="Humidity (%)" step="any" min="0" max="100">
+                    </div>
+                    <button type="button" onclick="addValues()" class="btn btn-secondary w-full max-w-xs">Add</button>
+                </div>
+                <div id="valuesList" class="mb-4">
+                    <p><strong>Added Values:</strong> <span id="displayValues">None</span></p>
+                </div>
+                <input type="hidden" name="values" id="valuesInput">
+            </div>           
+        
+            <button type="submit" class="btn btn-primary w-full">Submit</button>
+        </form>
+
+        {% if error %}
+        <div class="px-4 py-4">
+            <div class="alert alert-error">
+                <p>{{ error }}</p>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if processed_values %}
+        <div class="px-4 py-4">
+            <div class="card bg-base-100 shadow-xl">
+                <div class="card-body">
+                    <h2 class="card-title text-2xl">Results</h2>
+                    <div class="grid gap-4">
+                        <!-- Predicted Values -->
+                        <div class="stats shadow">
+                            <div class="stat">
+                                <div class="stat-title">Predicted Temperature</div>
+                                <div class="stat-value text-primary">{{ predicted_value.temp }}°C</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-title">Predicted Humidity</div>
+                                <div class="stat-value text-secondary">{{ predicted_value.hum }}%</div>
+                            </div>
+                        </div>
+                        <!-- Input Values -->
+                        <div>
+                            <h3 class="text-lg font-semibold mb-2">Input Values</h3>
+                            <div class="overflow-x-auto">
+                                <table class="table table-zebra w-full">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Temperature (°C)</th>
+                                            <th>Humidity (%)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for point in processed_values %}
+                                        <tr>
+                                            <td>{{ point.index }}</td>
+                                            <td>{{ point.temp }}</td>
+                                            <td>{{ point.hum }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if show_chart %}
+            <div class="px-4 py-4">
+                <div class="card bg-base-100 shadow-xl">
+                    <div class="card-body">
+                        <h2 class="card-title">Support Vector Regression Chart</h2>
+                        <canvas id="svmChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        let values = [];
+
+        function addValues() {
+            const tempInput = document.getElementById('tempInput');
+            const humInput = document.getElementById('humInput');
+            const temp = parseFloat(tempInput.value);
+            const hum = parseFloat(humInput.value);
+            
+            if (!isNaN(temp) && !isNaN(hum)) {
+                values.push([temp, hum]);
+                updateValuesDisplay();
+                tempInput.value = ''; // Clear input fields
+                humInput.value = '';
+            } else {
+                alert('Please enter valid numbers for both temperature and humidity');
+            }
+        }
+    
+        function updateValuesDisplay() {
+            const display = document.getElementById('displayValues');
+            const valuesInput = document.getElementById('valuesInput');
+            
+            if (values.length > 0) {
+                display.textContent = values.map(v => `(${v[0]}°C, ${v[1]}%)`).join(', ');
+                valuesInput.value = JSON.stringify(values); // Store values in hidden input
+            } else {
+                display.textContent = 'None';
+                valuesInput.value = '';
+            }
+        }
+    
+        // Update hidden input before form submission
+        document.getElementById('svmForm').addEventListener('submit', function() {
+            document.getElementById('valuesInput').value = JSON.stringify(values);
+        });
+
+
+    {% if show_chart %}
+         // Prepare data for Chart.js
+        const chartData = {{ chart_data|safe }};
+        const ctx = document.getElementById('svmChart').getContext('2d');
+
+        // Prepare datasets
+        const tempData = chartData.historical.map(point => ({
+            x: point.index,
+            y: point.temp
+        })).concat([{
+            x: chartData.predicted.index,
+            y: chartData.predicted.temp
+        }]);
+
+        const humData = chartData.historical.map(point => ({
+            x: point.index,
+            y: point.hum
+        })).concat([{
+            x: chartData.predicted.index,
+            y: chartData.predicted.hum
+        }]);
+
+        // Render line chart
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                datasets: [
+                    {
+                        label: 'Temperature (°C)',
+                        data: tempData,
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        fill: false,
+                        yAxisID: 'y-temp',
+                        pointRadius: (context) => context.dataIndex === tempData.length - 1 ? 8 : 5,
+                        pointBackgroundColor: (context) => context.dataIndex === tempData.length - 1 ? 'rgba(255, 99, 132, 1)' : 'rgba(255, 99, 132, 0.5)',
+                        pointBorderColor: 'rgba(255, 99, 132, 1)',
+                        tension: 0.1
+                    },
+                    {
+                        label: 'Humidity (%)',
+                        data: humData,
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        fill: false,
+                        yAxisID: 'y-hum',
+                        pointRadius: (context) => context.dataIndex === humData.length - 1 ? 8 : 5,
+                        pointBackgroundColor: (context) => context.dataIndex === humData.length - 1 ? 'rgba(54, 162, 235, 1)' : 'rgba(54, 162, 235, 0.5)',
+                        pointBorderColor: 'rgba(54, 162, 235, 1)',
+                        tension: 0.1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Time Step'
+                        },
+                        type: 'linear',
+                        ticks: {
+                            stepSize: 1
+                        }
+                    },
+                    'y-temp': {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        title: {
+                            display: true,
+                            text: 'Temperature (°C)'
+                        },
+                        grid: {
+                            drawOnChartArea: true
+                        }
+                    },
+                    'y-hum': {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        title: {
+                            display: true,
+                            text: 'Humidity (%)'
+                        },
+                        grid: {
+                            drawOnChartArea: false
+                        },
+                        min: 0,
+                        max: 100
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: true
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const isPredicted = context.dataIndex === context.dataset.data.length - 1;
+                                const label = context.dataset.label;
+                                const value = context.parsed.y;
+                                return `${label}: ${value}${label.includes('Temperature') ? '°C' : '%'}${isPredicted ? ' (Predicted)' : ''}`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    {% endif %}
+</script>
+{% endblock %}
