@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="max-w-5xl mx-auto py-5 max-sm:p-4">
+        <h1 class="max-sm:text-4xl max-sm:my-6 text-5xl my-12">
+            A Beginner's Guide to <span class="text-primary font-bold font-poppins">SVM Regression</span>
+        </h1>
+
+        <h2 class="max-sm:text-2xl text-3xl my-5 text-primary font-bold">Introduction</h2>
+        <p class="max-sm:text-lg text-xl">
+            Support Vector Machine (SVM) Regression is a method that finds a function
+            to predict continuous values (like temperature or humidity) based on past data.
+            It works well even when the relationship between inputs and outputs is complex.
+        </p>
+        <p class="max-sm:text-lg text-xl mt-3">
+            In this example, we use previous temperature and humidity readings
+            to predict the next temperature and humidity values.
+        </p>
+
+        <h2 class="max-sm:text-2xl text-3xl my-5 text-primary font-bold">How Does It Work?</h2>
+        <ol class="list-decimal list-inside max-sm:text-lg text-xl">
+            <li>You input a list of temperature-humidity pairs (e.g., [[22,55], [23,60], [24,65]]).</li>
+            <li>The server converts this list into a format the model understands.</li>
+            <li>We train two SVM models: one to predict temperature, another for humidity.</li>
+            <li>The models use all but the last pair to learn patterns.</li>
+            <li>We predict the next temperature and humidity for the final pair.</li>
+        </ol>
+
+        <h2 class="max-sm:text-2xl text-3xl my-5 text-primary font-bold">Step-by-Step Breakdown</h2>
+
+        <h3 class="max-sm:text-xl text-2xl my-4 text-secondary font-bold">Step 1: Read the Input Values</h3>
+        <p class="max-sm:text-lg text-xl">
+            We get the JSON string of pairs from the form and convert it into a Python list.
+        </p>
+        <div class="mockup-code mt-2">
+        <pre><code>import json
+
+  values_json = request.POST.get("values", "[]")
+  input_values = json.loads(values_json)  # e.g., [[22,55], [23,60], [24,65]]</code></pre>
+        </div>
+
+        <h3 class="max-sm:text-xl text-2xl my-4 text-secondary font-bold">Step 2: Prepare Data for SVM</h3>
+        <p class="max-sm:text-lg text-xl">
+            We convert the list to a NumPy array and split it into features and targets.
+            Features (X) are all pairs except the last. Targets (y) are temperature and humidity separately.
+        </p>
+        <div class="mockup-code mt-2">
+        <pre><code>import numpy as np
+
+  data = np.array(input_values)  # shape: (n, 2)
+  X = data[:-1]                   # all but last for training
+  y_temp = data[1:, 0]            # target: next temperatures
+  y_hum = data[1:, 1]             # target: next humidities</code></pre>
+        </div>
+
+        <h3 class="max-sm:text-xl text-2xl my-4 text-secondary font-bold">Step 3: Train SVM Models</h3>
+        <p class="max-sm:text-lg text-xl">
+            We create two SVR (Support Vector Regression) models and fit them on our training data.
+        </p>
+        <div class="mockup-code mt-2">
+        <pre><code>from sklearn.svm import SVR
+
+  svr_temp = SVR(kernel="rbf", C=100, gamma="scale")
+  svr_hum = SVR(kernel="rbf", C=100, gamma="scale")
+  svr_temp.fit(X, y_temp)
+  svr_hum.fit(X, y_hum)</code></pre>
+        </div>
+
+        <h3 class="max-sm:text-xl text-2xl my-4 text-secondary font-bold">Step 4: Predict the Next Values</h3>
+        <p class="max-sm:text-lg text-xl">
+            We take the last input pair and ask both models to predict the next temperature and humidity.
+        </p>
+        <div class="mockup-code mt-2">
+        <pre><code>last_pair = data[-1].reshape(1, -1)
+  predicted_temp = svr_temp.predict(last_pair)[0]
+  predicted_hum = svr_hum.predict(last_pair)[0]</code></pre>
+        </div>
+
+        <h3 class="max-sm:text-xl text-2xl my-4 text-secondary font-bold">Step 5: Display the Predictions</h3>
+        <p class="max-sm:text-lg text-xl">
+            We round the predictions and send them back to the template for display.
+        </p>
+        <div class="mockup-code mt-2">
+        <pre><code>pred_temp = round(predicted_temp, 2)
+  pred_hum = round(predicted_hum, 2)</code></pre>
+            <p class="max-sm:text-lg text-xl">
+                Then render these in the Django template
+            </p>
+        </div>
+
+        <h2 class="max-sm:text-2xl text-3xl my-5 text-primary font-bold">Why SVM Regression?</h2>
+        <ul class="max-sm:text-lg text-xl list-disc list-inside">
+            <li>✅ Works well with small to medium-sized datasets.</li>
+            <li>✅ Can model complex, non-linear relationships.</li>
+            <li>✅ More robust to outliers than simple linear regression.</li>
+        </ul>
+
+        <h2 class="max-sm:text-2xl text-3xl my-5 text-primary font-bold">Give It a Try!</h2>
+        <p class="max-sm:text-lg text-xl">
+            Visit the SVM Regression page, enter a JSON list of [temp, hum] pairs, and see your next prediction! 🌡️💧
+        </p>
+    </div>
+{% endblock %}

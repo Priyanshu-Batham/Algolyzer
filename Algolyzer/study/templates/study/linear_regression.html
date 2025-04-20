@@ -1,0 +1,96 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="max-w-5xl mx-auto py-5 max-sm:p-4">
+        <h1 class="max-sm:text-4xl max-sm:my-6 text-5xl my-12">
+            A Beginner's Guide to <span class="text-primary font-bold font-poppins">Linear Regression</span>
+        </h1>
+
+        <h2 class="max-sm:text-2xl text-3xl my-5 text-primary font-bold">Introduction</h2>
+        <p class="max-sm:text-lg text-xl">
+            Linear regression is a basic machine learning method that finds a straight line (relationship) between input data and output values.
+            In simple terms, it learns how one variable changes when another changes and uses that to make predictions.
+        </p>
+        <p class="max-sm:text-lg text-xl mt-3">
+            Here, we collect five numeric inputs from sliders (values 1–5) and predict a sixth value based on the trends in those inputs.
+        </p>
+
+        <h2 class="max-sm:text-2xl text-3xl my-5 text-primary font-bold">How Does It Work?</h2>
+        <ol class="list-decimal list-inside max-sm:text-lg text-xl">
+            <li>User moves five sliders to choose numbers.</li>
+            <li>Values are sent to the server when the form is submitted.</li>
+            <li>A straight-line model is trained on the five numbers.</li>
+            <li>The model predicts the value at position 6.</li>
+            <li>We display the predicted value along with the line’s equation.</li>
+        </ol>
+
+        <h2 class="max-sm:text-2xl text-3xl my-5 text-primary font-bold">Step-by-Step Breakdown</h2>
+
+        <h3 class="max-sm:text-xl text-2xl my-4 text-secondary font-bold">Step 1: Collect Input Data</h3>
+        <p class="max-sm:text-lg text-xl">
+            We read the slider values from the form submission using Django’s request object.
+        </p>
+        <div class="mockup-code mt-2">
+        <pre><code>values = [
+    float(request.POST.get("value_1", 0)),
+    float(request.POST.get("value_2", 0)),
+    float(request.POST.get("value_3", 0)),
+    float(request.POST.get("value_4", 0)),
+    float(request.POST.get("value_5", 0)),
+]</code></pre>
+        </div>
+
+        <h3 class="max-sm:text-xl text-2xl my-4 text-secondary font-bold">Step 2: Prepare Data for Training</h3>
+        <p class="max-sm:text-lg text-xl">
+            We create an array of positions (1–5) and another array of the slider values. This shapes the data for the model.
+        </p>
+        <div class="mockup-code mt-2">
+        <pre><code>import numpy as np
+
+  X = np.array(range(1, 6)).reshape(-1, 1)  # Positions 1 to 5
+  y = np.array(values)  # The values from sliders</code></pre>
+        </div>
+
+        <h3 class="max-sm:text-xl text-2xl my-4 text-secondary font-bold">Step 3: Train the Model</h3>
+        <p class="max-sm:text-lg text-xl">
+            We use scikit-learn’s LinearRegression to learn the best-fit line through our data points.
+        </p>
+        <div class="mockup-code mt-2">
+        <pre><code>from sklearn.linear_model import LinearRegression
+
+  model = LinearRegression()
+  model.fit(X, y)</code></pre>
+        </div>
+
+        <h3 class="max-sm:text-xl text-2xl my-4 text-secondary font-bold">Step 4: Predict the Next Value</h3>
+        <p class="max-sm:text-lg text-xl">
+            With the trained model, we predict what the value would be at position 6.
+        </p>
+        <div class="mockup-code mt-2">
+        <pre><code>next_index = np.array([[6]])
+  predicted_value = model.predict(next_index)[0]</code></pre>
+        </div>
+
+        <h3 class="max-sm:text-xl text-2xl my-4 text-secondary font-bold">Step 5: Get the Line Equation</h3>
+        <p class="max-sm:text-lg text-xl">
+            We extract the slope (change rate) and intercept (starting point) to show the line’s formula.
+        </p>
+        <div class="mockup-code mt-2">
+        <pre><code>slope = model.coef_[0]
+  intercept = model.intercept_</code></pre>
+        </div>
+
+        <h2 class="max-sm:text-2xl text-3xl my-5 text-primary font-bold">Why Linear Regression?</h2>
+        <ul class="max-sm:text-lg text-xl list-disc list-inside">
+            <li>✅ Simple and interpretable — you see the actual equation.</li>
+            <li>✅ Fast to train and requires little data.</li>
+            <li>✅ Great starting point for understanding how prediction works.</li>
+        </ul>
+
+        <h2 class="max-sm:text-2xl text-3xl my-5 text-primary font-bold">Try It Yourself!</h2>
+        <p class="max-sm:text-lg text-xl">
+            Go to the Linear Regression page, move the sliders, and watch your predicted point update! 📈
+        </p>
+    </div>
+{% endblock %}

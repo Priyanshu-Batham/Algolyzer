@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="max-w-5xl mx-auto py-5 max-sm:p-4">
+        <h1 class="max-sm:text-4xl max-sm:my-6 text-5xl my-12">
+            A Beginner's Guide to <span class="text-primary font-bold font-poppins">K-Means Clustering</span>
+        </h1>
+
+        <h2 class="max-sm:text-2xl text-3xl my-5 text-primary font-bold">Introduction</h2>
+        <p class="max-sm:text-lg text-xl">
+            K-Means clustering is an unsupervised learning algorithm that groups data into clusters based on similarity.
+            It finds a set of "centroids" that best represent the data points in each cluster.
+        </p>
+        <p class="max-sm:text-lg text-xl mt-3">
+            In this tool, you enter a list of numbers, and the algorithm will group them into up to three clusters.
+        </p>
+
+        <h2 class="max-sm:text-2xl text-3xl my-5 text-primary font-bold">How Does It Work?</h2>
+        <ol class="list-decimal list-inside max-sm:text-lg text-xl">
+            <li>You input several numbers (e.g., 2, 8, 3, 15, 6).</li>
+            <li>The server reads and parses these numbers into a list.</li>
+            <li>K-Means places cluster centers and assigns each number to the nearest center.</li>
+            <li>The centers move to the average of their assigned points until stable.</li>
+            <li>The final clusters and their labels are shown.</li>
+        </ol>
+
+        <h2 class="max-sm:text-2xl text-3xl my-5 text-primary font-bold">Step-by-Step Breakdown</h2>
+
+        <h3 class="max-sm:text-xl text-2xl my-4 text-secondary font-bold">Step 1: Read and Parse Input</h3>
+        <p class="max-sm:text-lg text-xl">
+            We get the raw JSON string of numbers from the form and convert it into a Python list.
+        </p>
+        <div class="mockup-code mt-2">
+        <pre><code>import json
+
+  values_json = request.POST.get("values", "[]")
+  input_values = json.loads(values_json)  # e.g., [2, 8, 3, 15, 6]</code></pre>
+        </div>
+
+        <h3 class="max-sm:text-xl text-2xl my-4 text-secondary font-bold">Step 2: Prepare Data for K-Means</h3>
+        <p class="max-sm:text-lg text-xl">
+            We convert the list of numbers into a NumPy array and reshape it so each number is its own data point.
+        </p>
+        <div class="mockup-code mt-2">
+        <pre><code>import numpy as np
+
+  X = np.array(input_values).reshape(-1, 1)  # e.g., [[2], [8], [3], [15], [6]]</code></pre>
+        </div>
+
+        <h3 class="max-sm:text-xl text-2xl my-4 text-secondary font-bold">Step 3: Choose Number of Clusters</h3>
+        <p class="max-sm:text-lg text-xl">
+            We allow up to 3 clusters but never more than the number of points.
+        </p>
+        <div class="mockup-code mt-2">
+        <pre><code>from sklearn.cluster import KMeans
+
+  n_clusters = min(len(input_values), 3)
+  kmeans = KMeans(n_clusters=n_clusters, random_state=42)</code></pre>
+        </div>
+
+        <h3 class="max-sm:text-xl text-2xl my-4 text-secondary font-bold">Step 4: Run K-Means</h3>
+        <p class="max-sm:text-lg text-xl">
+            We fit the model to our data and get a label for each point.
+        </p>
+        <div class="mockup-code mt-2">
+        <pre><code>kmeans.fit(X)
+  labels = kmeans.labels_.tolist()  # e.g., [0, 1, 0, 2, 0]</code></pre>
+        </div>
+
+        <h3 class="max-sm:text-xl text-2xl my-4 text-secondary font-bold">Step 5: Pair Values with Cluster Labels</h3>
+        <p class="max-sm:text-lg text-xl">
+            We zip each original number with its cluster label for easy display.
+        </p>
+        <div class="mockup-code mt-2">
+        <pre><code>classified_values = list(zip(input_values, labels))
+  # e.g., [(2,0), (8,1), (3,0), (15,2), (6,0)]</code></pre>
+        </div>
+
+        <h2 class="max-sm:text-2xl text-3xl my-5 text-primary font-bold">Why K-Means?</h2>
+        <ul class="max-sm:text-lg text-xl list-disc list-inside">
+            <li>✅ Easy to understand and implement.</li>
+            <li>✅ Fast and scales well with data size.</li>
+            <li>✅ Good for discovering hidden groupings in your data.</li>
+        </ul>
+
+        <h2 class="max-sm:text-2xl text-3xl my-5 text-primary font-bold">Try Clustering!</h2>
+        <p class="max-sm:text-lg text-xl">
+            Visit the K-Means Clustering page, input a few numbers separated by commas, and see how they group together! 🧩
+        </p>
+    </div>
+{% endblock %}
