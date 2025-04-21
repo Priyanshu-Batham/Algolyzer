@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="max-w-5xl mx-auto py-5 max-sm:p-4">
+        <h1 class="max-sm:text-4xl max-sm:my-6 text-5xl my-12">
+            A Beginner's Guide to <span class="text-primary font-bold font-poppins">Doodle Classification</span>
+        </h1>
+
+        <h2 class="max-sm:text-2xl text-3xl my-5 text-primary font-bold">Introduction</h2>
+        <p class="max-sm:text-lg text-xl">
+            Doodle classification is a type of image classification that predicts which number (0-9) was drawn by a user.
+            This is done using a deep learning model trained on the MNIST dataset—a famous dataset of handwritten digits.
+        </p>
+        <p class="max-sm:text-lg text-xl mt-3">
+            In this project, we're using a pre-trained model from Hugging Face called <code>farleyknight/mnist-digit-classification-2022-09-04</code>,
+            which is specifically trained to recognize digits from rough sketches or "doodles."
+        </p>
+
+        <h2 class="max-sm:text-2xl text-3xl my-5 text-primary font-bold">How Does It Work?</h2>
+        <ol class="list-decimal list-inside max-sm:text-lg text-xl">
+            <li>The user draws a digit on a canvas in the browser.</li>
+            <li>The drawing is converted to a base64 PNG image.</li>
+            <li>This image is sent to the server and saved temporarily.</li>
+            <li>The image is passed through a deep learning model.</li>
+            <li>The model outputs the most likely digit with a confidence score.</li>
+        </ol>
+
+        <h2 class="max-sm:text-2xl text-3xl my-5 text-primary font-bold">Step-by-Step Breakdown</h2>
+
+        <h3 class="max-sm:text-xl text-2xl my-4 text-secondary font-bold">Step 1: Capture the Drawing</h3>
+        <p class="max-sm:text-lg text-xl">
+            We use an HTML canvas where users draw their digit. The drawing is captured as a base64-encoded image string.
+        </p>
+
+        <div class="mockup-code mt-2">
+            <pre><code>image_data = request.POST.get("image_data")</code></pre>
+        </div>
+
+        <h3 class="max-sm:text-xl text-2xl my-4 text-secondary font-bold">Step 2: Save the Drawing as an Image</h3>
+        <p class="max-sm:text-lg text-xl">
+            The base64 string is decoded and saved as a PNG image, so that it can be read like a normal image file.
+        </p>
+
+        <div class="mockup-code mt-2">
+        <pre><code>format, imgstr = image_data.split(";base64,")
+  ext = format.split("/")[-1]
+  image_file = ContentFile(base64.b64decode(imgstr), name=f"doodle.{ext}")</code></pre>
+        </div>
+
+        <h3 class="max-sm:text-xl text-2xl my-4 text-secondary font-bold">Step 3: Run the Image through the Classifier</h3>
+        <p class="max-sm:text-lg text-xl">
+            The image is passed into a pre-trained model that analyzes the pixel patterns and predicts which digit was drawn.
+        </p>
+
+        <div class="mockup-code mt-2">
+        <pre><code>image = Image.open(task.input_image.path)
+  result = mnist_classifier(image)</code></pre>
+        </div>
+
+        <h3 class="max-sm:text-xl text-2xl my-4 text-secondary font-bold">Step 4: Get the Best Prediction</h3>
+        <p class="max-sm:text-lg text-xl">
+            The model returns a list of possible digits with scores. We choose the one with the highest score.
+        </p>
+
+        <div class="mockup-code mt-2">
+        <pre><code>best_prediction = max(result, key=lambda x: x["score"])
+  best_label = best_prediction["label"]</code></pre>
+        </div>
+
+        <h2 class="max-sm:text-2xl text-3xl my-5 text-primary font-bold">Why This Model?</h2>
+        <ul class="max-sm:text-lg text-xl list-disc list-inside">
+            <li>✅ Trained on real-world digit images from the MNIST dataset.</li>
+            <li>✅ Fast and lightweight — ideal for web apps and educational tools.</li>
+            <li>✅ Easy to integrate using Hugging Face’s <code>pipeline</code> interface.</li>
+        </ul>
+
+        <h2 class="max-sm:text-2xl text-3xl my-5 text-primary font-bold">Try Drawing!</h2>
+        <p class="max-sm:text-lg text-xl">
+            Head over to the classifier page and draw a number to see the magic happen in real-time! 🎨
+        </p>
+    </div>
+{% endblock %}
