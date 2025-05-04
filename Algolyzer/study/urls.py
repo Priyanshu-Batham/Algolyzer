@@ -9,6 +9,8 @@ urlpatterns = [
     ),
     path("doodle_classifer/", views.doodle_classifier, name="doodle_classifier_study"),
     path("linear_regression/", views.linear_regression, name="linear_regression_study"),
-    path("k_means_clustering/", views.k_means_clustering, name="k_means_clustering"),
-    path("svm_regression/", views.svm_regression, name="svm_regression"),
+    path(
+        "k_means_clustering/", views.k_means_clustering, name="k_means_clustering_study"
+    ),
+    path("svm_regression/", views.svm_regression, name="svm_regression_study"),
 ]
